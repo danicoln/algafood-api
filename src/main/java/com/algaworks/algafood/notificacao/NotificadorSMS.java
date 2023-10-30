@@ -4,7 +4,7 @@ import com.algaworks.algafood.model.Cliente;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Qualifier("prioridade-urgente")
+@TipoDoNotificador(NivelUrgencia.URGENTE)
 @Component
 public class NotificadorSMS implements Notificador {
 
