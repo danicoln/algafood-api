@@ -56,6 +56,11 @@ Quando você integra serviços externos (por exemplo, APIs de terceiros), callba
 
 Em Java, os callbacks são implementados geralmente através de interfaces funcionais que definem um único método abstrato (conhecidas como interfaces funcionais) e, em seguida, você instancia essas interfaces com classes anônimas ou lambdas para fornecer a implementação do método.
 
+
+### 2.23. Configurando projetos Spring Boot com o application.properties
+
+[Documentação das propriedades comuns da aplicação (application.properties)](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html)
+
 ### 2.24. Substituindo propriedades via linha de comando e variáveis de ambiente
 
 Um exemplo na linha de comando seria:
@@ -95,4 +100,3 @@ java -jar target/algafood-api-0.0.1-SNAPSHOT.jar
 ~~~
 
 ### 2.25. Criando e acessando propriedades customizadas com @Value
-
