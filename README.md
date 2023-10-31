@@ -9,8 +9,16 @@
 
 ## Módulo 2 Spring e Injeção de Dependências
 
+### 2.5 Criando um projeto Spring Boot com Spring Initializr
+
+Versão do Spring Boot utilizado nas aulas é o 2.1.7.
+Esta versão já está muito depreciada, sendo assim, mudei para a versão 2.7.17.
+
 ### 2.20 Mudando o comportamento da aplicação com Spring Profiles
 
 Aula sobre o uso do Spring Profiles.
 Nesta aula o professor ensina as formas de como utilizar o Spring Profiles. Eu não consegui fazer funcionar, então sigo nesta aula para verificar uma solução.
 Provavelmente pode ser versão do spring boot.
+
+#### Solução: 
+O problema estava no service, o atributo "notificador" estava anotado com "@TipoDoNotificador(NivelUrgencia.URGENTE)", sendo assim no console mostrava apenas a entidade de SMS. Após a mudança para "@TipoDoNotificador(NivelUrgencia.SEM_URGENCIA)", o serviço funcionou corretamente.

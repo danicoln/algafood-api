@@ -5,15 +5,12 @@ import com.algaworks.algafood.notificacao.NivelUrgencia;
 import com.algaworks.algafood.notificacao.Notificador;
 import com.algaworks.algafood.notificacao.TipoDoNotificador;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class AtivacaoClienteService {
 
-    @TipoDoNotificador(NivelUrgencia.URGENTE) //anotação customizada
+    @TipoDoNotificador(NivelUrgencia.SEM_URGENCIA) //anotação customizada
     @Autowired
     private Notificador notificador;
 
