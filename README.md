@@ -55,3 +55,44 @@ Em Java 8 e versões posteriores, você pode usar lambdas como callbacks para it
 Quando você integra serviços externos (por exemplo, APIs de terceiros), callbacks podem ser usados para lidar com eventos ou respostas desses serviços.
 
 Em Java, os callbacks são implementados geralmente através de interfaces funcionais que definem um único método abstrato (conhecidas como interfaces funcionais) e, em seguida, você instancia essas interfaces com classes anônimas ou lambdas para fornecer a implementação do método.
+
+### 2.24. Substituindo propriedades via linha de comando e variáveis de ambiente
+
+Um exemplo na linha de comando seria:
+
+~~~
+java -jar target/algafood-api-0.0.1-SNAPSHOT.jar --server.port=8082
+~~~
+
+Outra forma, definir uma variável de ambiente na linha de comando, no Linux / Mac por exemplo:
+
+~~~
+export SERVER_PORT=8083
+~~~
+
+Para saber se a variável de ambiente foi atribuída, verificar com o seguinte comando:
+
+~~~
+echo %SERVER_PORT
+~~~
+
+#### No Windows: 
+
+~~~
+set SERVER_PORT=8083
+~~~
+
+Para checar se definiu a variável de ambiente, inserir o seguinte comando:
+~~~
+echo %SERVER_PORT%
+~~~
+
+
+Para rodar o projeto, basta inserir o comando:
+
+~~~
+java -jar target/algafood-api-0.0.1-SNAPSHOT.jar
+~~~
+
+### 2.25. Criando e acessando propriedades customizadas com @Value
+
