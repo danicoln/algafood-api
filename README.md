@@ -108,19 +108,57 @@ Quando um projeto começa a crescer e o ter muitas propriedades customizadas, po
 
 Por isso existe uma forma de organizar, criando uma classe que representa um grupo de configurações com essas propriedades.
 
-⚠️ Analisar: 
+⚠️ Analisar alterações: 
 
     ✅ NotificadorProperties
     ✅ NotificadorEmail
     ✅ application.properties
+
 ### 2.27. Alterando a configuração do projeto dependendo do ambiente (com Spring Profiles)
 
 📌 Configurando ambientes com Spring Profiles.
 
-⚠️Analisar: 
+⚠️Analisar alterações: 
 
     ✅ application.properties
     ✅ application-dev.properties
     ✅ application-prod.properties
     ✅ Em "Run" > "Edit Configuration..." > "Environment variables" adicionar a propriedade de um profile para ser ativado o ambiente, por exemplo: "spring.profiles.active=prod".
+
+### 2.28. Ativando o Spring Profile por linha de comando e variável de ambiente
+
+⚠️Analisar alterações: 
+
+📌 Nesta aula, é dado um exemplo de como ativar o Spring Profile apenas por linha de comando e variável de ambiente. Primeiramente precisamos gerar o arquivo jar com o seguinte passo a passo:
+
+✅ Primeiro necessário limpar o arquivo:
+```
+./mvnw clean
+```
+
+✅ Em seguida, construir o arquivo:
+```
+./mvnw package
+```
+
+Insere a propriedade:
+![Alt text](images/image.png)
+
+Com o programa rodando, confirmamos o ambiente ativo
+![Alt text](images/image-1.png)
+
+Ao chamar o serviço
+![Alt text](images/image-3.png)
+
+✅ Pela linha de comando, ativando por variável de ambiente (no Mac/Linux ao invés de set, colocar "export")
+
+```
+set SPRING_PROFILES_ACTIVE=dev
+```
+
+✅ Para consultar a variável de ambiente:
+
+```
+echo $SPRING_PROFILES_ACTIVE
+```
 
