@@ -101,6 +101,18 @@ java -jar target/algafood-api-0.0.1-SNAPSHOT.jar
 
 ### 2.25. Criando e acessando propriedades customizadas com @Value
 
+
+### 2.26. Acessando propriedades com @ConfigurationProperties
+
+Quando um projeto começa a crescer e o ter muitas propriedades customizadas, pode ficar muito complexo ter que repetir mesmas injeções de valores em classes diferentes.
+
+Por isso existe uma forma de organizar, criando uma classe que representa um grupo de configurações com essas propriedades.
+
+⚠️ Analisar: 
+
+    ✅ NotificadorProperties
+    ✅ NotificadorEmail
+    ✅ application.properties
 ### 2.27. Alterando a configuração do projeto dependendo do ambiente (com Spring Profiles)
 
 📌 Configurando ambientes com Spring Profiles.
@@ -111,3 +123,4 @@ java -jar target/algafood-api-0.0.1-SNAPSHOT.jar
     ✅ application-dev.properties
     ✅ application-prod.properties
     ✅ Em "Run" > "Edit Configuration..." > "Environment variables" adicionar a propriedade de um profile para ser ativado o ambiente, por exemplo: "spring.profiles.active=prod".
+
