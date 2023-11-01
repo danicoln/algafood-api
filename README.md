@@ -162,9 +162,11 @@ set SPRING_PROFILES_ACTIVE=dev
 echo $SPRING_PROFILES_ACTIVE
 ```
 
+## Módulo 3 - Introdução ao JPA e Hibernate
+
 ### 3.3. Adicionando JPA e configurando o Data Source
 
-#### Nota para atualização de versão
+#### Nota para atualização de versão:
 
 Este documento irá te auxiliar a fazer esta aula com a versão 2.7 do Spring Boot e suas dependências.
 
@@ -187,3 +189,20 @@ A partir da versão 2.7.12, é necessário adicionar a seguinte dependência do 
 ✅ Adicionado o Spring Data JPA;
 
 ✅ Configurado no application.properties os dados do banco de dados.
+
+
+### 3.4. Mapeando entidades com JPA
+
+⚠️ Analisar alterações: 
+
+📌 Nesta aula, foi criada:
+
+✅ Cozinha;
+
+✅ Restaurante;
+
+#### Diagrama de classe
+
+![Diagrama](images/diagrama-1.png)
+
+![Diagrama](images/diagrama-2.png)
