@@ -162,3 +162,28 @@ set SPRING_PROFILES_ACTIVE=dev
 echo $SPRING_PROFILES_ACTIVE
 ```
 
+### 3.3. Adicionando JPA e configurando o Data Source
+
+#### Nota para atualização de versão
+
+Este documento irá te auxiliar a fazer esta aula com a versão 2.7 do Spring Boot e suas dependências.
+
+A partir da versão 2.7.12, é necessário adicionar a seguinte dependência do driver do MySQL no pom.xml:
+
+```
+<dependency>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+    </dependency>
+```
+
+[Documentação do driver JDBC do MySQL](https://dev.mysql.com/doc/connector-j/5.1/en/)
+
+
+⚠️Analisar alterações: 
+
+📌 Nesta aula, apagamos todas as classes de exemplos das aulas anteriores.
+
+✅ Adicionado o Spring Data JPA;
+
+✅ Configurado no application.properties os dados do banco de dados.
