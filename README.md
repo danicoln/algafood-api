@@ -242,3 +242,16 @@ Nesta anotação, inserimos como parâmetro GenerationType.IDENTITY. Esta propri
 ![cmd](images/3.6-describe-tab_cozinhas.png)
 
 
+### 3.7. Importando dados de teste com import.sql
+
+📌 O que vimos nesta aula:
+
+✅ Sobre a inserção de dados via arquivo .sql no banco de dados.
+
+Consultando os dados através do comando:
+
+```
+select * from cozinha;
+```
+
+
