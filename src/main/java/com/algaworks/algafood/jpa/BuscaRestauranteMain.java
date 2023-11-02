@@ -7,6 +7,8 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
+import java.util.List;
+
 public class BuscaRestauranteMain {
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApiApplication.class)
@@ -15,8 +17,12 @@ public class BuscaRestauranteMain {
 
         RestauranteRepository repository = applicationContext.getBean(RestauranteRepository.class);
 
-        Restaurante restaurante = repository.buscar(1L);
+        List<Restaurante> restaurantes = repository.listar();
 
-        System.out.println(restaurante.getNome());
+        for(Restaurante restaurante : restaurantes){
+            System.out.printf("%s - %f - %s\n", restaurante.getNome(),
+                    restaurante.getTaxaFrete(), restaurante.getCozinha().getNome());
+        }
+
     }
 }
