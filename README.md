@@ -264,3 +264,23 @@ select * from cozinha;
 ### 3.16 Desafio: Lombok e repositório de restaurantes
 
 Realizado o Desafio.
+
+### 3.17. Mapeando relacionamento com @ManyToOne
+
+📌 O que vimos nesta aula:
+
+✅ Mapeamento do relacionamento @ManyToOne na entidade Restaurante, onde a leitura correta é "MUITOS restaurantes contém UMA Cozinha". 
+
+✅ A configuração do dialeto do banco de dados, fazendo uma consulta através do buscador da IDE, inserindo o nome do banco de dados, no nosso caso Mysql, para consultar o pacote e o nome da classe.
+
+✅ Com os dados, configuração no application.properties:
+
+```
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL57Dialect
+```
+
+Esta configuração serve para que o hibernate use o dialeto do MySQL.
+
+✅ Alteração no import.sql.
+
+✅ Testando mudanças através da classe BuscaRestauranteMain.
