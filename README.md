@@ -254,4 +254,23 @@ Consultando os dados através do comando:
 select * from cozinha;
 ```
 
+### 3.8. Consultando objetos do banco de dados
 
+📌 O que vimos nesta aula:
+
+✅ Exemplo de consulta de objetos do banco de dados;
+
+Para esta aula, criamos as classes:
+
+    ✅ CadastroCozinha;
+    ✅ ConsultaCozinhaMain;
+
+Inserimos uma nova configuração em application.properties para que possamos verificar no console os selects de tabelas feitas pelo hibernate:
+
+```
+spring.jpa.show-sql=true
+```
+
+⚠️ Obs:
+
+Esta configuração só pode ser usada em ambiente de desenvolvimento, não sendo uma boa prática usar em ambiente de produção/homologação.
