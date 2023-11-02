@@ -254,4 +254,9 @@ Consultando os dados através do comando:
 select * from cozinha;
 ```
 
+### 3.15. Conhecendo e usando o Lombok
+
+📌 Usando Lombok, uma biblioteca Java. 
+
+[Projeto Lombok](https://projectlombok.org/)
 
