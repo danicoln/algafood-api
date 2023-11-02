@@ -255,3 +255,23 @@ select * from cozinha;
 ```
 
 
+### 3.13. Conhecendo o padrão Aggregate do DDD
+
+📌 O que vimos nesta aula:
+
+✅ Padrão Aggregate do DDD.
+
+É um grupo de objetos de domínio que podem ser tratados como uma única unidade.
+
+As entidades Pedido e ItemPedido (mais o Enun StatusPedido), fazem parte de do "agregado". Dentro deste agregado, existe apenas uma raíz do agregado, veja na imagem abaixo o exemplo:
+
+![Aggregate Root](images/aggregate-1.png)
+
+Qualquer referência para fora do agregado, se for também um grupo de entidades, deve ir apenas para para a entidade que também seja um "Aggregate Root", ou seja, o "pai" do agregado. Veja o exemplo a seguir:
+
+![Aggregate Root](images/aggregate-2.png)
+
+⚠️ [Ver artigo sobre Aggregate do Martin Fowler](https://martinfowler.com/bliki/DDD_Aggregate.html)
+
+⚠️ [Livro do Eric Evans onde fala mais sobre este padrão.](https://www.amazon.com.br/Domain-Driven-Design-Eric-Evans/dp/8550800651)
+
