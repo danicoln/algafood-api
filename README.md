@@ -254,4 +254,11 @@ Consultando os dados através do comando:
 select * from cozinha;
 ```
 
+### 3.14. Conhecendo e implementando o padrão Repository
+
+📌 O que vimos nesta aula:
+
+✅ Sobre o padrão Repository e a camada de infraestrutura.
+
+Na camada de infraestrutura, inserimos implementações técnica de acesso ao BD. Se refere a implementações que não tem a ver com o negócio.
 
