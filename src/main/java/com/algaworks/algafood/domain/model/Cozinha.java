@@ -4,13 +4,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tab_cozinhas") //nomeia o nome da tabela
 public class Cozinha {
 
     @Id
     private Long id;
 
-    @Column(name = "nom_cozinha")
     private String nome;
 
     public Long getId() {
