@@ -207,7 +207,7 @@ A partir da versão 2.7.12, é necessário adicionar a seguinte dependência do 
 
 ![Diagrama](images/diagrama-2.png)
 
-### 3.4. Mapeando entidades com JPA
+### 3.5. Criando as tabelas do banco a partir das entidades
 
 ⚠️ Analisar alterações: 
 
@@ -230,6 +230,7 @@ spring.jpa.hibernate.ddl-auto=create
 
 Já no ambiente de produção, a forma de criar tabelas será demonstrada em outra aula.
 
+
 ### 3.6. Mapeando o id da entidade para autoincremento
 
 📌 O que vimos nesta aula:
@@ -239,3 +240,5 @@ Já no ambiente de produção, a forma de criar tabelas será demonstrada em out
 Nesta anotação, inserimos como parâmetro GenerationType.IDENTITY. Esta propriedade significa que estamos passando a responsabilidade de gerar o valor do identificador para o provedor de persistência, ou seja, para o banco de dados:
 
 ![cmd](images/3.6-describe-tab_cozinhas.png)
+
+
