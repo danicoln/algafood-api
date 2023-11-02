@@ -260,3 +260,7 @@ select * from cozinha;
 
 [Projeto Lombok](https://projectlombok.org/)
 
+
+### 3.16 Desafio: Lombok e repositório de restaurantes
+
+Realizado o Desafio.
