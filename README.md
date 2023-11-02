@@ -206,3 +206,26 @@ A partir da versão 2.7.12, é necessário adicionar a seguinte dependência do 
 ![Diagrama](images/diagrama-1.png)
 
 ![Diagrama](images/diagrama-2.png)
+
+### 3.4. Mapeando entidades com JPA
+
+⚠️ Analisar alterações: 
+
+📌 O que vimos nesta aula:
+
+✅ Sobre as formas de geração das tabelas.
+
+No ambiente de desenvolvimento, a forma mais comum de gerar as tabelas é criando automaticamente pela seguinte configuração no application.propierties:
+
+```
+spring.jpa.generate-ddl=true
+```
+
+Outra configuração, esta, específica do hibernate, define a forma que seja executado.
+Nesta forma (create), dropa todas as tabelas e recria toda vez que reiniciar a aplicação (pode perder dados, recomendado para ambiente de desenvolvimento).
+
+```
+spring.jpa.hibernate.ddl-auto=create
+```
+
+Já no ambiente de produção, a forma de criar tabelas será demonstrada em outra aula.
