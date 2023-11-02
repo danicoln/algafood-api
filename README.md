@@ -274,3 +274,12 @@ spring.jpa.show-sql=true
 ⚠️ Obs:
 
 Esta configuração só pode ser usada em ambiente de desenvolvimento, não sendo uma boa prática usar em ambiente de produção/homologação.
+
+### 3.9. Adicionando um objeto no banco de dados
+
+📌 O que vimos nesta aula:
+
+✅ Criamos a classe InclusaoCozinhaMain;
+
+✅ Inserimos um novo método na classe CadastroCozinha.
+
