@@ -3,10 +3,7 @@ package com.algaworks.algafood.domain.model;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 //@Getter
 //@Setter
@@ -21,6 +18,7 @@ public class Cozinha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false) // este parâmetro nullable=false significa que essas colunas não aceitam valores nulos
     private String nome;
     
 }
