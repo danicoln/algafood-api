@@ -207,7 +207,7 @@ A partir da versão 2.7.12, é necessário adicionar a seguinte dependência do 
 
 ![Diagrama](images/diagrama-2.png)
 
-### 3.4. Mapeando entidades com JPA
+### 3.5. Criando as tabelas do banco a partir das entidades
 
 ⚠️ Analisar alterações: 
 
