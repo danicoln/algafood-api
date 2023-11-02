@@ -283,3 +283,53 @@ Esta configuração só pode ser usada em ambiente de desenvolvimento, não send
 
 ✅ Inserimos um novo método na classe CadastroCozinha.
 
+### 3.10. Buscando um objeto pelo id no banco de dados
+
+📌 O que vimos nesta aula:
+
+✅ Criamos a classe BuscaCozinhaMain;
+
+✅ Inserimos um novo método na classe CadastroCozinha, o de buscar.
+
+### 3.11. Atualizando um objeto no banco de dados
+
+📌 O que vimos nesta aula:
+
+✅ Criamos a classe AlteracaoCozinhaMain;
+
+✅ Alteramos o nome do método adicionar para "salvar".
+
+### 3.12. Excluindo um objeto do banco de dados
+
+📌 O que vimos nesta aula:
+
+✅ Criamos a classe ExclusaoCozinhaMain;
+
+✅ Inserimos um novo método na classe CadastroCozinha, o de remover.
+
+⚠️ Observações:
+
+O método criado "remover", em seu parâmetro, o objeto passado está em seu estado "Transient", se não fizermos a busca deste objeto no BD antes da exclusão, dá o seguinte erro: 
+```
+Exception in thread "restartedMain" java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.boot.devtools.restart.RestartLauncher.run(RestartLauncher.java:50)
+Caused by: java.lang.IllegalArgumentException: Removing a detached instance com.algaworks.algafood.domain.model.Cozinha#1
+```
+
+Para que este  erro não aconteça, é necessário a busca do objeto no BD para  que o mesmo
+saia do estado "Transient" para o estado "Detached" para poder ser gerenciada com a chamada do método merge.
+
+```
+    @Transactional
+    public void remover(Cozinha cozinha) {
+        cozinha = buscar(cozinha.getId());
+        manager.remove(cozinha);
+    }
+```
+
+### [Veja este artigo para maiores iformações](https://blog.algaworks.com/tutorial-jpa/)
+

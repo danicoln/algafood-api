@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Component
@@ -26,10 +25,21 @@ public class CadastroCozinha {
      * manager.merge().
      * Este merge, mescla o estado de determinada entidade no
      * contexto de persistência atual. Retorna a instância
-     * gerenciada na qual o estado foi mergiado (mesclado)*/
+     * gerenciada na qual o estado foi mergiado (mesclado)
+     */
 
     @Transactional //Esta anotação faz com que o método seja executado dentro de uma transação
-    public Cozinha adicionar(Cozinha cozinha) {
+    public Cozinha salvar(Cozinha cozinha) {
         return manager.merge(cozinha);
+    }
+
+    public Cozinha buscar(Long id) {
+        return manager.find(Cozinha.class, id);
+    }
+
+    @Transactional
+    public void remover(Cozinha cozinha) {
+        cozinha = buscar(cozinha.getId());
+        manager.remove(cozinha);
     }
 }

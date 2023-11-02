@@ -6,7 +6,9 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
-public class InclusaoCozinhaMain {
+import java.util.List;
+
+public class BuscaCozinhaMain {
     public static void main(String[] args) {
 
         /**
@@ -21,22 +23,8 @@ public class InclusaoCozinhaMain {
 
         CadastroCozinha cadastroCozinha = applicationContext.getBean(CadastroCozinha.class);
 
-        Cozinha cozinha1 = new Cozinha();
-        cozinha1.setNome("Brasileira");
+        Cozinha cozinha = cadastroCozinha.buscar(1L);
 
-        Cozinha cozinha2 = new Cozinha();
-        cozinha2.setNome("Japonesa");
-
-        /**
-         * Para observar:
-         * Atribuímos às variáveis o método adicionar(),
-         * pois no método adicionar(), retorna o "merge",
-         * que faz a atribuição do ID quando é passado o parâmetro
-         * -> Analisar o método!*/
-        cozinha1 = cadastroCozinha.salvar(cozinha1);
-        cozinha2 = cadastroCozinha.salvar(cozinha2);
-
-        System.out.printf("%d - %s\n", cozinha1.getId(), cozinha1.getNome());
-        System.out.printf("%d - %s\n", cozinha2.getId(), cozinha2.getNome());
+        System.out.println(cozinha.getNome());
     }
 }
