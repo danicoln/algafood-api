@@ -289,3 +289,20 @@ Esta configuração serve para que o hibernate use o dialeto do MySQL.
 
 #### Diagrama
 <img src="https://raw.githubusercontent.com/algaworks/curso-especialista-spring-rest/master/ESR%20-%20Diagrama%20de%20classes.png">
+
+## REST COM SPRING
+
+### 4.1. O que é REST?
+
+API REST, também chamada de API RESTful, é uma interface de programação de aplicações (API ou API web) em conformidade com as restrições do estilo de arquitetura REST, permitindo a interação com serviços web RESTful. REST é a sigla em inglês para "Representational State Transfer", que em português significa tansferência de estado representacional. Essa arquitetura foi criada pelo cientista da computação Roy Fielding.
+
+Vantagens: 
+
+    ✅ Separação de cliente e servidor;
+    ✅ Escalabilidade;
+    ✅ Independência de linguagem;
+    ✅ Mercado;
+
+
+### Conhecendo as constraints do REST
+
