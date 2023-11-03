@@ -326,3 +326,6 @@ Vantagens:
 
 [Artigo sobre as constraints](https://www.dio.me/articles/o-que-e-rest)
 
+### 4.3. Diferença entre REST e RESTful
+
+[Ver artigo](https://blog.geekhunter.com.br/sua-api-nao-e-restful-entenda-por-que/)
