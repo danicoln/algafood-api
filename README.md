@@ -458,3 +458,78 @@ Observe que está um pouco confuso. Com as customizações:
     </cozinha>
 </cozinhas> 
 ```
+
+### 4.17. Conhecendo os métodos HTTP
+
+📌 Conceito Idempotência
+
+A idempotência é um conceito da área de matemática e ciência da computação, que se refere à possibilidade de uma determinada operação ser aplicada múltiplas vezes e, em todas elas, obter um único resultado.
+
+⚠️ Principais métodos HTTP:
+
+✅ Get;
+
+✅ Post;
+
+✅ Put;
+
+✅ Patch; 
+
+✅ Delete;
+
+✅ Head;
+
+✅ Options.
+
+
+### 4.18. Conhecendo os códigos de status HTTP
+
+⚠️ Status HTTP.
+
+✅ Nível 200: Significa que o recurso foi processado com sucesso;
+
+✅ Nível 201: Significa que o recurso foi criado com sucesso;
+
+✅ Nível 204: Sem conteúdo. Significa que o recurso foi processado com sucesso, sem a necessidade de resposta. Exemplo, a exclusão com sucesso;
+
+✅ Nível 301: Movido permanentemente;
+
+✅ Nível 302: Encontrado;
+
+✅ Nível 400: Significa requisição mal feita;
+
+✅ Nível 401: Não autorizado;
+
+✅ Nível 403: Proibido;
+
+✅ Nível 404: Não encontrado;
+
+✅ Nível 405: Método não permitido;
+
+✅ Nível 406: Não aceito;
+
+✅ Nível 500: Significa erro no servidor (responsabilidade do dev);
+
+✅ Nível 503: Serviço indisponível;
+
+
+[Registro oficial IANA de códigos de status HTTP](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
+
+[Documentação de códigos de status HTTP no MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status)
+
+
+### 4.19. Definindo o status da resposta HTTP com @ResponseStatus
+
+📌 Nesta aula, vimos uma maneira de inserir no método os métodos HTTP através da anotação @ReponseStatus() passando como parâmetro o status desejado. Exemplo: no método de salvar um recurso, o parâmetro seria o HttpStatus.CREATED.
+
+### 4.20. Manipulando a resposta HTTP com ResponseEntity
+
+📌 Alguns exemplos de implementação usando ResponseEntity, e HttpHeaders.
+
+### 4.21. Corrigindo o Status HTTP para resource inexistente
+
+📌 Alguns exemplos de implementação usando ResponseEntity, e Not Found.
+
+### 4.22. Status HTTP para collection resource vazia: qual usar?
+
+📌 O certo é o status ser 200 mesmo, pois o recurso está apenas vazio, ou seja, quando chamamos um serviço de lista de cozinhas, se este não contém dados, o serviço foi chamado com sucesso, apenas está com a lista vazia, sendo assim, o retorno 200 é considerado o mais correto.
