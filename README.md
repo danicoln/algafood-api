@@ -351,3 +351,28 @@ Acesse [este link](https://gnutls.org/), faça download do arquivo de instalaç�
 
 [Documentação usada na aula](https://docs.github.com/pt/rest?apiVersion=2022-11-28)
 
+### 4.8. Entendendo o que são Recursos REST
+
+Um resource é qualquer coisa exposto na web.
+
+### 4.9. Identificando recursos REST
+
+URI vs URL: 
+
+URI significa Uniform Resource Identifier. É um conjunto de caracteres que tem como objetivo de dar um endereço para os objetos de forma não ambígua.
+A URI deve se referenciar a um substantivo. Por exemplo:
+    
+    /produtos
+
+Para buscar um único produto, seria da seguinte forma:
+Ex.: /produtos{codigo}
+
+    /produtos/331
+
+URL significa Uniform Resource Locator. É um tipo de identificador de recurso também, ela especifica não apenas o identificador, mas a localização do recurso também.
+
+A URL completa por exemplo, seria assim:
+
+    https://api.algamarket.com.br/produtos
+
+    
