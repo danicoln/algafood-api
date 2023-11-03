@@ -388,5 +388,12 @@ Abra o arquivo hosts no bloco de notas e insira, por exemplo:
     #	127.0.0.1       api.algafood.local ⚠️
 
 
+### 4.13. Implementando content negotiation para retornar JSON ou XML
 
+✅ Foi preciso adicionar uma dependência que é uma extensão do Jackson para serialização de objeto Java para XML.
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
 
