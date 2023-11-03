@@ -303,6 +303,26 @@ Vantagens:
     ✅ Independência de linguagem;
     ✅ Mercado;
 
+[Artigo sobre API REST](https://www.ibm.com/br-pt/topics/rest-apis)
 
-### Conhecendo as constraints do REST
+
+### 4.2. Conhecendo as constraints do REST
+
+✅ Cliente-servidor: deve ser uma aplicação com clientes e servidores separados.
+
+✅ Stateless server: o servidor não deve guardar informações sobre o estado do cliente. Cada requisição deve ser independente, contendo as informações necessárias para ser atendida.
+
+✅ Cacheable: é necessário que as respostas possam ser cacheadas, e o cliente deve ser informado sobre as propriedades de cache de um recurso a fim de decidir quando utilizar cache ou não.
+
+✅ Interface uniforme: deve existir uma interface uniforme entre cliente e servidor. Para tanto, algumas convenções devem ser seguidas:
+
+    1. Identificação de recursos por URI: cada recurso deve possuir sua respectiva URI de acesso
+    2. Manipulação de recursos a partir de suas representações (que podem ser em formato HTML, XML, JSON, TXT, etc)
+    3. Mensagens auto-descritivas
+    4. Hypermedia as the engine of application state (HATEOAS): as respostas devem conter todas as informações necessárias para que o cliente possa navegar pela aplicação
+✅ Sistema em camadas: a aplicação deve ser composta por camadas de fácil alteração, sendo possível adicionar ou remover camadas.
+
+✅ Código sob demanda (opcional): o cliente pode solicitar um código do servidor e executá-lo.
+
+[Artigo sobre as constraints](https://www.dio.me/articles/o-que-e-rest)
 
