@@ -326,6 +326,7 @@ Vantagens:
 
 [Artigo sobre as constraints](https://www.dio.me/articles/o-que-e-rest)
 
+[Documentação da API REST do GitHub](https://docs.github.com/pt/rest?apiVersion=2022-11-28)
 ### 4.3. Diferença entre REST e RESTful
 
 [Ver artigo](https://blog.geekhunter.com.br/sua-api-nao-e-restful-entenda-por-que/)
@@ -335,3 +336,18 @@ Vantagens:
 ### 4.5. Conhecendo o protocolo HTTP
 
  [Veja esta documentação](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Overview)
+
+ ### 4.6. Usando o protocolo HTTP
+
+#### Instalando o GnuTLS no Windows
+
+Acesse [este link](https://gnutls.org/), faça download do arquivo de instalação (ZIP) para Windows e descompacte o arquivo em uma pasta.
+
+⚠️ Este programa é apenas para meios didáticos para entender o protocolo HTTP, não sendo obrigatória a instalação.
+
+### 4.7. Instalando e testando o Postman
+
+[Postman](https://www.getpostman.com/)
+
+[Documentação usada na aula](https://docs.github.com/pt/rest?apiVersion=2022-11-28)
+
