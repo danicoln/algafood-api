@@ -284,3 +284,8 @@ Esta configuração serve para que o hibernate use o dialeto do MySQL.
 ✅ Alteração no import.sql.
 
 ✅ Testando mudanças através da classe BuscaRestauranteMain.
+
+### 3.20. Desafio: mapeando entidades
+
+#### Diagrama
+<img src="https://raw.githubusercontent.com/algaworks/curso-especialista-spring-rest/master/ESR%20-%20Diagrama%20de%20classes.png">
