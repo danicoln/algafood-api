@@ -517,3 +517,8 @@ A idempotência é um conceito da área de matemática e ciência da computaçã
 
 [Documentação de códigos de status HTTP no MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status)
 
+
+### 4.19. Definindo o status da resposta HTTP com @ResponseStatus
+
+📌 Nesta aula, vimos uma maneira de inserir no método os métodos HTTP através da anotação @ReponseStatus() passando como parâmetro o status desejado. Exemplo: no método de salvar um recurso, o parâmetro seria o HttpStatus.CREATED.
+
