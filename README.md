@@ -529,3 +529,7 @@ A idempotência é um conceito da área de matemática e ciência da computaçã
 ### 4.21. Corrigindo o Status HTTP para resource inexistente
 
 📌 Alguns exemplos de implementação usando ResponseEntity, e Not Found.
+
+### 4.22. Status HTTP para collection resource vazia: qual usar?
+
+📌 O certo é o status ser 200 mesmo, pois o recurso está apenas vazio, ou seja, quando chamamos um serviço de lista de cozinhas, se este não contém dados, o serviço foi chamado com sucesso, apenas está com a lista vazia, sendo assim, o retorno 200 é considerado o mais correto.
