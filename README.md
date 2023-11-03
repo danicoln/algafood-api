@@ -400,3 +400,11 @@ Abra o arquivo hosts no bloco de notas e insira, por exemplo:
 ### 4.14. Consultando Singleton Resource com GET e @PathVariable
 
 Singleton Resource significa quando o usuário quer buscar apenas um objeto específico no BD.
+
+### 4.15. Customizando as representações XML e JSON com @JsonIgnore, @JsonProperty e @JsonRootName
+
+    ✅ @JsonIgnore: Para caso, queira ignorar algum atributo específico no BD;
+
+    ✅ @JsonProperty: Alterar a nomeclatura do atributo/propriedade sem modificar no atributo em si;
+
+    ✅ @JsonRootName: Para customizar a nomeclatura da entidade que é exibida no BD.
