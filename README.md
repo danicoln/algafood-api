@@ -289,3 +289,90 @@ Esta configuração serve para que o hibernate use o dialeto do MySQL.
 
 #### Diagrama
 <img src="https://raw.githubusercontent.com/algaworks/curso-especialista-spring-rest/master/ESR%20-%20Diagrama%20de%20classes.png">
+
+## REST COM SPRING
+
+### 4.1. O que é REST?
+
+API REST, também chamada de API RESTful, é uma interface de programação de aplicações (API ou API web) em conformidade com as restrições do estilo de arquitetura REST, permitindo a interação com serviços web RESTful. REST é a sigla em inglês para "Representational State Transfer", que em português significa tansferência de estado representacional. Essa arquitetura foi criada pelo cientista da computação Roy Fielding.
+
+Vantagens: 
+
+    ✅ Separação de cliente e servidor;
+    ✅ Escalabilidade;
+    ✅ Independência de linguagem;
+    ✅ Mercado;
+
+[Artigo sobre API REST](https://www.ibm.com/br-pt/topics/rest-apis)
+
+
+### 4.2. Conhecendo as constraints do REST
+
+✅ Cliente-servidor: deve ser uma aplicação com clientes e servidores separados.
+
+✅ Stateless server: o servidor não deve guardar informações sobre o estado do cliente. Cada requisição deve ser independente, contendo as informações necessárias para ser atendida.
+
+✅ Cacheable: é necessário que as respostas possam ser cacheadas, e o cliente deve ser informado sobre as propriedades de cache de um recurso a fim de decidir quando utilizar cache ou não.
+
+✅ Interface uniforme: deve existir uma interface uniforme entre cliente e servidor. Para tanto, algumas convenções devem ser seguidas:
+
+    1. Identificação de recursos por URI: cada recurso deve possuir sua respectiva URI de acesso
+    2. Manipulação de recursos a partir de suas representações (que podem ser em formato HTML, XML, JSON, TXT, etc)
+    3. Mensagens auto-descritivas
+    4. Hypermedia as the engine of application state (HATEOAS): as respostas devem conter todas as informações necessárias para que o cliente possa navegar pela aplicação
+✅ Sistema em camadas: a aplicação deve ser composta por camadas de fácil alteração, sendo possível adicionar ou remover camadas.
+
+✅ Código sob demanda (opcional): o cliente pode solicitar um código do servidor e executá-lo.
+
+[Artigo sobre as constraints](https://www.dio.me/articles/o-que-e-rest)
+
+[Documentação da API REST do GitHub](https://docs.github.com/pt/rest?apiVersion=2022-11-28)
+### 4.3. Diferença entre REST e RESTful
+
+[Ver artigo](https://blog.geekhunter.com.br/sua-api-nao-e-restful-entenda-por-que/)
+
+### 4.4. Desenvolvedores de REST APIs puristas e pragmáticos
+
+### 4.5. Conhecendo o protocolo HTTP
+
+ [Veja esta documentação](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Overview)
+
+ ### 4.6. Usando o protocolo HTTP
+
+#### Instalando o GnuTLS no Windows
+
+Acesse [este link](https://gnutls.org/), faça download do arquivo de instalação (ZIP) para Windows e descompacte o arquivo em uma pasta.
+
+⚠️ Este programa é apenas para meios didáticos para entender o protocolo HTTP, não sendo obrigatória a instalação.
+
+### 4.7. Instalando e testando o Postman
+
+[Postman](https://www.getpostman.com/)
+
+[Documentação usada na aula](https://docs.github.com/pt/rest?apiVersion=2022-11-28)
+
+### 4.8. Entendendo o que são Recursos REST
+
+Um resource é qualquer coisa exposto na web.
+
+### 4.9. Identificando recursos REST
+
+URI vs URL: 
+
+URI significa Uniform Resource Identifier. É um conjunto de caracteres que tem como objetivo de dar um endereço para os objetos de forma não ambígua.
+A URI deve se referenciar a um substantivo. Por exemplo:
+    
+    /produtos
+
+Para buscar um único produto, seria da seguinte forma:
+Ex.: /produtos{codigo}
+
+    /produtos/331
+
+URL significa Uniform Resource Locator. É um tipo de identificador de recurso também, ela especifica não apenas o identificador, mas a localização do recurso também.
+
+A URL completa por exemplo, seria assim:
+
+    https://api.algamarket.com.br/produtos
+
+    
