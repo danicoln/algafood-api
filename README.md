@@ -397,3 +397,6 @@ Abra o arquivo hosts no bloco de notas e insira, por exemplo:
             <artifactId>jackson-dataformat-xml</artifactId>
         </dependency>
 
+### 4.14. Consultando Singleton Resource com GET e @PathVariable
+
+Singleton Resource significa quando o usuário quer buscar apenas um objeto específico no BD.
