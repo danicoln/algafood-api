@@ -458,3 +458,25 @@ Observe que está um pouco confuso. Com as customizações:
     </cozinha>
 </cozinhas> 
 ```
+
+### 4.17. Conhecendo os métodos HTTP
+
+📌 Conceito Idempotência
+
+A idempotência é um conceito da área de matemática e ciência da computação, que se refere à possibilidade de uma determinada operação ser aplicada múltiplas vezes e, em todas elas, obter um único resultado.
+
+Principais métodos HTTP:
+
+✅ Get;
+
+✅ Post;
+
+✅ Put;
+
+✅ Patch; 
+
+✅ Delete;
+
+✅ Head;
+
+✅ Options.
