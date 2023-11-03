@@ -525,3 +525,7 @@ A idempotência é um conceito da área de matemática e ciência da computaçã
 ### 4.20. Manipulando a resposta HTTP com ResponseEntity
 
 📌 Alguns exemplos de implementação usando ResponseEntity, e HttpHeaders.
+
+### 4.21. Corrigindo o Status HTTP para resource inexistente
+
+📌 Alguns exemplos de implementação usando ResponseEntity, e Not Found.
