@@ -11,7 +11,7 @@ import javax.persistence.*;
 //@Getter
 //@Setter
 //@EqualsAndHashCode
-@JsonRootName("gastronomia")//muda a propriedade (testar no postman)
+@JsonRootName("cozinha")//muda a propriedade (testar no postman)
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)// o parâmetro srve para que o equals e hash seja incluído apenas se for explícito
 @Entity

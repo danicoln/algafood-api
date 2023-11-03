@@ -408,3 +408,53 @@ Singleton Resource significa quando o usuário quer buscar apenas um objeto espe
     ✅ @JsonProperty: Alterar a nomeclatura do atributo/propriedade sem modificar no atributo em si;
 
     ✅ @JsonRootName: Para customizar a nomeclatura da entidade que é exibida no BD.
+
+
+### 4.16. Customizando a representação em XML com Wrapper e anotações do Jackson
+
+Existe a possibilidade de customizar a representação em XML.
+
+✅ Para isso, precisamos criar um método no controller, listarXml(), para que podemos customizar a representação no formato XML.
+
+✅ Criamos uma classe "CozinhasXmlWrapper" para que seja a responsável em fazer o empacotamento das listas de "Cozinhas".
+
+Por enquanto a representação está da seguinte forma:
+
+```
+<CozinhasXmlWrapper>
+    <cozinhas>
+        <cozinhas>
+            <id>1</id>
+            <titulo>Tailandesa</titulo>
+        </cozinhas>
+        <cozinhas>
+            <id>2</id>
+            <titulo>Indiana</titulo>
+        </cozinhas>
+    </cozinhas>
+</CozinhasXmlWrapper>
+```
+
+Observe que está um pouco confuso. Com as customizações:
+
+✅ @JacksonXmlRootElement: Esta anotação na classe "CozinhasXmlWrapper", podemos customizar inserindo como parâmetro "cozinhas", para que na representação deixe de mostrar o nome da entidade;
+
+✅ @JsonProperty: No atributo da classe,inserimos esta anotação para passarmos como parâmentro a customização ("cozinha"), para que seja representado cada objeto da lista.  
+
+✅ @JacksonXmlElementWrapper: Inserimos também no método esta anotação para passar como parâmentro o userWrapping = false, para desabilitarmos a representação do empacotamento/embrulho, fazendo com que a representação fique mais sucinta.
+
+📌 A representação em xml com estas alterações ficam da seguinte forma:
+
+
+```
+<cozinhas>
+    <cozinha>
+        <id>1</id>
+        <titulo>Tailandesa</titulo>
+    </cozinha>
+    <cozinha>
+        <id>2</id>
+        <titulo>Indiana</titulo>
+    </cozinha>
+</cozinhas> 
+```
