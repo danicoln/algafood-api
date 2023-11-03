@@ -329,3 +329,9 @@ Vantagens:
 ### 4.3. Diferença entre REST e RESTful
 
 [Ver artigo](https://blog.geekhunter.com.br/sua-api-nao-e-restful-entenda-por-que/)
+
+### 4.4. Desenvolvedores de REST APIs puristas e pragmáticos
+
+### 4.5. Conhecendo o protocolo HTTP
+
+ [Veja esta documentação](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Overview)
