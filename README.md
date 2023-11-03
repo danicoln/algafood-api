@@ -376,3 +376,17 @@ A URL completa por exemplo, seria assim:
     https://api.algamarket.com.br/produtos
 
     
+### 4.10. Modelando e requisitando um Collection Resource com GET
+
+⚠️ Alterando o localhost no Windows:
+
+    C:Windows/System32/drivers/etc
+
+Abra o arquivo hosts no bloco de notas e insira, por exemplo:
+
+    #	127.0.0.1       localhost
+    #	127.0.0.1       api.algafood.local ⚠️
+
+
+
+
