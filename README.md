@@ -465,7 +465,7 @@ Observe que está um pouco confuso. Com as customizações:
 
 A idempotência é um conceito da área de matemática e ciência da computação, que se refere à possibilidade de uma determinada operação ser aplicada múltiplas vezes e, em todas elas, obter um único resultado.
 
-Principais métodos HTTP:
+⚠️ Principais métodos HTTP:
 
 ✅ Get;
 
@@ -480,3 +480,40 @@ Principais métodos HTTP:
 ✅ Head;
 
 ✅ Options.
+
+
+### 4.18. Conhecendo os códigos de status HTTP
+
+⚠️ Status HTTP.
+
+✅ Nível 200: Significa que o recurso foi processado com sucesso;
+
+✅ Nível 201: Significa que o recurso foi criado com sucesso;
+
+✅ Nível 204: Sem conteúdo. Significa que o recurso foi processado com sucesso, sem a necessidade de resposta. Exemplo, a exclusão com sucesso;
+
+✅ Nível 301: Movido permanentemente;
+
+✅ Nível 302: Encontrado;
+
+✅ Nível 400: Significa requisição mal feita;
+
+✅ Nível 401: Não autorizado;
+
+✅ Nível 403: Proibido;
+
+✅ Nível 404: Não encontrado;
+
+✅ Nível 405: Método não permitido;
+
+✅ Nível 406: Não aceito;
+
+✅ Nível 500: Significa erro no servidor (responsabilidade do dev);
+
+✅ Nível 503: Serviço indisponível;
+
+
+[Registro oficial IANA de códigos de status HTTP](https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
+
+[Documentação de códigos de status HTTP no MDN](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status)
+
