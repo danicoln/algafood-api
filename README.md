@@ -589,3 +589,25 @@ Por exemplo, no teste, a cozinha "Tailandesa" tem uma CONSTRAINTS com a tabela d
 ⚠️ O status 400 (Bad Request) também seria correto, mas ele é mais abrangente.
 
 ⚠️ Ao usar o status 409(Conflict), é bom retornar um corpo descrevendo qual foi o problema que gerou o conflito. Este problema, veremos na aula sobre modelagem de erro/problema e tratamento de exceptions.
+
+
+### 4.27. Implementando a camada de domain services (e a importância da linguagem ubíqua)
+
+Neste conceito de DDD, não é interessante o controller realizar modificações no estado da aplicação. A ideia é criar uma outra classe para que faça isso.
+
+📌 Sobre o DDD
+
+O Domain-Driven Design, ou DDD, foi criado para ajudar equipes a ter mais sucesso no desenvolvimento de software com alta qualidade. Quando implementado corretamente, o DDD entrega um design que traduz exatamente como o dominio funciona.
+
+✅ O que é DDD? 
+
+“É um conjunto de princípios com foco em domínio, exploração de modelos de formas criativas e definir e falar a linguagem Ubíqua, baseado no contexto delimitado.”
+
+✅ Linguagem ubíqua 
+
+Um dos pontos mais importantes do DDD, onde 99% das pessoas acabam ignorando, que é falar e extrair a linguagem Ubíqua.
+
+Linguagem Ubíqua é a linguagem falada no dia dia, no contexto da empresa. É a linguagem que utiliza as terminologias da realidade do negócio.
+
+[Mais sobre o DDD](https://fullcycle.com.br/domain-driven-design/)
+[Mais sobre o DDD no stackoverflow](https://pt.stackoverflow.com/questions/19548/o-que-realmente-%C3%A9-ddd-e-quando-ele-se-aplica)
