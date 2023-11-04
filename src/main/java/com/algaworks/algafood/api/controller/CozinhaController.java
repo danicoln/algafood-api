@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import com.algaworks.algafood.api.model.CozinhasXmlWrapper;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,6 +46,31 @@ public class CozinhaController {
     @ResponseStatus(HttpStatus.CREATED) // para que o status seja o 201
     public Cozinha adicionar(@RequestBody Cozinha cozinha) {
         return cozinhaRepository.salvar(cozinha); // é interessante retornar a representação do que é criado
+    }
+
+    @PutMapping("/{cozinhaId}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId,
+                                             @RequestBody Cozinha cozinha){
+        Cozinha cozinhaPersistida = cozinhaRepository.buscar(cozinhaId);
+
+        if(cozinhaPersistida != null){
+
+//        cozinhaPersistida.setNome(cozinha.getNome());
+            BeanUtils.copyProperties(cozinha, cozinhaPersistida, "id");
+            /**O método copyProperties de BeanUtils do springfamework faz
+             * o mesmo que a linha anterior (.setNome).
+             * Ele copia os dados do primeiro paramentro
+             * e salva no segundo paramentro, o terceiro parametro passamos
+             * uma propriedade que não queremos que seja alterada, no caso o id
+             * (precisa ser como string).
+             * Bom para quando temos mtas propriedades*/
+            cozinhaRepository.salvar(cozinhaPersistida);
+
+            return ResponseEntity.ok(cozinhaPersistida);
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 
 }

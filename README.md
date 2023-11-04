@@ -541,3 +541,38 @@ A idempotência é um conceito da área de matemática e ciência da computaçã
 📌 Na aula vimos que podemos passar no postman, no Header o Content-Type e o Accept, para recebermos e enviarmos os dados como xml, ou json.
 
 ![aula 4.24](images/image-4.24.png)
+
+### 4.25. Modelando e implementando a atualização de recursos com PUT
+
+📌 Nesta aula, conhecemos a classe BeanUtils do pacote springframework. Utilizamos o método copyProperties() e passamos três parâmetros.
+
+O método copyProperties de BeanUtils do springfamework faz o mesmo que o seguinte comando: 
+```
+    cozinhaPersistida.setNome(cozinha.getNome());
+```
+
+Ele copia os dados do primeiro paramentro e salva no segundo paramentro, o terceiro parametro passamos uma propriedade que não queremos que seja alterada, no caso o ID (precisa ser como string). Bom para quando temos mtas propriedades.
+
+```
+    BeanUtils.copyProperties(cozinha, cozinhaPersistida, "id");
+```
+
+O método de atualizar() fica da seguinte forma:
+
+```
+@PutMapping("/{cozinhaId}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
+        Cozinha cozinhaPersistida = cozinhaRepository.buscar(cozinhaId);
+
+        if(cozinhaPersistida != null){
+        BeanUtils.copyProperties(cozinha, cozinhaPersistida, "id");
+            
+        cozinhaRepository.salvar(cozinhaPersistida);
+
+        return ResponseEntity.ok(cozinhaPersistida);
+    }
+
+    return ResponseEntity.notFound().build();
+
+}
+```
