@@ -533,3 +533,59 @@ A idempotência é um conceito da área de matemática e ciência da computaçã
 ### 4.22. Status HTTP para collection resource vazia: qual usar?
 
 📌 O certo é o status ser 200 mesmo, pois o recurso está apenas vazio, ou seja, quando chamamos um serviço de lista de cozinhas, se este não contém dados, o serviço foi chamado com sucesso, apenas está com a lista vazia, sendo assim, o retorno 200 é considerado o mais correto.
+
+### 4.23. Modelando e implementando a inclusão de recursos com POST
+
+### 4.24. Negociando o media type do payload do POST com Content-Type
+
+📌 Na aula vimos que podemos passar no postman, no Header o Content-Type e o Accept, para recebermos e enviarmos os dados como xml, ou json.
+
+![aula 4.24](images/image-4.24.png)
+
+### 4.25. Modelando e implementando a atualização de recursos com PUT
+
+📌 Nesta aula, conhecemos a classe BeanUtils do pacote springframework. Utilizamos o método copyProperties() e passamos três parâmetros.
+
+O método copyProperties de BeanUtils do springfamework faz o mesmo que o seguinte comando: 
+```
+    cozinhaPersistida.setNome(cozinha.getNome());
+```
+
+Ele copia os dados do primeiro paramentro e salva no segundo paramentro, o terceiro parametro passamos uma propriedade que não queremos que seja alterada, no caso o ID (precisa ser como string). Bom para quando temos mtas propriedades.
+
+```
+    BeanUtils.copyProperties(cozinha, cozinhaPersistida, "id");
+```
+
+O método de atualizar() fica da seguinte forma:
+
+```
+@PutMapping("/{cozinhaId}")
+    public ResponseEntity<Cozinha> atualizar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinha){
+        Cozinha cozinhaPersistida = cozinhaRepository.buscar(cozinhaId);
+
+        if(cozinhaPersistida != null){
+        BeanUtils.copyProperties(cozinha, cozinhaPersistida, "id");
+            
+        cozinhaRepository.salvar(cozinhaPersistida);
+
+        return ResponseEntity.ok(cozinhaPersistida);
+    }
+
+    return ResponseEntity.notFound().build();
+
+}
+```
+
+### 4.26. Modelando e implementando a exclusão de recursos com DELETE
+
+Nesta aula vimos sobre o método de remover(). Nos deparamos com um problema onde ao excluir um objeto que tem vínculo com outro objeto, dá um erro de integridade.
+Por exemplo, no teste, a cozinha "Tailandesa" tem uma CONSTRAINTS com a tabela de restaurante.
+
+📌 Solução:
+
+✅ Inserimos um try-catch no método, e no catch, usamos a exception "DataIntegrityViolationException", retornando com status HttpStatus.CONFLICT, que é o status 409.
+
+⚠️ O status 400 (Bad Request) também seria correto, mas ele é mais abrangente.
+
+⚠️ Ao usar o status 409(Conflict), é bom retornar um corpo descrevendo qual foi o problema que gerou o conflito. Este problema, veremos na aula sobre modelagem de erro/problema e tratamento de exceptions.
