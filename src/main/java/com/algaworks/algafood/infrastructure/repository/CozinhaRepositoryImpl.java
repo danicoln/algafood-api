@@ -2,6 +2,7 @@ package com.algaworks.algafood.infrastructure.repository;
 
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +35,17 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @Transactional
     @Override
-    public void remover(Cozinha cozinha) {
-        cozinha = buscar(cozinha.getId());
+    public void remover(Long id) {
+        Cozinha cozinha = buscar(id);
+
+        if(cozinha == null){
+            /**
+             * Exeção do springframework.
+             * Abstrai bastante o uso da JPA.
+             * Passamos como parâmetro o tamanho que espera, no nosso
+             * caso, esperamos pelo menos 1 cozinha*/
+            throw new EmptyResultDataAccessException(1);
+        }
         manager.remove(cozinha);
     }
 }

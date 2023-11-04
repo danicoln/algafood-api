@@ -611,3 +611,7 @@ Linguagem Ubíqua é a linguagem falada no dia dia, no contexto da empresa. É a
 
 [Mais sobre o DDD](https://fullcycle.com.br/domain-driven-design/)
 [Mais sobre o DDD no stackoverflow](https://pt.stackoverflow.com/questions/19548/o-que-realmente-%C3%A9-ddd-e-quando-ele-se-aplica)
+
+### 4.28. Refatorando a exclusão de cozinhas para usar domain services
+
+📌 Ver modificações desta aula no git.
