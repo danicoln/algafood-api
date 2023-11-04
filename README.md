@@ -576,3 +576,16 @@ O método de atualizar() fica da seguinte forma:
 
 }
 ```
+
+### 4.26. Modelando e implementando a exclusão de recursos com DELETE
+
+Nesta aula vimos sobre o método de remover(). Nos deparamos com um problema onde ao excluir um objeto que tem vínculo com outro objeto, dá um erro de integridade.
+Por exemplo, no teste, a cozinha "Tailandesa" tem uma CONSTRAINTS com a tabela de restaurante.
+
+📌 Solução:
+
+✅ Inserimos um try-catch no método, e no catch, usamos a exception "DataIntegrityViolationException", retornando com status HttpStatus.CONFLICT, que é o status 409.
+
+⚠️ O status 400 (Bad Request) também seria correto, mas ele é mais abrangente.
+
+⚠️ Ao usar o status 409(Conflict), é bom retornar um corpo descrevendo qual foi o problema que gerou o conflito. Este problema, veremos na aula sobre modelagem de erro/problema e tratamento de exceptions.
