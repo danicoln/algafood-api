@@ -533,3 +533,11 @@ A idempotência é um conceito da área de matemática e ciência da computaçã
 ### 4.22. Status HTTP para collection resource vazia: qual usar?
 
 📌 O certo é o status ser 200 mesmo, pois o recurso está apenas vazio, ou seja, quando chamamos um serviço de lista de cozinhas, se este não contém dados, o serviço foi chamado com sucesso, apenas está com a lista vazia, sendo assim, o retorno 200 é considerado o mais correto.
+
+### 4.23. Modelando e implementando a inclusão de recursos com POST
+
+### 4.24. Negociando o media type do payload do POST com Content-Type
+
+📌 Na aula vimos que podemos passar no postman, no Header o Content-Type e o Accept, para recebermos e enviarmos os dados como xml, ou json.
+
+![aula 4.24](images/image-4.24.png)
