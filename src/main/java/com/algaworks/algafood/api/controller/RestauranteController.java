@@ -2,7 +2,9 @@ package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,7 @@ import java.util.List;
 public class RestauranteController {
 
     @Autowired
-    public RestauranteService service;
+    private RestauranteService service;
 
     @GetMapping
     public List<Restaurante> listar() {
@@ -35,8 +37,21 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante salvar(@RequestBody Restaurante restaurante) {
-        return service.salvar(restaurante);
+    public ResponseEntity<?> salvar(@RequestBody Restaurante restaurante) {
+        try{
+            restaurante = service.salvar(restaurante); // atribuição de variável
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(restaurante);
+
+        }catch (EntidadeNaoEncontradaException e){
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage()); // passando a mensagem de erro
+            /**Obs.:
+             * O retorno do método é um ResponseEntity, mas passamos ? para que seja
+             * qualquer tipo, sendo assim, podemos passar uma string no body por ex. (e.getMessage)*/
+
+        }
     }
 
     @DeleteMapping("/{restauranteId}")
