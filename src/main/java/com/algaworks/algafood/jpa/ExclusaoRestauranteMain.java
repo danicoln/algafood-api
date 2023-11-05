@@ -15,10 +15,10 @@ public class ExclusaoRestauranteMain {
 
         RestauranteRepository repository = applicationContext.getBean(RestauranteRepository.class);
 
-        Restaurante restaurante = repository.buscar(1L);
-
-        repository.remover(restaurante);
-
-        System.out.println(repository.listar());
+//        Restaurante restaurante = repository.buscar(1L);
+//
+//        repository.remover(restaurante);
+//
+//        System.out.println(repository.listar());
     }
 }
