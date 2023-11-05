@@ -615,3 +615,17 @@ Linguagem Ubíqua é a linguagem falada no dia dia, no contexto da empresa. É a
 ### 4.28. Refatorando a exclusão de cozinhas para usar domain services
 
 📌 Ver modificações desta aula no git.
+
+### 4.29. Desafio: modelando e implementando a consulta de recursos de restaurantes
+
+✅ [Acesse aqui o desafio realizado.](https://github.com/danicoln/algafood-api/pull/31/commits/dc3edcc2e8f113fa41f3809aab42ce0569bd112a)
+
+### 4.30. Modelando e implementando a inclusão de recursos de restaurantes
+
+#### Método salvar() de RestauranteService
+
+![RestauranteService-salvar](images/4.30-restaurante-service-salvar.png)
+
+#### Método salvar() de RestauranteController
+
+![RestauranteController-salvar](images/4.30-restaurante-controller-salvar.png)
