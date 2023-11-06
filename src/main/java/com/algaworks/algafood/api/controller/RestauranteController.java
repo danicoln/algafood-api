@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -67,23 +68,42 @@ public class RestauranteController {
                 restauranteAtual = service.salvar(restauranteAtual);
                 return ResponseEntity.ok(restauranteAtual);
             }
-            
+
             return ResponseEntity.notFound().build();
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/{restauranteId}")
-    public ResponseEntity<Restaurante> remover(@PathVariable Long restauranteId) {
-        try {
-            service.excluir(restauranteId);
-            return ResponseEntity.noContent().build();
-        } catch (EntidadeNaoEncontradaException e) {
+    @PatchMapping("/{restauranteId}")
+    public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
+                                              @RequestBody Map<String, Object> campos) {
+
+        Restaurante restaurante = service.buscar(restauranteId);
+        /**Observação:
+         * Precisamos atribuir os valores de "campos" para a variável "restaurante"
+         * */
+
+        if (restaurante == null) {
             return ResponseEntity.notFound().build();
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        campos.forEach((nomePropriedade, valorPropriedade) -> {
+            System.out.println(nomePropriedade + " = " + valorPropriedade);
+        });
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{restauranteId}")
+    public ResponseEntity<Restaurante> remover(@PathVariable Long restauranteId){
+            try {
+                service.excluir(restauranteId);
+                return ResponseEntity.noContent().build();
+            } catch (EntidadeNaoEncontradaException e) {
+                return ResponseEntity.notFound().build();
+            } catch (EntidadeEmUsoException e) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
         }
 
     }
-}
