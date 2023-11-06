@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -38,13 +39,13 @@ public class RestauranteController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> salvar(@RequestBody Restaurante restaurante) {
-        try{
+        try {
             restaurante = service.salvar(restaurante); // atribuição de variável
 
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(restaurante);
 
-        }catch (EntidadeNaoEncontradaException e){
+        } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.badRequest()
                     .body(e.getMessage()); // passando a mensagem de erro
             /**Obs.:
@@ -52,6 +53,25 @@ public class RestauranteController {
              * qualquer tipo, sendo assim, podemos passar uma string no body por ex. (e.getMessage)*/
 
         }
+    }
+
+    @PatchMapping("/{restauranteId}")
+    public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
+                                              @RequestBody Map<String, Object> campos) {
+
+        Restaurante restaurante = service.buscar(restauranteId);
+        /**Observação:
+         * Precisamos atribuir os valores de "campos" para a variável "restaurante"
+         * */
+
+        if (restaurante == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        campos.forEach((nomePropriedade, valorPropriedade) -> {
+            System.out.println(nomePropriedade + " = " + valorPropriedade);
+        });
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{restauranteId}")

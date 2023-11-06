@@ -290,7 +290,7 @@ Esta configuração serve para que o hibernate use o dialeto do MySQL.
 #### Diagrama
 <img src="https://raw.githubusercontent.com/algaworks/curso-especialista-spring-rest/master/ESR%20-%20Diagrama%20de%20classes.png">
 
-## REST COM SPRING
+## MÓDULO 4 - REST COM SPRING
 
 ### 4.1. O que é REST?
 
@@ -629,3 +629,6 @@ Linguagem Ubíqua é a linguagem falada no dia dia, no contexto da empresa. É a
 #### Método salvar() de RestauranteController
 
 ![RestauranteController-salvar](images/4.30-restaurante-controller-salvar.png)
+
+### 4.33. Analisando solução para atualização parcial de recursos com PATCH
+
