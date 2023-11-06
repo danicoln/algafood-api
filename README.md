@@ -689,3 +689,40 @@ O verbo HTTP que iremos utilizar, será o PUT.
 
 
 ### 4.33. Analisando solução para atualização parcial de recursos com PATCH
+
+
+### 4.34. Finalizando a atualização parcial com a API de Reflections do Spring
+
+📌 Nesta aula, focamos no método merge() de RestauranteController.
+
+A função deste método é "mesclar" o valor 1 (dadosOrigem) para o valor 2 (restauranteDestino).
+
+✅ Utilizamos o ObjectMapper do pacote Jackson, é responsável por serializar(converter)objetos java em json e vice versa.
+
+✅ Convertemos os dadosOrigem para um tipo Restaurante com a seguinte linha de código:
+
+```
+    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
+        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+
+```
+
+✅ Atribuimos as propriedades à variável dadosOrigem e usamos Field do Java Lang, para representar um atributo da classe Restaurante que iremos modificar. 
+
+✅ Com o método getField(), buscamos o valor da propriedade representada pela variável field e passamos para a variavel restauranteOrigem a variável novoValor já está convertida para o tipo Restaurante.
+
+✅ O ReflectionUtils inspeciona os objetos java e altera em tempo de execução
+
+```
+        dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+            
+        Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+        field.setAccessible(true);
+
+        Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+
+        ReflectionUtils.setField(field, restauranteDestino, novoValor);
+
+    });
+
+```
