@@ -630,5 +630,62 @@ Linguagem Ubíqua é a linguagem falada no dia dia, no contexto da empresa. É a
 
 ![RestauranteController-salvar](images/4.30-restaurante-controller-salvar.png)
 
-### 4.33. Analisando solução para atualização parcial de recursos com PATCH
 
+### 4.31. Desafio: Modelando e implementando a atualização de recursos de restaurantes
+
+
+#### 1 - Criando o método de atualização em RestauranteControlle
+Vamos definir a assinatura e anotações referentes ao método que irá atualizar os restaurantes
+
+Receberemos um parâmetro do tipo Long, que será o ID do restaurante a ser atualizado. Esse parâmetro virá pela URL.
+
+Também precisaremos do corpo da requisição, ou seja os dados do Restaurante, para atualizarmos.
+
+O verbo HTTP que iremos utilizar, será o PUT.
+
+```
+@PutMapping("/{restauranteId}")
+    public ResponseEntity<?> atualizar(@PathVariable Long restauranteId,
+            @RequestBody Restaurante restaurante) {
+    }
+```
+✅ Utilizamos @PathVariable para especificar que o parâmetro fará parte da URL
+
+✅ @RequestBody para obter esses valores do body da requisição.
+
+✅ @PutMapping para mapear nosso endpoint para esse verbo, com esse path.
+
+#### 2 - Implementando o método
+
+```
+ @PutMapping("/{restauranteId}")
+    public ResponseEntity<?> atualizar(@PathVariable Long restauranteId,
+        @RequestBody Restaurante restaurante) {
+        try {
+            Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+            
+            if (restauranteAtual != null) {
+                BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+                
+                restauranteAtual = cadastroRestaurante.salvar(restauranteAtual);
+                return ResponseEntity.ok(restauranteAtual);
+            }
+            
+            return ResponseEntity.notFound().build();
+        
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
+    }
+```
+
+✅ Fizemos já o tratamento, caso não exista um Restaurante com o ID recebido no parâmetro
+
+✅ Fazemos o tratamento do objeto e chamamos o método salvar. Se tudo correr bem, um código 200 será retornado.
+
+### 4.32. Desafio: implementando serviços REST de cidades e estados
+
+
+
+### 4.33. Analisando solução para atualização parcial de recursos com PATCH
