@@ -4,13 +4,14 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
 public class CozinhaRepositoryImpl implements CozinhaRepository {
 
     @PersistenceContext
@@ -19,6 +20,21 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
     @Override
     public List<Cozinha> listar() {
         return manager.createQuery("from Cozinha", Cozinha.class)
+                .getResultList();
+    }
+
+    @Override
+    public List<Cozinha> consultarPorNome(String nomeCozinha) {
+        /**
+         * // like significa que queremos uma Cozinha que contenha uma parte do nome no caso.
+         * */
+        return manager.createQuery("from Cozinha where nome like = :nome", Cozinha.class)
+                /**
+                 * os "%" inserido significa que queremos uma Cozinha
+                 * que contenha ":nome" tanto para a esqueda quanto
+                 * para a direita
+                 * */
+                .setParameter("nome", "%" + nomeCozinha + "%")
                 .getResultList();
     }
 
