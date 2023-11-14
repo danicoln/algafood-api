@@ -747,3 +747,7 @@ A função deste método é "mesclar" o valor 1 (dadosOrigem) para o valor 2 (re
 
 ### 5.1. Implementando consultas JPQL em repositórios
 
+### 5.2. Conhecendo o projeto Spring Data JPA (SDJ)
+
+[Documentação do Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+
