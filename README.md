@@ -726,3 +726,18 @@ A função deste método é "mesclar" o valor 1 (dadosOrigem) para o valor 2 (re
     });
 
 ```
+
+### 4.35. Introdução ao Modelo de Maturidade de Richardson (RMM)
+
+
+[Para saber mais](https://martinfowler.com/articles/richardsonMaturityModel.html)
+
+[Outras fontes](https://www.dio.me/articles/modelo-de-maturidade-richardson)
+
+[RFC2616: Hypertext Transfer Protocol-- HTTP/1.1](https://datatracker.ietf.org/doc/html/rfc2616)
+
+[RFC7231: Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content](https://datatracker.ietf.org/doc/html/rfc7231)
+
+[RESTful WebAPIs: Services for a Changing World](https://www.amazon.com/RESTful-Web-APIs-Services-Changing/dp/1449358063)
+
+[REST in Practice: Hypermedia and Systems Architecture](https://www.amazon.com.br/REST-Practice-Jim-Webber/dp/0596805829)
