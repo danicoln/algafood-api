@@ -741,3 +741,9 @@ A função deste método é "mesclar" o valor 1 (dadosOrigem) para o valor 2 (re
 [RESTful WebAPIs: Services for a Changing World](https://www.amazon.com/RESTful-Web-APIs-Services-Changing/dp/1449358063)
 
 [REST in Practice: Hypermedia and Systems Architecture](https://www.amazon.com.br/REST-Practice-Jim-Webber/dp/0596805829)
+
+
+## MÓDULO 5 - Super poderes do Spring Data JPA
+
+### 5.1. Implementando consultas JPQL em repositórios
+
