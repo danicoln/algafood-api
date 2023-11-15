@@ -783,3 +783,5 @@ public void excluir(Long cozinhaId) {
 
 [Documentação do Spring Data JPA: Keywords de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
 
+### 5.8. Conhecendo os prefixos de query methods
+
