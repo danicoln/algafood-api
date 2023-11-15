@@ -786,3 +786,7 @@ public void excluir(Long cozinhaId) {
 ### 5.8. Conhecendo os prefixos de query methods
 
 ### 5.9. Usando queries JPQL customizadas com @Query
+
+### 5.10. Externalizando consultas JPQL para um arquivo XML
+
+[GitHub Gist da estrutura do arquivo orm.xml](https://gist.github.com/thiagofa/35d5a651a39cb0b26f050dc3b1ce8f9b)
