@@ -790,3 +790,62 @@ public void excluir(Long cozinhaId) {
 ### 5.10. Externalizando consultas JPQL para um arquivo XML
 
 [GitHub Gist da estrutura do arquivo orm.xml](https://gist.github.com/thiagofa/35d5a651a39cb0b26f050dc3b1ce8f9b)
+
+### 5.11. Implementando um repositório SDJ customizado
+
+[Declaração de variáveis com "var"](https://www.infoq.com/br/articles/java-10-var-type/)
+
+#### Sobre o método customizado:
+
+#### Teste no controller
+```
+@GetMapping("/restaurantes/por-nome-e-frete")
+    public List<Restaurante> restaurantesPorNomeFrete(String nome,
+                                                      BigDecimal taxatFreteInicial, BigDecimal taxaFreteFinal) {
+        return restauranteRepository.find(nome, taxatFreteInicial, taxaFreteFinal);
+    }
+```
+
+#### Interface RestauranteRepository
+```
+    List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
+```
+
+📌 O spring data JPA entende que o método find de RestauranteRepository se refere à um método customizado. Então, ele chama o médodo do RestauranteRepositoryImpl. É importante entender que é preciso ter o prefixo "Impl" para que o SDJ entender que se refere a uma classe customizada.
+
+#### RestauranteRepositoryImpl
+```
+public List<Restaurante> find(String nome,
+                                  BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal){
+
+        var jpql = "from Restaurante where nome like :nome " +
+                "and taxaFrete between :taxaIniial and :taxaFinal";
+
+        return manager.createQuery(jpql, Restaurante.class)
+                .setParameter("nome", "%" + nome + "%")
+                .setParameter("taxaInicial", taxaFreteInicial)
+                .setParameter("taxaFinal", taxaFreteFinal)
+                .getResultList();
+```
+
+#### Desvantagem
+
+Com a implementação dessa forma, não existe um vínculo muito forte dos métodos. Pois, uma mudança no método da classe Impl, pode causar problema no Repository.
+
+A solução é extrair o método de RestauranteRepositoryImpl para uma interface, por exemplo RestauranteRepositoryQueries e colocamos no pacote repository do pacote de domínio. 
+
+```
+package com.algaworks.algafood.domain.repository;
+
+import com.algaworks.algafood.domain.model.Restaurante;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+public interface RestauranteRepositoryQueries {
+    List<Restaurante> find(String nome,
+                           BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
+}
+```
+
+Assim, extendemos também o RestauranteRepository para o RestauranteRepositoryQueries, com isso o RestauranteRepository herda o método de RestauranteRepositoryQueries.
