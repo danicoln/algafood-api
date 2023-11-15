@@ -12,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RestauranteService {
@@ -23,13 +24,13 @@ public class RestauranteService {
     private CozinhaRepository cozinhaRepository;
 
     public List<Restaurante> listar(){
-        return repository.listar();
+        return repository.findAll();
     }
 
     public Restaurante buscar(Long restauranteId){
-        Restaurante restaurante = repository.buscar(restauranteId);
-        if(restaurante.getId().equals(restauranteId)){
-            return restaurante;
+        Optional<Restaurante> restaurante = repository.findById(restauranteId);
+        if(restaurante.get().getId().equals(restauranteId)){
+            return restaurante.get();
         }
         return null;
     }
@@ -41,12 +42,12 @@ public class RestauranteService {
                         String.format("Não existe cadastro de cozinha com código %d", cozinhaId)));
 
         restaurante.setCozinha(cozinha);
-        return repository.salvar(restaurante);
+        return repository.save(restaurante);
     }
 
     public void excluir(Long restauranteId) {
         try {
-            repository.remover(restauranteId);
+            repository.deleteById(restauranteId);
 
         } catch (EmptyResultDataAccessException emptyException) {
             throw new EntidadeNaoEncontradaException(

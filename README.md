@@ -779,3 +779,7 @@ public void excluir(Long cozinhaId) {
 
 ### 5.6. Criando consultas com query methods
 
+### 5.7. Usando as keywords para definir critérios de query methods
+
+[Documentação do Spring Data JPA: Keywords de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
+
