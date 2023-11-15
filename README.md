@@ -747,3 +747,32 @@ A função deste método é "mesclar" o valor 1 (dadosOrigem) para o valor 2 (re
 
 ### 5.1. Implementando consultas JPQL em repositórios
 
+### 5.2. Conhecendo o projeto Spring Data JPA (SDJ)
+
+[Documentação do Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+
+### 5.3. Criando um repositório com Spring Data JPA (SDJ)
+
+### 5.4. Refatorando o código do projeto para usar o repositório do SDJ
+
+[Sobre o Optional](https://blog.algaworks.com/chega-de-nullpointerexception/)
+
+#### Sobre o EmptyResultDataAccessException
+
+Devido a atualização de versão, o JPA não lança mais EmptyResultDataAccessException quando o id buscado não existe no momento realizar a deleção com o deleteById(), ele simplesmente não deleta e não avisa sobre o fato de não existir, por tanto, para que possamos manter o mesmo comportamento demonstrado na aula, vamos alterar o método excluir() para o seguinte:
+
+```
+public void excluir(Long cozinhaId) {
+        try {
+                if (!cozinhaRepository.existsById(cozinhaId)) {
+                throw new EntidadeNaoEncontradaException(
+                        String.format("Não existe um cadastro de cozinha com código %d", cozinhaId));
+                }
+            cozinhaRepository.deleteById(cozinhaId);
+            
+        } catch (DataIntegrityViolationException e) {
+            throw new EntidadeEmUsoException(
+                String.format("Cozinha de código %d não pode ser removida, pois está em uso", cozinhaId));
+        }
+    }
+```
