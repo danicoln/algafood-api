@@ -849,3 +849,7 @@ public interface RestauranteRepositoryQueries {
 ```
 
 Assim, extendemos também o RestauranteRepository para o RestauranteRepositoryQueries, com isso o RestauranteRepository herda o método de RestauranteRepositoryQueries.
+
+### 5.12. Implementando uma consulta dinâmica com JPQL
+
+📌 Ver registros das atividades.
