@@ -19,6 +19,6 @@ public class AlteracaoRestauranteMain {
         restaurante.setId(1L);
         restaurante.setNome("Charbon");
 
-        repository.salvar(restaurante);
+        repository.save(restaurante);
     }
 }

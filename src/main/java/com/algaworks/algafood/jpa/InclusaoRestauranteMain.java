@@ -26,8 +26,8 @@ public class InclusaoRestauranteMain {
 
 
 
-        repository.salvar(restaurante);
+        repository.save(restaurante);
 
-        System.out.println(repository.listar());
+        System.out.println(repository.findAll());
     }
 }
