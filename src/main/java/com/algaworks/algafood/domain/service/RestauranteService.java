@@ -36,12 +36,10 @@ public class RestauranteService {
 
     public Restaurante salvar(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId(); // atribuição de variável
-        Cozinha cozinha = cozinhaRepository.buscar(cozinhaId); // atribuição de variável
+        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format("Não existe cadastro de cozinha com código %d", cozinhaId)));
 
-        if(cozinha == null){
-            throw new EntidadeNaoEncontradaException(
-                    String.format("Não existe cadastro de cozinha com código %d", cozinhaId));
-        }
         restaurante.setCozinha(cozinha);
         return repository.salvar(restaurante);
     }
@@ -58,7 +56,7 @@ public class RestauranteService {
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
                     String.format("Restaurante de código %d não pode ser removida, pois está em uso",
-                            restauranteId)); //exception de negócio
+                            restauranteId));
         }
     }
 }
