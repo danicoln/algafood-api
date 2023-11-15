@@ -58,6 +58,20 @@ public class TesteController {
     public List<Restaurante> restaurantesTop2PorNome(String nome) {
         return restauranteRepository.findTop2ByNomeContaining(nome);
     }
+
+    /**
+     * O spring data JPA entende que o método find de RestauranteRepository
+     * se refere à um método customizado. Então, ele chama o médodo
+     * do RestauranteRepositoryImpl. É importante entender que
+     * é preciso ter o prefixo "Impl" para que o SDJ entender que
+     * se refere a uma classe customizada.
+     * */
+    @GetMapping("/restaurantes/por-nome-e-frete")
+    public List<Restaurante> restaurantesPorNomeFrete(String nome,
+                                                      BigDecimal taxatFreteInicial, BigDecimal taxaFreteFinal) {
+        return restauranteRepository.find(nome, taxatFreteInicial, taxaFreteFinal);
+    }
+
     @GetMapping("/restaurantes/count-por-cozinha")
     public int restaurantesCountPorCozinha(Long  cozinhaId) {
         return restauranteRepository.countByCozinhaId(cozinhaId);
