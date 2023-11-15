@@ -776,3 +776,6 @@ public void excluir(Long cozinhaId) {
         }
     }
 ```
+
+### 5.6. Criando consultas com query methods
+

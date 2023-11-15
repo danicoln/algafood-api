@@ -6,9 +6,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
 
-//    List<Cozinha> consultarPorNome(String nome);
+    List<Cozinha> findTodasByNome(String nome);
+
+    Optional<Cozinha> findByNome(String nome);
 }
