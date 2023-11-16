@@ -853,3 +853,6 @@ Assim, extendemos também o RestauranteRepository para o RestauranteRepositoryQu
 ### 5.12. Implementando uma consulta dinâmica com JPQL
 
 📌 Ver registros das atividades.
+
+### 5.13. Implementando uma consulta simples com Criteria API
+
