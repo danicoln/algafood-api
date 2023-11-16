@@ -866,3 +866,24 @@ Assim, extendemos também o RestauranteRepository para o RestauranteRepositoryQu
 ### 5.16. Conhecendo o uso do padrão Specifications (DDD) com SDJ
 
 Para entender melhor, encontrei [este blog](https://www.anselme.com.br/2023/04/05/specification-pattern-no-domain-driven-design/) que fala um pouco sobre este assunto. 
+
+### 5.17. Implementando Specifications com SDJ
+
+![Alt text](images/teste-spec-1.png)
+
+![Alt text](images/teste-spec-2.png)
+
+Para testar, criamos o método a seguir:
+```
+@GetMapping("/restaurantes/com-frete-gratis")
+    public List<Restaurante> restaurantesComFreteGratis(String nome) {
+
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+    }
+```
+
+Para que o método findAll funcione, temos que inserir um implements no RestauranteRepository com <code>JpaSpecificationExecutor<code><</code><code>Restaurante</code><code>></code></code>.
+
