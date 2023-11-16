@@ -861,3 +861,8 @@ Assim, extendemos também o RestauranteRepository para o RestauranteRepositoryQu
 ### 5.15. Tornando a consulta com Criteria API com filtros dinâmicos
 
 📌 Implementação de consulta dinâmica com Criteria. 
+
+
+### 5.16. Conhecendo o uso do padrão Specifications (DDD) com SDJ
+
+Para entender melhor, encontrei [este blog](https://www.anselme.com.br/2023/04/05/specification-pattern-no-domain-driven-design/) que fala um pouco sobre este assunto. 
