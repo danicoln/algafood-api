@@ -889,5 +889,8 @@ Para que o método findAll funcione, temos que inserir um implements no Restaura
 
 ### 5.18. Criando uma fábrica de Specifications
 
-No Eclipse, é necessário configurar o import em "Preferences" / "Favorites", inserir o pacote da classe estática. Assim, o Eclipse define uma lista de classes de pacotes statics.
+
+📌 No Eclipse, é necessário configurar o import em "Preferences" / "Favorites", inserir o pacote da classe estática. Assim, o Eclipse define uma lista de classes de pacotes statics.
+
+### 5.19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy
 
