@@ -853,3 +853,11 @@ Assim, extendemos também o RestauranteRepository para o RestauranteRepositoryQu
 ### 5.12. Implementando uma consulta dinâmica com JPQL
 
 📌 Ver registros das atividades.
+
+### 5.13. Implementando uma consulta simples com Criteria API
+
+### 5.14. Adicionando restrições na cláusula where com Criteria API
+
+### 5.15. Tornando a consulta com Criteria API com filtros dinâmicos
+
+📌 Implementação de consulta dinâmica com Criteria. 
