@@ -7,6 +7,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
@@ -67,7 +68,7 @@ public class TesteController {
      * se refere a uma classe customizada.
      * */
     @GetMapping("/restaurantes/por-nome-e-frete")
-    public List<Restaurante> restaurantesPorNomeFrete(String nome,
+    public List<Restaurante> restaurantesPorNomeFrete(@RequestParam String nome,
                                                       BigDecimal taxatFreteInicial, BigDecimal taxaFreteFinal) {
         return restauranteRepository.find(nome, taxatFreteInicial, taxaFreteFinal);
     }
