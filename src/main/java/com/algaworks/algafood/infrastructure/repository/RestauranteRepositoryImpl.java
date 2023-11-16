@@ -3,6 +3,7 @@ package com.algaworks.algafood.infrastructure.repository;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepositoryQueries;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -34,15 +36,23 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
         CriteriaQuery<Restaurante> criteria = builder.createQuery(Restaurante.class);
         Root<Restaurante> root = criteria.from(Restaurante.class); //from Restaurante
 
-        Predicate nomePredicate = builder.like(root.get("nome"), "%" + nome + "%");
+        var predicates = new ArrayList<Predicate>();
 
-        Predicate taxaInicialPredicate = builder
-                .greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial);
+        if(StringUtils.hasText(nome)){
+            predicates.add(builder.like(root.get("nome"), "%" + nome + "%"));
+        }
+        if(taxaFreteInicial != null){
+            predicates.add(builder.greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteInicial));
+        }
+        if(taxaFreteFinal != null){
+            predicates.add(builder.lessThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal));
+        }
 
-        Predicate taxaFinalPredicate = builder
-                .greaterThanOrEqualTo(root.get("taxaFrete"), taxaFreteFinal);
-
-        criteria.where(nomePredicate, taxaInicialPredicate, taxaFinalPredicate);
+        /**
+         * O método no parâmetro, toArray, convertemos um list em um Array
+         * passando uma instância de um array preenchido com todos os predicates da lista
+         * o valor 0 é apenas para preencher o array, não sendo necessário um valor específico*/
+        criteria.where(predicates.toArray(new Predicate[0]));
 
         TypedQuery<Restaurante> query = manager.createQuery(criteria);
         return query.getResultList();
