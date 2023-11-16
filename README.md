@@ -887,3 +887,7 @@ Para testar, criamos o método a seguir:
 
 Para que o método findAll funcione, temos que inserir um implements no RestauranteRepository com <code>JpaSpecificationExecutor<code><</code><code>Restaurante</code><code>></code></code>.
 
+### 5.18. Criando uma fábrica de Specifications
+
+No Eclipse, é necessário configurar o import em "Preferences" / "Favorites", inserir o pacote da classe estática. Assim, o Eclipse define uma lista de classes de pacotes statics.
+

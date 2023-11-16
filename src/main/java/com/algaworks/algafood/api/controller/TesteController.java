@@ -4,14 +4,17 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import com.algaworks.algafood.infrastructure.spec.RestauranteComFreteGratisSpec;
-import com.algaworks.algafood.infrastructure.spec.RestauranteComNomeSemelhanteSpec;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import static com.algaworks.algafood.infrastructure.spec.RestaurantesSpecs.comFreteGratis;
+import static com.algaworks.algafood.infrastructure.spec.RestaurantesSpecs.comNomeSemelhante;
 
 @RestController
 @RequestMapping("/teste")
@@ -59,13 +62,7 @@ public class TesteController {
         return restauranteRepository.findTop2ByNomeContaining(nome);
     }
 
-    /**
-     * O spring data JPA entende que o método find de RestauranteRepository
-     * se refere à um método customizado. Então, ele chama o médodo
-     * do RestauranteRepositoryImpl. É importante entender que
-     * é preciso ter o prefixo "Impl" para que o SDJ entender que
-     * se refere a uma classe customizada.
-     * */
+
     @GetMapping("/restaurantes/por-nome-e-frete")
     public List<Restaurante> restaurantesPorNomeFrete(String nome,
                                                       BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
@@ -80,10 +77,8 @@ public class TesteController {
     @GetMapping("/restaurantes/com-frete-gratis")
     public List<Restaurante> restaurantesComFreteGratis(String nome) {
 
-        var comFreteGratis = new RestauranteComFreteGratisSpec();
-        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
-
-        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+        return restauranteRepository.findAll(comFreteGratis()
+                .and(comNomeSemelhante(nome)));
     }
 
 
