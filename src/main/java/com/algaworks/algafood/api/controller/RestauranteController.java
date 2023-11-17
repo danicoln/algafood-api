@@ -64,7 +64,7 @@ public class RestauranteController {
             Restaurante restauranteAtual = service.buscar(restauranteId);
 
             if (restauranteAtual != null) {
-                BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamentos");
+                BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamentos", "endereco");
 
                 restauranteAtual = service.salvar(restauranteAtual);
                 return ResponseEntity.ok(restauranteAtual);
