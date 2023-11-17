@@ -897,3 +897,15 @@ Para que o método findAll funcione, temos que inserir um implements no Restaura
 ### 5.20. Estendendo o JpaRepository para customizar o repositório base
 
 📌 Na nossa classe AlgafoodApiApplication, anotamos com @EnableJpaRepositories. Com essa anotação, customizamos uma propriedade repositoryBaseClass. Nesta propriedade, inserimos a classe base, precisa ser a nossa Impl. Desta forma, substituímos a implementação do repositório base, dexando ser de SimpleJpaRepository para CustomJpaRepository
+
+## MÓDULO 6 - Explorando Mais do JPA e Hibernate
+
+### 6.1. Mapeando relacionamento bidirecional com @OneToMany
+
+Em mapeamentos bidirecionais entre entidades em frameworks de persistência de dados, como JPA (Java Persistence API) para bancos de dados relacionais, pode ocorrer um problema conhecido como "loop infinito" ou "referência cíclica". Isso acontece quando duas entidades referenciam uma à outra de forma bidirecional, e durante o processo de serialização para JSON, por exemplo, o sistema entra em um loop infinito tentando serializar as referências cruzadas. 
+
+Para resolver esse problema, geralmente você precisa escolher um lado da relação para ser o lado "proprietário" e usar a anotação @JsonIgnore ou outras estratégias para evitar a serialização infinita. Por exemplo, você pode fazer com que a entidade B seja o lado proprietário e marcar a lista de A com @JsonIgnore.
+
+O mapeamento @JsonIgnore é uma anotação usada em Java, especialmente em contextos de desenvolvimento de APIs usando frameworks como o Jackson (usado para serialização/deserialização de objetos Java para JSON) ou similares. Essa anotação é aplicada a campos, métodos ou classes para indicar que determinada propriedade deve ser ignorada durante o processo de serialização (conversão de um objeto Java para JSON).
+
+![Exemplo de mapeamento](images/6.1-jsonIgnore.png)
