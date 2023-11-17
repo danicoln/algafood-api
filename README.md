@@ -894,3 +894,6 @@ Para que o método findAll funcione, temos que inserir um implements no Restaura
 
 ### 5.19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy
 
+### 5.20. Estendendo o JpaRepository para customizar o repositório base
+
+📌 Na nossa classe AlgafoodApiApplication, anotamos com @EnableJpaRepositories. Com essa anotação, customizamos uma propriedade repositoryBaseClass. Nesta propriedade, inserimos a classe base, precisa ser a nossa Impl. Desta forma, substituímos a implementação do repositório base, dexando ser de SimpleJpaRepository para CustomJpaRepository
