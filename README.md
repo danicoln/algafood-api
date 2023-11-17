@@ -916,3 +916,6 @@ A anotação @ManyToMany é usada em Java, especialmente em frameworks de persis
 
 ![6.2 Anotação ManyToMany](images/6.2-many-to-many.png)
 
+### 6.3. Analisando o impacto do relacionamento muitos-para-muitos na REST API
+
+É necessário analisar com cuidado sobre as informações que desejamos apresentar na representação, por exemplo, nossa lista de restaurantes, não precisamos apresentar todas as formas de pagamentos. Para isso, adicionamos a anotação @JsonIgnore no nosso atributo formasPagamentos, com isso, não sera representado formas de pagamentos na listagem de Restaurante.
