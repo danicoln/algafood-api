@@ -909,3 +909,10 @@ Para resolver esse problema, geralmente você precisa escolher um lado da relaç
 O mapeamento @JsonIgnore é uma anotação usada em Java, especialmente em contextos de desenvolvimento de APIs usando frameworks como o Jackson (usado para serialização/deserialização de objetos Java para JSON) ou similares. Essa anotação é aplicada a campos, métodos ou classes para indicar que determinada propriedade deve ser ignorada durante o processo de serialização (conversão de um objeto Java para JSON).
 
 ![Exemplo de mapeamento](images/6.1-jsonIgnore.png)
+
+### 6.2. Mapeando relacionamento muitos-para-muitos com @ManyToMany
+
+A anotação @ManyToMany é usada em Java, especialmente em frameworks de persistência como JPA, para mapear um relacionamento muitos-para-muitos entre duas entidades. Ela indica que uma entidade pode estar associada a várias instâncias da outra entidade, e vice-versa. No contexto do banco de dados, isso geralmente é implementado através de uma tabela intermediária que armazena os pares de chaves estrangeiras das entidades envolvidas no relacionamento.
+
+![6.2 Anotação ManyToMany](images/6.2-many-to-many.png)
+
