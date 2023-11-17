@@ -5,11 +5,16 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+
+import static com.algaworks.algafood.infrastructure.spec.RestaurantesSpecs.comFreteGratis;
+import static com.algaworks.algafood.infrastructure.spec.RestaurantesSpecs.comNomeSemelhante;
 
 @RestController
 @RequestMapping("/teste")
@@ -57,13 +62,7 @@ public class TesteController {
         return restauranteRepository.findTop2ByNomeContaining(nome);
     }
 
-    /**
-     * O spring data JPA entende que o método find de RestauranteRepository
-     * se refere à um método customizado. Então, ele chama o médodo
-     * do RestauranteRepositoryImpl. É importante entender que
-     * é preciso ter o prefixo "Impl" para que o SDJ entender que
-     * se refere a uma classe customizada.
-     * */
+
     @GetMapping("/restaurantes/por-nome-e-frete")
     public List<Restaurante> restaurantesPorNomeFrete(String nome,
                                                       BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
@@ -73,6 +72,26 @@ public class TesteController {
     @GetMapping("/restaurantes/count-por-cozinha")
     public int restaurantesCountPorCozinha(Long  cozinhaId) {
         return restauranteRepository.countByCozinhaId(cozinhaId);
+    }
+
+    @GetMapping("/restaurantes/com-frete-gratis")
+    public List<Restaurante> restaurantesComFreteGratis(String nome) {
+
+        return restauranteRepository.findComFreteGratis(nome);
+    }
+
+    //Teste Restaurante
+    @GetMapping("/restaurantes/primeiro")
+    public Optional<Restaurante> restaurantePrimeiro(String nome) {
+
+        return restauranteRepository.buscarPrimeiro();
+    }
+
+    //Teste cozinha
+    @GetMapping("/restaurantes/primeira")
+    public Optional<Cozinha> cozinhaPrimeiro(String nome) {
+
+        return cozinhaRepository.buscarPrimeiro();
     }
 
 }

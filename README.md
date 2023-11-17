@@ -861,3 +861,39 @@ Assim, extendemos também o RestauranteRepository para o RestauranteRepositoryQu
 ### 5.15. Tornando a consulta com Criteria API com filtros dinâmicos
 
 📌 Implementação de consulta dinâmica com Criteria. 
+
+
+### 5.16. Conhecendo o uso do padrão Specifications (DDD) com SDJ
+
+Para entender melhor, encontrei [este blog](https://www.anselme.com.br/2023/04/05/specification-pattern-no-domain-driven-design/) que fala um pouco sobre este assunto. 
+
+### 5.17. Implementando Specifications com SDJ
+
+![Alt text](images/teste-spec-1.png)
+
+![Alt text](images/teste-spec-2.png)
+
+Para testar, criamos o método a seguir:
+```
+@GetMapping("/restaurantes/com-frete-gratis")
+    public List<Restaurante> restaurantesComFreteGratis(String nome) {
+
+        var comFreteGratis = new RestauranteComFreteGratisSpec();
+        var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
+
+        return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+    }
+```
+
+Para que o método findAll funcione, temos que inserir um implements no RestauranteRepository com <code>JpaSpecificationExecutor<code><</code><code>Restaurante</code><code>></code></code>.
+
+### 5.18. Criando uma fábrica de Specifications
+
+
+📌 No Eclipse, é necessário configurar o import em "Preferences" / "Favorites", inserir o pacote da classe estática. Assim, o Eclipse define uma lista de classes de pacotes statics.
+
+### 5.19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy
+
+### 5.20. Estendendo o JpaRepository para customizar o repositório base
+
+📌 Na nossa classe AlgafoodApiApplication, anotamos com @EnableJpaRepositories. Com essa anotação, customizamos uma propriedade repositoryBaseClass. Nesta propriedade, inserimos a classe base, precisa ser a nossa Impl. Desta forma, substituímos a implementação do repositório base, dexando ser de SimpleJpaRepository para CustomJpaRepository
