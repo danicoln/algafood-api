@@ -1003,3 +1003,11 @@ Para solucionar este problema, usamos uma anotação @JsonIgnoreProperties e pas
 #### Observação:
 
 Neste momento temos 6 restaurantes, mas tem alguns restaurantes usando a mesma cozinha, sendo assim, o hibernate faz apenas um select para cada cozinha.
+
+### 6.13. Alterando a estratégia de fetching para Eager Loading
+
+Veja no exemplo abaixo, que para cada restaurante, o próprio JPA faz o select das formas de pagamento. Temos um problema de N+1. Se tivéssemos 1000 restaurantes, seriam 1000 selects de forma de pagamento para cada restaurante.
+
+![Teste EAGER](images/teste-eager.png)
+
+Na prática, geralmente não usamos uma configuração de alterar "ToMany" que é Lazy, para EAGER. Pois pode dar um problemão para a performance do sistema.
