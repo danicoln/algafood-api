@@ -37,7 +37,8 @@ public class Restaurante {
     @JsonIgnore
     // implementação do Hibernate, não no JPA
     @CreationTimestamp
-    @Column(nullable = false, columnDefinition = "datetime") //na propriedade columnDefinition, definimos datetime para que os milisegundos não apareça
+    @Column(nullable = false, columnDefinition = "datetime")
+    //na propriedade columnDefinition, definimos datetime para que os milisegundos não apareça
     private LocalDateTime dataCadastro;
 
     @JsonIgnore
@@ -50,7 +51,14 @@ public class Restaurante {
     @ManyToMany
     @JoinTable(name = "restaurante_forma_pagamento", //customiza o nome da tabela
             joinColumns = @JoinColumn(name = "restaurante_id"),// a propriedade "joinColumn" define qual o nome da tabela intermediaria que associa à tabela restaurante
-    inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id")) // Em contra partida, precisamos informar o inverso, definir o nome que faz referencia à tabela inversa.
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+    // Em contra partida, precisamos informar o inverso, definir o nome que faz referencia à tabela inversa.
     private List<FormaPagamento> formasPagamentos = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany
+    @JoinTable(name = "restaurante_produtos",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "produtos_id"))
+    private List<Produto> produtos = new ArrayList<>();
 }

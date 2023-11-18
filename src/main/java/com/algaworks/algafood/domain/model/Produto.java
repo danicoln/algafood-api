@@ -24,4 +24,16 @@ public class Produto {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Restaurante restaurante;
+
+//    public String getAtivo(){
+//        return ativo ? "Sim" : "Não";
+//    }
+//
+//    public void setAtivo(String ativo){
+//        this.ativo = "Sim".equalsIgnoreCase(ativo);
+//    }
+//
+//    public Boolean isAtivo(){
+//        return ativo;
+//    }
 }
