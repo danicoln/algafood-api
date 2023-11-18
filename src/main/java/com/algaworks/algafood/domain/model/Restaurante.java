@@ -56,9 +56,9 @@ public class Restaurante {
     private List<FormaPagamento> formasPagamentos = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany
-    @JoinTable(name = "restaurante_produtos",
-            joinColumns = @JoinColumn(name = "restaurante_id"),
-            inverseJoinColumns = @JoinColumn(name = "produtos_id"))
+    @OneToMany(mappedBy = "restaurante")
+//    @JoinTable(name = "restaurante_produtos",
+//            joinColumns = @JoinColumn(name = "restaurante_id"),
+//            inverseJoinColumns = @JoinColumn(name = "produtos_id"))
     private List<Produto> produtos = new ArrayList<>();
 }
