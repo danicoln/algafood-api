@@ -927,3 +927,10 @@ Para que o método findAll funcione, temos que inserir um implements no Restaura
 ### 6.5. Testando e analisando o impacto da incorporação de classe na REST API
 
 ✅ Da mesma forma que na aula 6.3, é necessário analisar com cuidado sobre as informações passadas na collection resource. Assim, inserimos a anotação @JsonIgnore. Numa aula futura, iremos aprender como melhorar essas representações.
+
+### 6.6. Mapeando propriedades com @CreationTimestamp e @UpdateTimestamp
+
+✅ A anotação "@CreationTimestamp" e "@UpdateTimestamp" é uma implementação do Hibernate, não do JPA. Um é para criação e outro é para atualização. 
+
+✅ Utilizamos na anotação @Column uma propriedade chamada columnDefinition, e passamos o valor "datetime" para que os milisegundos não apareça.
+
