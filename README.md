@@ -937,3 +937,101 @@ Para que o método findAll funcione, temos que inserir um implements no Restaura
 ### 6.7. Desafio: mapeando relacionamento muitos-para-um
 
 [Ver Issue](https://github.com/danicoln/algafood-api/issues/53)
+
+### 6.8. Desafio: mapeando relacionamento um-para-muitos
+
+[Ver Issue](https://github.com/danicoln/algafood-api/pull/57)
+
+### 6.9. Desafio: mapeando relacionamentos muitos-para-muitos
+
+[Ver Issue](https://github.com/danicoln/algafood-api/pull/58)
+
+### 6.10. Entendendo o Eager Loading
+
+Todas as associações que terminam com "ToOne", usam por padrão estratégia Eager Loading, ou seja, um carregamento ansioso/antecipado. Todas vez que uma instância for carregada a partir do banco de dados, irá carregar também as associações que usam Eager Loading.
+
+📌 [Diferença entre inner join e left join](https://pt.stackoverflow.com/questions/6441/qual-%C3%A9-a-diferen%C3%A7a-entre-inner-join-e-outer-join)
+
+#### Eager Loading
+É o Load aonde todas as classes relacionadas são carregadas na mesma query. O ORM, normalmente por meio de Joins, trará todas as entidades relacionadas.
+
+### 6.11. Entendendo o Lazy Loading
+Todas as associações que terminam com "ToMany", usam por padrão estratégia Lazy Loading, ou seja, um carrgamento preguiçoso.
+
+#### Lazy Loading
+É um carregamento preguiçoso, quando você executa uma consulta por uma certa Entidade suas relações não são carregadas em memória pela consulta inicial, no entanto, ao executar algum método que chama esses registros, será executada uma outra consulta para preencher essas entidades relacionadas. Ou seja, Lazy é um carregamento por demanda.
+
+É importante analisar os selects que estão sendo gerados.
+
+### 6.12. Alterando a estratégia de fetching para Lazy Loading
+
+Fizemos um teste no nosso controlador para testarmos o fetch LAZY.
+```
+public List<Restaurante> listar(){
+        List<Restaurante> restaurantes = repository.findAll();
+        System.out.println("O nome da cozinha é: ");
+        System.out.println(restaurantes.get(0).getCozinha().getNome());
+        return restaurantes;
+    }
+```
+
+No nosso teste de listar Restaurantes, no console podemos verificar que é feita apenas um select na tabela Cozinha.
+
+![Teste Lazy](images/teste-lazy.png)
+
+#### Remoção do @JsonIgnore
+
+Com a remoção do @JsonIgnore no atributo cozinha, ao testar dá o seguinte erro:
+
+![Teste Lazy](images/teste-2-lazy.png)
+
+Quando o atributo está LAZY, a implementação do JPA cria uma Classe dinamicamente em tempo de execução e atribui ao atributo "cozinha".
+
+Note na imagem a seguir, que a classe criada pelo JPA se chama "Cozinha$HibernateProxy$8BNbNy8F" passando uma propriedade como parâmetro "hibernateLazyInitializer".
+Como o atributo está LAZY, o atributo "cozinha" está null, ou seja, quando é feita a consulta no banco de dados, é seria retornado um NullPointerException, mas como o JPA cria esta classe proxy em tempo de execução, dá este erro.
+
+![Teste Lazy](images/teste-3-lazy.png)
+
+Esta exception, diz que não foi possível serializar um objeto numa representação json, por causa da propriedade "hibernateLazyInitializer". 
+
+#### Solução
+
+Para solucionar este problema, usamos uma anotação @JsonIgnoreProperties e passamos o nome da propriedade de parâmetros. Veja no teste a seguir que no console, fez select para 4 cozinhas vinculadas para cada restaurante.
+
+![Teste Lazy](images/teste-4-lazy.png)
+
+#### Observação:
+
+Neste momento temos 6 restaurantes, mas tem alguns restaurantes usando a mesma cozinha, sendo assim, o hibernate faz apenas um select para cada cozinha.
+
+### 6.13. Alterando a estratégia de fetching para Eager Loading
+
+Veja no exemplo abaixo, que para cada restaurante, o próprio JPA faz o select das formas de pagamento. Temos um problema de N+1. Se tivéssemos 1000 restaurantes, seriam 1000 selects de forma de pagamento para cada restaurante.
+
+![Teste EAGER](images/teste-eager.png)
+
+Na prática, geralmente não usamos uma configuração de alterar "ToMany" que é Lazy, para EAGER. Pois pode dar um problemão para a performance do sistema.
+
+### 6.14. Resolvendo o Problema do N+1 com fetch join na JPQL
+
+Para resolver o problema do nosso caso, teremos que implementar o método findAll() do JPA mas de forma customizada. Em RestauranteRepository, fazemos o seguinte:
+
+```
+@Query("from Restaurante r join r.cozinha")
+List<Restaurante> findAll();
+```
+
+Sendo assim, o método busca os restaurante fazendo apenas um select em restaurante.
+
+Para inserir mais uma regra, por exemplo, as formas de pagamentos:
+
+```
+@Query("from Restaurante r join r.cozinha left join fetch r.formasPagamentos")
+List<Restaurante> findAll();
+```
+
+Utilizamos "left join fetch", para caso se algum restaurante não tiver nenhuma forma de pagamento associada a ele.
+
+Sendo assim, é realizado apenas um select na tabela de restaurante. 
+
+Com a utilização de JOIN FETCH, gera um produto cartesiano, uma combinação de registros, podendo ter mais linhas na tabela intermediária.
