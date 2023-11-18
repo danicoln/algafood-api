@@ -955,3 +955,10 @@ Todas as associações que terminam com "ToOne", usam por padrão estratégia Ea
 #### Eager Loading
 É o Load aonde todas as classes relacionadas são carregadas na mesma query. O ORM, normalmente por meio de Joins, trará todas as entidades relacionadas.
 
+### 6.11. Entendendo o Lazy Loading
+Todas as associações que terminam com "ToMany", usam por padrão estratégia Lazy Loading, ou seja, um carrgamento preguiçoso.
+
+#### Lazy Loading
+É um carregamento preguiçoso, quando você executa uma consulta por uma certa Entidade suas relações não são carregadas em memória pela consulta inicial, no entanto, ao executar algum método que chama esses registros, será executada uma outra consulta para preencher essas entidades relacionadas. Ou seja, Lazy é um carregamento por demanda.
+
+É importante analisar os selects que estão sendo gerados.
