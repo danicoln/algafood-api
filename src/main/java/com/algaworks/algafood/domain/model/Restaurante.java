@@ -45,8 +45,7 @@ public class Restaurante {
     private LocalDateTime dataAtualizacao;
 
     //    @JsonIgnore
-    @JsonIgnoreProperties("hibernateLazyInitializer")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
 
@@ -57,8 +56,8 @@ public class Restaurante {
 //            inverseJoinColumns = @JoinColumn(name = "produtos_id"))
     private List<Produto> produtos = new ArrayList<>();
 
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+//    @JsonIgnore
+    @ManyToMany
     @JoinTable(name = "restaurante_forma_pagamento",
             joinColumns = @JoinColumn(name = "restaurante_id"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))

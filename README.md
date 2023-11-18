@@ -1011,3 +1011,27 @@ Veja no exemplo abaixo, que para cada restaurante, o próprio JPA faz o select d
 ![Teste EAGER](images/teste-eager.png)
 
 Na prática, geralmente não usamos uma configuração de alterar "ToMany" que é Lazy, para EAGER. Pois pode dar um problemão para a performance do sistema.
+
+### 6.14. Resolvendo o Problema do N+1 com fetch join na JPQL
+
+Para resolver o problema do nosso caso, teremos que implementar o método findAll() do JPA mas de forma customizada. Em RestauranteRepository, fazemos o seguinte:
+
+```
+@Query("from Restaurante r join r.cozinha")
+List<Restaurante> findAll();
+```
+
+Sendo assim, o método busca os restaurante fazendo apenas um select em restaurante.
+
+Para inserir mais uma regra, por exemplo, as formas de pagamentos:
+
+```
+@Query("from Restaurante r join r.cozinha left join fetch r.formasPagamentos")
+List<Restaurante> findAll();
+```
+
+Utilizamos "left join fetch", para caso se algum restaurante não tiver nenhuma forma de pagamento associada a ele.
+
+Sendo assim, é realizado apenas um select na tabela de restaurante. 
+
+Com a utilização de JOIN FETCH, gera um produto cartesiano, uma combinação de registros, podendo ter mais linhas na tabela intermediária.
