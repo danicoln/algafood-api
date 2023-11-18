@@ -21,7 +21,7 @@ public class BuscaRestauranteMain {
 
         for(Restaurante restaurante : restaurantes){
             System.out.printf("%s - %f - %s - %s\n", restaurante.getNome(),
-                    restaurante.getTaxaFrete(), restaurante.getFormaPagamento(), restaurante.getCozinha().getNome());
+                    restaurante.getTaxaFrete(), restaurante.getFormasPagamentos(), restaurante.getCozinha().getNome());
         }
 
     }

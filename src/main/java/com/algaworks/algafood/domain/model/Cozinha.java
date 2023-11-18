@@ -7,24 +7,26 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-//@Getter
-//@Setter
-//@EqualsAndHashCode
+
 @JsonRootName("cozinha")//muda a propriedade (testar no postman)
 @Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)// o parâmetro srve para que o equals e hash seja incluído apenas se for explícito
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Cozinha {
 
-    @EqualsAndHashCode.Include // estamos explicitando o equals e hashcode no atributo id
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @JsonIgnore // ignora a propriedade (testar no postman)
-    @JsonProperty("titulo") // a representacao de "nome" será titulo (testar no postman)
-    @Column(nullable = false) // este parâmetro nullable=false significa que essas colunas não aceitam valores nulos
+    @JsonProperty("titulo")
+    @Column(nullable = false)
     private String nome;
-    
+
+    @JsonIgnore // ignora a propriedade (testar no postman)
+    @OneToMany(mappedBy = "cozinha")
+    private List<Restaurante> restaurantes = new ArrayList<>();
 }

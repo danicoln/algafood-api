@@ -897,3 +897,40 @@ Para que o método findAll funcione, temos que inserir um implements no Restaura
 ### 5.20. Estendendo o JpaRepository para customizar o repositório base
 
 📌 Na nossa classe AlgafoodApiApplication, anotamos com @EnableJpaRepositories. Com essa anotação, customizamos uma propriedade repositoryBaseClass. Nesta propriedade, inserimos a classe base, precisa ser a nossa Impl. Desta forma, substituímos a implementação do repositório base, dexando ser de SimpleJpaRepository para CustomJpaRepository
+
+## MÓDULO 6 - Explorando Mais do JPA e Hibernate
+
+### 6.1. Mapeando relacionamento bidirecional com @OneToMany
+
+✅ Em mapeamentos bidirecionais entre entidades em frameworks de persistência de dados, como JPA (Java Persistence API) para bancos de dados relacionais, pode ocorrer um problema conhecido como "loop infinito" ou "referência cíclica". Isso acontece quando duas entidades referenciam uma à outra de forma bidirecional, e durante o processo de serialização para JSON, por exemplo, o sistema entra em um loop infinito tentando serializar as referências cruzadas. 
+
+✅ Para resolver esse problema, geralmente você precisa escolher um lado da relação para ser o lado "proprietário" e usar a anotação @JsonIgnore ou outras estratégias para evitar a serialização infinita. Por exemplo, você pode fazer com que a entidade B seja o lado proprietário e marcar a lista de A com @JsonIgnore.
+
+✅ O mapeamento @JsonIgnore é uma anotação usada em Java, especialmente em contextos de desenvolvimento de APIs usando frameworks como o Jackson (usado para serialização/deserialização de objetos Java para JSON) ou similares. Essa anotação é aplicada a campos, métodos ou classes para indicar que determinada propriedade deve ser ignorada durante o processo de serialização (conversão de um objeto Java para JSON).
+
+![Exemplo de mapeamento](images/6.1-jsonIgnore.png)
+
+### 6.2. Mapeando relacionamento muitos-para-muitos com @ManyToMany
+
+✅ A anotação @ManyToMany é usada em Java, especialmente em frameworks de persistência como JPA, para mapear um relacionamento muitos-para-muitos entre duas entidades. Ela indica que uma entidade pode estar associada a várias instâncias da outra entidade, e vice-versa. No contexto do banco de dados, isso geralmente é implementado através de uma tabela intermediária que armazena os pares de chaves estrangeiras das entidades envolvidas no relacionamento.
+
+![6.2 Anotação ManyToMany](images/6.2-many-to-many.png)
+
+### 6.3. Analisando o impacto do relacionamento muitos-para-muitos na REST API
+
+✅ É necessário analisar com cuidado sobre as informações que desejamos apresentar na representação, por exemplo, nossa lista de restaurantes, não precisamos apresentar todas as formas de pagamentos. Para isso, adicionamos a anotação @JsonIgnore no nosso atributo formasPagamentos, com isso, não sera representado formas de pagamentos na listagem de Restaurante.
+
+### 6.4. Mapeando classes incorporáveis com @Embedded e @Embeddable
+
+✅ Componentizar algumas entidades, muitas vezes é necessário. Por exemplo, endereço. Criamos uma classe apenas para os dados de endereço, para poder separar negócios de restaurante no caso. Neste caso, a classe endereço não é considerada uma Entidade.
+
+### 6.5. Testando e analisando o impacto da incorporação de classe na REST API
+
+✅ Da mesma forma que na aula 6.3, é necessário analisar com cuidado sobre as informações passadas na collection resource. Assim, inserimos a anotação @JsonIgnore. Numa aula futura, iremos aprender como melhorar essas representações.
+
+### 6.6. Mapeando propriedades com @CreationTimestamp e @UpdateTimestamp
+
+✅ A anotação "@CreationTimestamp" e "@UpdateTimestamp" é uma implementação do Hibernate, não do JPA. Um é para criação e outro é para atualização. 
+
+✅ Utilizamos na anotação @Column uma propriedade chamada columnDefinition, e passamos o valor "datetime" para que os milisegundos não apareça.
+
