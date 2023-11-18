@@ -934,3 +934,6 @@ Para que o método findAll funcione, temos que inserir um implements no Restaura
 
 ✅ Utilizamos na anotação @Column uma propriedade chamada columnDefinition, e passamos o valor "datetime" para que os milisegundos não apareça.
 
+### 6.7. Desafio: mapeando relacionamento muitos-para-um
+
+[Ver Issue](https://github.com/danicoln/algafood-api/issues/53)
