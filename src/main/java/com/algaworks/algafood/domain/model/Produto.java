@@ -16,6 +16,8 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
+    private String nome;
+    @Column(nullable = false)
     private String descricao;
     @Column(nullable = false)
     private BigDecimal preco;
@@ -24,4 +26,16 @@ public class Produto {
     @ManyToOne
     @JoinColumn(nullable = false)
     private Restaurante restaurante;
+
+//    public String getAtivo(){
+//        return ativo ? "Sim" : "Não";
+//    }
+//
+//    public void setAtivo(String ativo){
+//        this.ativo = "Sim".equalsIgnoreCase(ativo);
+//    }
+//
+//    public Boolean isAtivo(){
+//        return ativo;
+//    }
 }
