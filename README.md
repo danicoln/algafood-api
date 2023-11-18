@@ -937,3 +937,21 @@ Para que o método findAll funcione, temos que inserir um implements no Restaura
 ### 6.7. Desafio: mapeando relacionamento muitos-para-um
 
 [Ver Issue](https://github.com/danicoln/algafood-api/issues/53)
+
+### 6.8. Desafio: mapeando relacionamento um-para-muitos
+
+[Ver Issue](https://github.com/danicoln/algafood-api/pull/57)
+
+### 6.9. Desafio: mapeando relacionamentos muitos-para-muitos
+
+[Ver Issue](https://github.com/danicoln/algafood-api/pull/58)
+
+### 6.10. Entendendo o Eager Loading
+
+Todas as associações que terminam com "ToOne", usam por padrão estratégia Eager Loading, ou seja, um carregamento ansioso/antecipado. Todas vez que uma instância for carregada a partir do banco de dados, irá carregar também as associações que usam Eager Loading.
+
+📌 [Diferença entre inner join e left join](https://pt.stackoverflow.com/questions/6441/qual-%C3%A9-a-diferen%C3%A7a-entre-inner-join-e-outer-join)
+
+#### Eager Loading
+É o Load aonde todas as classes relacionadas são carregadas na mesma query. O ORM, normalmente por meio de Joins, trará todas as entidades relacionadas.
+
