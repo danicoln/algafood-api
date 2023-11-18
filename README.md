@@ -962,3 +962,44 @@ Todas as associações que terminam com "ToMany", usam por padrão estratégia L
 É um carregamento preguiçoso, quando você executa uma consulta por uma certa Entidade suas relações não são carregadas em memória pela consulta inicial, no entanto, ao executar algum método que chama esses registros, será executada uma outra consulta para preencher essas entidades relacionadas. Ou seja, Lazy é um carregamento por demanda.
 
 É importante analisar os selects que estão sendo gerados.
+
+### 6.12. Alterando a estratégia de fetching para Lazy Loading
+
+Fizemos um teste no nosso controlador para testarmos o fetch LAZY.
+```
+public List<Restaurante> listar(){
+        List<Restaurante> restaurantes = repository.findAll();
+        System.out.println("O nome da cozinha é: ");
+        System.out.println(restaurantes.get(0).getCozinha().getNome());
+        return restaurantes;
+    }
+```
+
+No nosso teste de listar Restaurantes, no console podemos verificar que é feita apenas um select na tabela Cozinha.
+
+![Teste Lazy](images/teste-lazy.png)
+
+#### Remoção do @JsonIgnore
+
+Com a remoção do @JsonIgnore no atributo cozinha, ao testar dá o seguinte erro:
+
+![Teste Lazy](images/teste-2-lazy.png)
+
+Quando o atributo está LAZY, a implementação do JPA cria uma Classe dinamicamente em tempo de execução e atribui ao atributo "cozinha".
+
+Note na imagem a seguir, que a classe criada pelo JPA se chama "Cozinha$HibernateProxy$8BNbNy8F" passando uma propriedade como parâmetro "hibernateLazyInitializer".
+Como o atributo está LAZY, o atributo "cozinha" está null, ou seja, quando é feita a consulta no banco de dados, é seria retornado um NullPointerException, mas como o JPA cria esta classe proxy em tempo de execução, dá este erro.
+
+![Teste Lazy](images/teste-3-lazy.png)
+
+Esta exception, diz que não foi possível serializar um objeto numa representação json, por causa da propriedade "hibernateLazyInitializer". 
+
+#### Solução
+
+Para solucionar este problema, usamos uma anotação @JsonIgnoreProperties e passamos o nome da propriedade de parâmetros. Veja no teste a seguir que no console, fez select para 4 cozinhas vinculadas para cada restaurante.
+
+![Teste Lazy](images/teste-4-lazy.png)
+
+#### Observação:
+
+Neste momento temos 6 restaurantes, mas tem alguns restaurantes usando a mesma cozinha, sendo assim, o hibernate faz apenas um select para cada cozinha.

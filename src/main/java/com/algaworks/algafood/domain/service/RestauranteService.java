@@ -27,6 +27,13 @@ public class RestauranteService {
     public List<Restaurante> listar(){
         return repository.findAll();
     }
+    /**Exemplo: testando o fetch lazy*/
+//    public List<Restaurante> listar(){
+//        List<Restaurante> restaurantes = repository.findAll();
+//        System.out.println("O nome da cozinha é: ");
+//        System.out.println(restaurantes.get(0).getCozinha().getNome());
+//        return restaurantes;
+//    }
 
     public Restaurante buscar(Long restauranteId){
         Optional<Restaurante> restaurante = repository.findById(restauranteId);
