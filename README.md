@@ -1105,3 +1105,20 @@ O ideal é utilizar ferramentas de versionamento de schemas, como por exemplo o 
 #### Como profissionais gerenciam as mudanças em schemas do banco de dados
 
 ✅ As criações e alterações de tabelas são feitas através de script de migração utilizando versões, não podendo alterar estes scripts criados.
+
+### 7.6. Adicionando o Flyway no projeto e criando a primeira migração
+
+
+#### Atualização do Flyway 8
+
+Devido à atualização da dependência do Flyway para a versão 8 no Spring Boot 2.7.0, é necessário adicionar uma dependência a mais do Flyway, dependendo do banco de dados utilizado.
+
+Caso utilize o MySQL, adicione:
+
+```
+<dependency>
+  <groupId>org.flywaydb</groupId>
+  <artifactId>flyway-mysql</artifactId>
+</dependency>
+```
+
