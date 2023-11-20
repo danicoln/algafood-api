@@ -1035,3 +1035,45 @@ Utilizamos "left join fetch", para caso se algum restaurante não tiver nenhuma 
 Sendo assim, é realizado apenas um select na tabela de restaurante. 
 
 Com a utilização de JOIN FETCH, gera um produto cartesiano, uma combinação de registros, podendo ter mais linhas na tabela intermediária.
+
+## MÓDULO 7. POOL DE CONEXÕES E FLYWAY
+
+O pool de conexões, em termos gerais, refere-se a uma técnica usada em programação para otimizar o gerenciamento de conexões com bancos de dados ou outros recursos de rede. A ideia é reutilizar conexões existentes em vez de abrir uma nova a cada vez que uma aplicação precisa se conectar a um banco de dados.
+
+### 7.1. Entendendo o Funcionamento de um Pool de Conexões
+
+![Pool de conexões](images/app-sem-pool-conexoes.png)
+
+### Aplicação sem o Pool de Conexões:
+
+<ol>
+    <li>A aplicação precisa acessar o banco de dados.</li>
+    <li>Ela abre uma nova conexão toda vez que precisa executar uma consulta ou atualização.</li>
+    <li>Após a operação, a conexão é fechada.</li>
+</ol>
+
+### Problemas:
+
+<ul>
+    <li>Abrir e fechar conexões repetidamente pode ser demorado e consumir recursos.</li>
+    <li>Pode levar a problemas de desempenho devido ao tempo gasto na criação e fechamento de conexões</li>
+</ul>
+
+### Aplicação com o Pool de Conexões:
+
+![Pool de conexões](images/app-com-pool-conexoes.png)
+
+![Pool de conexões](images/app-com-pool-conexoes-varias.png)
+<ol>
+    <li>A aplicação solicita uma conexão a partir de um pool (conjunto pré-existente de conexões).</li>
+    <li>Quando a operação é concluída, a conexão não é fechada, mas retornada ao pool para uso futuro.</li>
+</ol>
+
+### Benefícios:
+
+<ul>
+    <li>Redução do tempo de abertura e fechamento de conexões.</li>
+    <li>Melhoria no desempenho, já que as conexões são reutilizadas.</li>
+    <li>Controle mais eficiente dos recursos de conexão.</li>
+</ul>
+
