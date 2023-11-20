@@ -1083,3 +1083,15 @@ O pool de conexões, em termos gerais, refere-se a uma técnica usada em program
 
 ### 7.3. Configurando o pool de conexões do Hikari
 
+📌 Para saber mais, verificar as configurações feitas na aula.
+
+### 7.4. Schema generation em produção não é uma boa prática
+
+Foi falado na aula que não é uma boa prática usar as seguintes configurações no application.properties:
+
+```
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=create
+```
+
+O ideal é utilizar ferramentas de versionamento de schemas, como por exemplo o Flyway.
