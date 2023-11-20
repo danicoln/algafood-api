@@ -1087,7 +1087,7 @@ O pool de conexões, em termos gerais, refere-se a uma técnica usada em program
 
 ### 7.4. Schema generation em produção não é uma boa prática
 
-Foi falado na aula que não é uma boa prática usar as seguintes configurações no application.properties:
+📌 Foi falado na aula que não é uma boa prática usar as seguintes configurações no application.properties:
 
 ```
 spring.jpa.generate-ddl=true
@@ -1095,3 +1095,13 @@ spring.jpa.hibernate.ddl-auto=create
 ```
 
 O ideal é utilizar ferramentas de versionamento de schemas, como por exemplo o Flyway.
+
+### 7.5. Flyway: ferramenta de versionamento de schemas de banco de dados
+
+#### Como amadores gerenciam as mudanças em schemas do banco de dados
+
+✅ Resumindo a aula, geralmente, o desenvolvedor altera de forma manual as tabelas do banco de dados em algum ambiente, ocasionando um transtorno para o restante da equipe.
+
+#### Como profissionais gerenciam as mudanças em schemas do banco de dados
+
+✅ As criações e alterações de tabelas são feitas através de script de migração utilizando versões, não podendo alterar estes scripts criados.
