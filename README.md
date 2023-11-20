@@ -1122,3 +1122,24 @@ Caso utilize o MySQL, adicione:
 </dependency>
 ```
 
+### 7.7. Evoluindo o banco de dados com novas migrações
+
+#### Criando uma tabela cidade:
+
+Fizemos um teste de script no MySQL Workbanch, para verificar se o script está correto. Estando tudo certo, apagamos a tabela e copiamos o script e inserimos no projeto através do script de migração.
+
+No MySQL:
+```
+create table cidade (
+	id bigint not null auto_increment,
+    nome_cidade varchar(80) not null,
+    nome_estado varchar(80) not null,
+    primary key (id)
+) engine=InnoDB default charset=utf8mb4;
+```
+
+Apagando a tabela:
+```
+drop table cidade;
+```
+
