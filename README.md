@@ -1077,3 +1077,7 @@ O pool de conexões, em termos gerais, refere-se a uma técnica usada em program
     <li>Controle mais eficiente dos recursos de conexão.</li>
 </ul>
 
+### 7.2. Conhecendo o Hikari: a solução padrão de pool de conexões no Spring Boot
+
+[Para saber mais sobre o Hikari](https://medium.com/creditas-tech/pool-de-conex%C3%B5es-com-spring-e-postgres-ded983543522#:~:text=O%20HikariCP%20prov%C3%AA%20algumas%20funcionalidades,abertura%20autom%C3%A1tica%20de%20nova%20conex%C3%A3o)
+
