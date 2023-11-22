@@ -1159,3 +1159,15 @@ Para criar o database "algafood" a partir do dump, execute o comando:
 ```
 mysql --host localhost --user root --password < dump.sql
 ```
+
+### 7.9. Criando migração a partir de DDL gerado por schema generation
+
+Para os preguiçosos, existe uma forma de criar tabelas inserindo algumas configurações no application.properties:
+
+```
+spring.jpa.properties.javax.persistence.schema-generation.scripts.action=create
+spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target=src/main/resources/ddl.sql
+```
+📌 Após subir a aplicação, atualizar o resource para que o arquivo ddl.sql apareça. Mas é extremamente necessário a revisão do arquivo, analisar as criações de tabelas, foreign keys etc, pois vem configurado padrão do jpa.
+
+📌 É importante também, após a criação do arquivo ddl.sql, retirar a configuração no application.properties, pois toda vez que subir a aplicação, será gerado o arquivo ddl.sql.
