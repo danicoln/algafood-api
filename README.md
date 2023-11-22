@@ -1143,3 +1143,19 @@ Apagando a tabela:
 drop table cidade;
 ```
 
+### 7.8. Criando migrações complexas com remanejamento de dados
+
+#### Dump de banco de dados
+
+É importante saber, que antes de realizar qualquer migração de um banco de dados, é necessário realizar um backup para que não se perca os dados.
+
+Para fazer um backup do banco de dados, "algafood" no MySQL, use o seguinte comando:
+```
+mysqldump --host localhost --user root --password --databases algafood > dump.sql
+```
+
+Para criar o database "algafood" a partir do dump, execute o comando:
+
+```
+mysql --host localhost --user root --password < dump.sql
+```
