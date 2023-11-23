@@ -1,0 +1,5 @@
+CREATE TABLE forma_pagamento (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    descricao VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
