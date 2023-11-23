@@ -1279,3 +1279,15 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Esp
 spring.flyway.locations=classpath:db/migration,classpath:db/testdata
 ```
 
+### 7.11. Reparando migrações com erros
+
+Nesta aula vimos algumas formas de reparar erros no Flyway. Uma das formas que não deu certo comigo é por linha de comando com as seguintes propriedades:
+
+```
+./mvnw flyway:repair -Dflyway.configFiles=src/main/resources/flyway.properties
+```
+
+O erro foi de acesso negado para o usuário "root" onde a senha não estava sendo reconhecida.
+
+![Erro de acesso ao BD](images/7.11-print-erro.png)
+
