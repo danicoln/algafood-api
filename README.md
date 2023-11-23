@@ -1035,3 +1035,259 @@ Utilizamos "left join fetch", para caso se algum restaurante não tiver nenhuma 
 Sendo assim, é realizado apenas um select na tabela de restaurante. 
 
 Com a utilização de JOIN FETCH, gera um produto cartesiano, uma combinação de registros, podendo ter mais linhas na tabela intermediária.
+
+## MÓDULO 7. POOL DE CONEXÕES E FLYWAY
+
+O pool de conexões, em termos gerais, refere-se a uma técnica usada em programação para otimizar o gerenciamento de conexões com bancos de dados ou outros recursos de rede. A ideia é reutilizar conexões existentes em vez de abrir uma nova a cada vez que uma aplicação precisa se conectar a um banco de dados.
+
+### 7.1. Entendendo o Funcionamento de um Pool de Conexões
+
+![Pool de conexões](images/app-sem-pool-conexoes.png)
+
+### Aplicação sem o Pool de Conexões:
+
+<ol>
+    <li>A aplicação precisa acessar o banco de dados.</li>
+    <li>Ela abre uma nova conexão toda vez que precisa executar uma consulta ou atualização.</li>
+    <li>Após a operação, a conexão é fechada.</li>
+</ol>
+
+### Problemas:
+
+<ul>
+    <li>Abrir e fechar conexões repetidamente pode ser demorado e consumir recursos.</li>
+    <li>Pode levar a problemas de desempenho devido ao tempo gasto na criação e fechamento de conexões</li>
+</ul>
+
+### Aplicação com o Pool de Conexões:
+
+![Pool de conexões](images/app-com-pool-conexoes.png)
+
+![Pool de conexões](images/app-com-pool-conexoes-varias.png)
+<ol>
+    <li>A aplicação solicita uma conexão a partir de um pool (conjunto pré-existente de conexões).</li>
+    <li>Quando a operação é concluída, a conexão não é fechada, mas retornada ao pool para uso futuro.</li>
+</ol>
+
+### Benefícios:
+
+<ul>
+    <li>Redução do tempo de abertura e fechamento de conexões.</li>
+    <li>Melhoria no desempenho, já que as conexões são reutilizadas.</li>
+    <li>Controle mais eficiente dos recursos de conexão.</li>
+</ul>
+
+### 7.2. Conhecendo o Hikari: a solução padrão de pool de conexões no Spring Boot
+
+[Para saber mais sobre o Hikari](https://medium.com/creditas-tech/pool-de-conex%C3%B5es-com-spring-e-postgres-ded983543522#:~:text=O%20HikariCP%20prov%C3%AA%20algumas%20funcionalidades,abertura%20autom%C3%A1tica%20de%20nova%20conex%C3%A3o)
+
+### 7.3. Configurando o pool de conexões do Hikari
+
+📌 Para saber mais, verificar as configurações feitas na aula.
+
+### 7.4. Schema generation em produção não é uma boa prática
+
+📌 Foi falado na aula que não é uma boa prática usar as seguintes configurações no application.properties:
+
+```
+spring.jpa.generate-ddl=true
+spring.jpa.hibernate.ddl-auto=create
+```
+
+O ideal é utilizar ferramentas de versionamento de schemas, como por exemplo o Flyway.
+
+### 7.5. Flyway: ferramenta de versionamento de schemas de banco de dados
+
+#### Como amadores gerenciam as mudanças em schemas do banco de dados
+
+✅ Resumindo a aula, geralmente, o desenvolvedor altera de forma manual as tabelas do banco de dados em algum ambiente, ocasionando um transtorno para o restante da equipe.
+
+#### Como profissionais gerenciam as mudanças em schemas do banco de dados
+
+✅ As criações e alterações de tabelas são feitas através de script de migração utilizando versões, não podendo alterar estes scripts criados.
+
+### 7.6. Adicionando o Flyway no projeto e criando a primeira migração
+
+
+#### Atualização do Flyway 8
+
+Devido à atualização da dependência do Flyway para a versão 8 no Spring Boot 2.7.0, é necessário adicionar uma dependência a mais do Flyway, dependendo do banco de dados utilizado.
+
+Caso utilize o MySQL, adicione:
+
+```
+<dependency>
+  <groupId>org.flywaydb</groupId>
+  <artifactId>flyway-mysql</artifactId>
+</dependency>
+```
+
+### 7.7. Evoluindo o banco de dados com novas migrações
+
+#### Criando uma tabela cidade:
+
+Fizemos um teste de script no MySQL Workbanch, para verificar se o script está correto. Estando tudo certo, apagamos a tabela e copiamos o script e inserimos no projeto através do script de migração.
+
+No MySQL:
+```
+create table cidade (
+	id bigint not null auto_increment,
+    nome_cidade varchar(80) not null,
+    nome_estado varchar(80) not null,
+    primary key (id)
+) engine=InnoDB default charset=utf8mb4;
+```
+
+Apagando a tabela:
+```
+drop table cidade;
+```
+
+### 7.8. Criando migrações complexas com remanejamento de dados
+
+#### Dump de banco de dados
+
+É importante saber, que antes de realizar qualquer migração de um banco de dados, é necessário realizar um backup para que não se perca os dados.
+
+Para fazer um backup do banco de dados, "algafood" no MySQL, use o seguinte comando:
+```
+mysqldump --host localhost --user root --password --databases algafood > dump.sql
+```
+
+Para criar o database "algafood" a partir do dump, execute o comando:
+
+```
+mysql --host localhost --user root --password < dump.sql
+```
+
+### 7.9. Criando migração a partir de DDL gerado por schema generation
+
+Para os preguiçosos, existe uma forma de criar tabelas inserindo algumas configurações no application.properties:
+
+```
+spring.jpa.properties.javax.persistence.schema-generation.scripts.action=create
+spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target=src/main/resources/ddl.sql
+```
+📌 Após subir a aplicação, atualizar o resource para que o arquivo ddl.sql apareça. Mas é extremamente necessário a revisão do arquivo, analisar as criações de tabelas, foreign keys etc, pois vem configurado padrão do jpa.
+
+📌 É importante também, após a criação do arquivo ddl.sql, retirar a configuração no application.properties, pois toda vez que subir a aplicação, será gerado o arquivo ddl.sql.
+
+### 7.10. Adicionando dados de testes com callback do Flyway
+
+📌 Vimos em aulas anteriores que não é uma boa prática a utilização de dados de testes no ambiente de desenvolvimento.
+
+No MySQL, criamos um arquivo com o nome afterMigrate.sql, o Flyway irá entender que este arquivo é de callback, após realizar todas as migrações, o Flyway irá chamar o afterMigrate.sql.
+
+Nos inserts para o MySQL, temos que colocar o "ignore" para que o BD ignore os dados caso dê algum erro.
+
+```
+insert ignore into cozinha (id, nome) values (1, 'Tailandesa');
+insert ignore into cozinha (id, nome) values (2, 'Indiana');
+insert ignore into cozinha (id, nome) values (3, 'Argentina');
+insert ignore into cozinha (id, nome) values (4, 'Brasileira');
+```
+
+✅ Outra opção, é zerar os dados de todas as tabelas, para caso o dev queira os dados frescos nas tabelas.
+
+Na aula, criamos o arquivo afterMigrate.sql e inserimos os dados abaixo:
+
+```
+set foreign_key_checks = 0;
+
+delete from cidade;
+delete from cozinha;
+delete from estado;
+delete from forma_pagamento;
+delete from grupo;
+delete from grupo_permissao;
+delete from permissao;
+delete from produto;
+delete from restaurante;
+delete from restaurante_forma_pagamento;
+delete from usuario;
+delete from usuario_grupo;
+
+set foreign_key_checks = 1;
+
+alter table cidade auto_increment = 1;
+alter table cozinha auto_increment = 1;
+alter table estado auto_increment = 1;
+alter table forma_pagamento auto_increment = 1;
+alter table grupo auto_increment = 1;
+alter table permissao auto_increment = 1;
+alter table produto auto_increment = 1;
+alter table restaurante auto_increment = 1;
+alter table usuario auto_increment = 1;
+
+insert into forma_pagamento (id, descricao) values (1, 'Débito');
+insert into forma_pagamento (id, descricao) values (2, 'Crédito');
+insert into forma_pagamento (id, descricao) values (3, 'Pix');
+insert into forma_pagamento (id, descricao) values (4, 'Dinheiro');
+
+insert into cozinha (id, nome) values (1, 'Tailandesa');
+insert into cozinha (id, nome) values (2, 'Indiana');
+insert into cozinha (id, nome) values (3, 'Argentina');
+insert into cozinha (id, nome) values (4, 'Brasileira');
+
+
+insert into estado (id, nome) values (1, 'São Paulo');
+insert into estado (id, nome) values (2, 'Rio de Janeiro');
+insert into estado (id, nome) values (3, 'Minas Gerais');
+
+insert into cidade (id, nome, estado_id) values (1, 'Americana', 1);
+insert into cidade (id, nome, estado_id) values (2, 'Belo Horizonte', 3);
+insert into cidade (id, nome, estado_id) values (3, 'Hortolândia', 1);
+insert into cidade (id, nome, estado_id) values (4, 'Rio de Janeiro', 2);
+
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro) values (1, 'Charbon', 9.99, 1, utc_timestamp, utc_timestamp, 1, '38400-999', 'Rua João Pinheiro', '1000', 'Sun Gertrudez');
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (2, 'Matuto', 9.99, 1, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (3, 'Madero', 7.50, 1, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (4, 'Delivery Foods', 15.50, 2, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (5, 'Java Steakhouse', 12, 3, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (6, 'Lanchonete do Tio Sam', 11, 4, utc_timestamp, utc_timestamp);
+insert into restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao) values (7, 'Bar da Maria', 6, 4, utc_timestamp, utc_timestamp);
+
+insert into permissao (id, nome, descricao) values (1, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
+insert into permissao (id, nome, descricao) values (2, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
+
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Porco com molho agridoce', 'Deliciosa carne suína ao molho especial', 78.90, 1, 1);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Camarão tailandês', '16 camarões grandes ao molho picante', 110, 1, 1);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Salada picante com carne grelhada', 'Salada de folhas com cortes finos de carne bovina grelhada e nosso molho especial de pimenta vermelha', 87.20, 1, 2);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Garlic Naan', 'Pão tradicional indiano com cobertura de alho', 21, 1, 3);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Murg Curry', 'Cubos de frango preparados com molho curry e especiarias', 43, 1, 3);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Bife Ancho', 'Corte macio e suculento, com dois dedos de espessura, retirado da parte dianteira do contrafilé', 79, 1, 4);
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('T-Bone', 'Corte muito saboroso, com um osso em formato de T, sendo de um lado o contrafilé e do outro o filé mignon', 89, 1, 4);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Sanduíche X-Tudo', 'Sandubão com muito queijo, hamburger bovino, bacon, ovo, salada e maionese', 19, 1, 5);
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
+
+
+```
+
+📌 Por algum motivo, não deu certo para mim. Estava dando erro de que a tabela "forma_pagamento" não existe. Mesmo apagando a linha de forma_pagamento, dava outro erro mas idêntico, onde a tabela grupo não existe. 
+
+✅ Inserimos uma configuração para que o spring localize o arquivo em application.properties:
+
+```
+spring.flyway.locations=classpath:db/migration,classpath:db/testdata
+```
+
+### 7.11. Reparando migrações com erros
+
+Nesta aula vimos algumas formas de reparar erros no Flyway. Uma das formas que não deu certo comigo é por linha de comando com as seguintes propriedades:
+
+```
+./mvnw flyway:repair -Dflyway.configFiles=src/main/resources/flyway.properties
+```
+
+O erro foi de acesso negado para o usuário "root" onde a senha não estava sendo reconhecida.
+
+![Erro de acesso ao BD](images/7.11-print-erro.png)
+
