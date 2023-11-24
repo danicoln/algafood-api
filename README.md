@@ -1291,3 +1291,6 @@ O erro foi de acesso negado para o usuário "root" onde a senha não estava send
 
 ![Erro de acesso ao BD](images/7.11-print-erro.png)
 
+## MÓDULO 8 - TRATAMENTO E MODELAGEM DE ERROS DA API
+
+### 8.1. Introdução ao tratamento e modelagem de erros
