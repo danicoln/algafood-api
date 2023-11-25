@@ -1294,3 +1294,10 @@ O erro foi de acesso negado para o usuário "root" onde a senha não estava send
 ## MÓDULO 8 - TRATAMENTO E MODELAGEM DE ERROS DA API
 
 ### 8.1. Introdução ao tratamento e modelagem de erros
+
+### 8.2. Lançando exceções customizadas anotadas com @ResponseStatus
+
+### 8.3. Lançando exceções do tipo ResponseStatusException
+
+Numa classe de domínio, não deveríamos nos preocupar com código de status Http. Esta preocupação é para uma outra camada de domínio.
+A classe de serviço não sabe nada de código de status de resposta, simplesmente exceções de negócios. Então, em outra classe (no nosso caso, no controller), relançamos a ResponseStatusException.
