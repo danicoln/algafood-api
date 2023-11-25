@@ -1307,3 +1307,7 @@ A classe de serviço não sabe nada de código de status de resposta, simplesmen
 Agora, sabemos como devolver código de status http e a mensagem a partir de exception de duas formas: usando a anotação @ResponseStatus e também a classe de exceção ResponseStatusException.
 
 Nesta aula, aprendemos a simplificar ainda mais.
+
+### 8.5. Simplificando o código com o uso de @ResponseStatus em exceptions
+
+A forma que foi implementada a exception na aula anterior, onde a classe EntidadeNaoEncontradaException extende a ResponseStatusException, é legal para quando precisamos de uma única exception podendo a classe devolver na resposta http diferentes respostas de código HTTP. No nosso caso, especialmente, quem lança essa exceção é a nossa classe de Serviço (CadastroCozinhaService), e não queremos um código de status http dentro de nossa classe de serviço. 
