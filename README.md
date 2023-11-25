@@ -1291,3 +1291,23 @@ O erro foi de acesso negado para o usuário "root" onde a senha não estava send
 
 ![Erro de acesso ao BD](images/7.11-print-erro.png)
 
+## MÓDULO 8 - TRATAMENTO E MODELAGEM DE ERROS DA API
+
+### 8.1. Introdução ao tratamento e modelagem de erros
+
+### 8.2. Lançando exceções customizadas anotadas com @ResponseStatus
+
+### 8.3. Lançando exceções do tipo ResponseStatusException
+
+Numa classe de domínio, não deveríamos nos preocupar com código de status Http. Esta preocupação é para uma outra camada.
+A classe de serviço não sabe nada de código de status de resposta, simplesmente exceções de negócios. Então, em outra classe (no nosso caso, no controller), relançamos a ResponseStatusException.
+
+### 8.4. Estendendo ResponseStatusException
+
+Agora, sabemos como devolver código de status http e a mensagem a partir de exception de duas formas: usando a anotação @ResponseStatus e também a classe de exceção ResponseStatusException.
+
+Nesta aula, aprendemos a simplificar ainda mais.
+
+### 8.5. Simplificando o código com o uso de @ResponseStatus em exceptions
+
+A forma que foi implementada a exception na aula anterior, onde a classe EntidadeNaoEncontradaException extende a ResponseStatusException, é legal para quando precisamos de uma única exception podendo a classe devolver na resposta http diferentes respostas de código HTTP. No nosso caso, especialmente, quem lança essa exceção é a nossa classe de Serviço (CadastroCozinhaService), e não queremos um código de status http dentro de nossa classe de serviço. 
