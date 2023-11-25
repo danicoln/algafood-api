@@ -6,10 +6,14 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CidadeService {
+
+    public static final String CIDADE_NAO_ENCONTRADA = "Não existe uma cidade com o código %d";
+    public static final String CIDADE_EM_USO = "Entidade de código %d não pode ser removida, pois já está em uso";
 
     @Autowired
     private CidadeRepository repository;
@@ -20,17 +24,24 @@ public class CidadeService {
 
     public void excluir(Long cidadeId) {
         try {
-            if (!repository.existsById(cidadeId)) {
-                throw new EntidadeNaoEncontradaException(
-                        String.format("Não existe uma cidade com o código %d",
-                                cidadeId));
-            }
             repository.deleteById(cidadeId);
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntidadeNaoEncontradaException(
+                    String.format(CIDADE_NAO_ENCONTRADA,
+                            cidadeId));
+
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
-                    String.format("Entidade de código %d não pode ser removida, pois já está em uso",
+                    String.format(CIDADE_EM_USO,
                             cidadeId));
         }
+    }
 
+    public Cidade buscarOuFalar(Long cidadeId) {
+        return repository.findById(cidadeId)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        String.format(CIDADE_NAO_ENCONTRADA,
+                                cidadeId)));
     }
 }
