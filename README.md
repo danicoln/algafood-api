@@ -1299,5 +1299,11 @@ O erro foi de acesso negado para o usuário "root" onde a senha não estava send
 
 ### 8.3. Lançando exceções do tipo ResponseStatusException
 
-Numa classe de domínio, não deveríamos nos preocupar com código de status Http. Esta preocupação é para uma outra camada de domínio.
+Numa classe de domínio, não deveríamos nos preocupar com código de status Http. Esta preocupação é para uma outra camada.
 A classe de serviço não sabe nada de código de status de resposta, simplesmente exceções de negócios. Então, em outra classe (no nosso caso, no controller), relançamos a ResponseStatusException.
+
+### 8.4. Estendendo ResponseStatusException
+
+Agora, sabemos como devolver código de status http e a mensagem a partir de exception de duas formas: usando a anotação @ResponseStatus e também a classe de exceção ResponseStatusException.
+
+Nesta aula, aprendemos a simplificar ainda mais.
