@@ -1321,3 +1321,24 @@ Tarefas: https://github.com/danicoln/algafood-api/commit/87b285e1097ecf0cb413c53
 ### 8.7. Analisando os impactos da refatoração
 
 De acordo com a aula, após as refatorações, nos testes realizados, por exemplo, adicionando uma cidade com um estado inexistente, o código HTTP 404 não é o ideal para este caso. Iremos corrigir isso na próxima aula.
+
+### 8.8. Criando a exception NegocioException
+
+Em nosso CidadeController, no método de atualizar, criamos um TryCatch buscando o EntidadeNaoEncontradaException, e relançando um NegocioException. Assim, este NegocioException retorna o BadRequest status 400. Na camada de controller, não tem problema de trabalharmos com Exception pensando em código de status http.
+
+```
+@PutMapping("/{cidadeId}")
+    public Cidade atualizar(@PathVariable Long cidadeId,
+                                            @RequestBody Cidade cidade) {
+
+        Cidade cidadeAtual = service.buscarOuFalhar(cidadeId);
+
+        BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+
+        try {
+            return service.salvar(cidadeAtual);
+        } catch (EntidadeNaoEncontradaException e){
+            throw new NegocioException(e.getMessage());
+        }
+    }
+```
