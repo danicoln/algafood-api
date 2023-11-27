@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.RestauranteService;
@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,25 +38,29 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante adicionar (@RequestBody Restaurante restaurante) {
+    public Restaurante adicionar(@RequestBody Restaurante restaurante) {
         return service.salvar(restaurante);
     }
 
     @PutMapping("/{restauranteId}")
     public Restaurante atualizar(@PathVariable Long restauranteId,
-                                       @RequestBody Restaurante restaurante) {
-            Restaurante restauranteAtual = service.buscarOuFalhar(restauranteId);
+                                 @RequestBody Restaurante restaurante) {
+        Restaurante restauranteAtual = service.buscarOuFalhar(restauranteId);
 
-            BeanUtils.copyProperties(restaurante, restauranteAtual,
-                    "id", "formasPagamentos",
-                    "endereco", "dataCadastro", "produtos");
+        BeanUtils.copyProperties(restaurante, restauranteAtual,
+                "id", "formasPagamentos",
+                "endereco", "dataCadastro", "produtos");
 
+        try {
             return service.salvar(restauranteAtual);
+        } catch (EntidadeNaoEncontradaException e) {
+            throw new NegocioException(e.getMessage());
+        }
     }
 
     @PatchMapping("/{restauranteId}")
     public Restaurante atualizarParcial(@PathVariable Long restauranteId,
-                                              @RequestBody Map<String, Object> campos) {
+                                        @RequestBody Map<String, Object> campos) {
 
         Restaurante restauranteAtual = service.buscar(restauranteId);
 
