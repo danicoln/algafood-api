@@ -1311,3 +1311,13 @@ Nesta aula, aprendemos a simplificar ainda mais.
 ### 8.5. Simplificando o código com o uso de @ResponseStatus em exceptions
 
 A forma que foi implementada a exception na aula anterior, onde a classe EntidadeNaoEncontradaException extende a ResponseStatusException, é legal para quando precisamos de uma única exception podendo a classe devolver na resposta http diferentes respostas de código HTTP. No nosso caso, especialmente, quem lança essa exceção é a nossa classe de Serviço (CadastroCozinhaService), e não queremos um código de status http dentro de nossa classe de serviço. 
+
+### 8.6. Desafio: refatorando os serviços REST
+
+Ticket - Issue: https://github.com/danicoln/algafood-api/issues/63
+
+Tarefas: https://github.com/danicoln/algafood-api/commit/87b285e1097ecf0cb413c53ba72b28aa0c30674c
+
+### 8.7. Analisando os impactos da refatoração
+
+De acordo com a aula, após as refatorações, nos testes realizados, por exemplo, adicionando uma cidade com um estado inexistente, o código HTTP 404 não é o ideal para este caso. Iremos corrigir isso na próxima aula.
