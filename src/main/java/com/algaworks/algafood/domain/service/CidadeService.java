@@ -3,6 +3,7 @@ package com.algaworks.algafood.domain.service;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
+import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,7 +19,12 @@ public class CidadeService {
     @Autowired
     private CidadeRepository repository;
 
+    @Autowired
+    private EstadoService estadoService;
+
     public Cidade salvar(Cidade cidade) {
+        Long estadoId = cidade.getEstado().getId();
+        Estado estado = estadoService.buscarOuFalhar(estadoId);
         return repository.save(cidade);
     }
 
@@ -38,7 +44,7 @@ public class CidadeService {
         }
     }
 
-    public Cidade buscarOuFalar(Long cidadeId) {
+    public Cidade buscarOuFalhar(Long cidadeId) {
         return repository.findById(cidadeId)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
                         String.format(CIDADE_NAO_ENCONTRADA,

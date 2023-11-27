@@ -101,6 +101,7 @@ public class RestauranteController {
     }
 
     @DeleteMapping("/{restauranteId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long restauranteId) {
         service.excluir(restauranteId);
     }
