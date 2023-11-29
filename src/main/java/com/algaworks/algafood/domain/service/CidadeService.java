@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CidadeService {
 
-    public static final String CIDADE_NAO_ENCONTRADA = "Não existe uma cidade com o código %d";
     public static final String CIDADE_EM_USO = "Entidade de código %d não pode ser removida, pois já está em uso";
 
     @Autowired
@@ -33,9 +32,7 @@ public class CidadeService {
             repository.deleteById(cidadeId);
 
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
-                    String.format(CIDADE_NAO_ENCONTRADA,
-                            cidadeId));
+            throw new CidadeNaoEncontradaException(cidadeId);
 
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(
@@ -46,8 +43,6 @@ public class CidadeService {
 
     public Cidade buscarOuFalhar(Long cidadeId) {
         return repository.findById(cidadeId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format(CIDADE_NAO_ENCONTRADA,
-                                cidadeId)));
+                .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId));
     }
 }
