@@ -24,6 +24,7 @@ public class CidadeService {
     public Cidade salvar(Cidade cidade) {
         Long estadoId = cidade.getEstado().getId();
         Estado estado = estadoService.buscarOuFalhar(estadoId);
+        cidade.setEstado(estado); // sem essa linha, estava vindo nulo o nome de Estado
         return repository.save(cidade);
     }
 
