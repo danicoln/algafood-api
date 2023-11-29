@@ -1346,3 +1346,7 @@ Em nosso CidadeController, no método de atualizar, criamos um TryCatch buscando
 ### 8.10. Afinando a granularidade e definindo a hierarquia das exceptions de negócios
 
 Afinar a granularidade é tratar um problema de forma bem específica ao invés de utilizar uma Exception genérica. 
+
+### 8.12. Tratando exceções em nível de controlador com @ExceptionHandler
+
+Uma forma que facilita bastante, para ter acesso ao ResponseEntity para caso dê errado, será criando um método que trata exceções dentro do controlador. 
