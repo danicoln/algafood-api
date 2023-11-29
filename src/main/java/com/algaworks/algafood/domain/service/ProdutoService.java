@@ -2,6 +2,8 @@ package com.algaworks.algafood.domain.service;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
@@ -38,8 +40,7 @@ public class ProdutoService {
     public Produto salvar(Produto produto) {
         Long restauranteId = produto.getRestaurante().getId();
         Restaurante restaurante = restauranteRepository.findById(restauranteId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Não existe cadastro de restaurante com código %d", restauranteId)));
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
         produto.setRestaurante(restaurante);
         return produtoRepository.save(produto);
     }
@@ -48,7 +49,7 @@ public class ProdutoService {
         try {
             produtoRepository.deleteById(produtoId);
         } catch (EmptyResultDataAccessException ex) {
-            throw new EntidadeNaoEncontradaException(
+            throw new NegocioException( //TODO: Verificar a Exception correta pra este caso.
                     String.format("Não existe um cadastro de produto com o código %d",
                             produtoId));
         } catch (DataIntegrityViolationException e) {
