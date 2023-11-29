@@ -1342,3 +1342,6 @@ Em nosso CidadeController, no método de atualizar, criamos um TryCatch buscando
         }
     }
 ```
+
+### 8.10. Afinando a granularidade e definindo a hierarquia das exceptions de negócios
+
