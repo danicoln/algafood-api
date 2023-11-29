@@ -71,39 +71,5 @@ public class CidadeController {
         service.excluir(cidadeId);
     }
 
-    /**
-     * O método é chamado automataticamente pelo spring
-     * passando a exception que foi lançada, e teremos
-     * a chance de fazer o que quizermos, incluindo retornar
-     * ResponseEntity customizando inclusive o corpo da resposta
-     * http
-     */
-    @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> tratarEntidadeNaoEncontradaException(
-            EntidadeNaoEncontradaException e) {
-        Problema problema = Problema.builder()
-                .dataHora(LocalDateTime.now())
-                .mensagem(e.getMessage()).build();
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(problema);
-    }
-
-    /**
-     * A anotação ExceptionHandler, verifica também
-     * a causa da exception também veja na linha 62
-     * que passamos como parâmetro a causa (msg, causa)
-     * -> throw new NegocioException(e.getMessage(), e);
-     * */
-    @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<?> tratarNegocioException(
-            NegocioException e) {
-        /**Implementação de mensagem personalizada*/
-        Problema problema = Problema.builder() //usando o builder do lombok
-                .dataHora(LocalDateTime.now())// passando a data
-                .mensagem(e.getMessage()).build();// passando a msg 
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(problema);
-    }
 }
