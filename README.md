@@ -1354,3 +1354,6 @@ Uma forma que facilita bastante, para ter acesso ao ResponseEntity para caso dê
 ### 8.13. Tratando exceções globais com @ExceptionHandler e @ControllerAdvice
 
 Existe uma forma de criar um ExceptionHandler de forma global.
+
+### 8.16. Customizando o corpo da resposta padrão de ResponseEntityExceptionHandler
+
