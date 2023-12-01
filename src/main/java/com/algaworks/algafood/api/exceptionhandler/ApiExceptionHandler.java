@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.time.LocalDateTime;
-
-/**Esta anotação diz que dentro deste componente
+/**
+ * Esta anotação diz que dentro deste componente
  * podemos adicionar ExceptionHandlers, que as exceções
  * de todos os controladores do projeto serão tratadas
- * nesta classe*/
+ * nesta classe
+ */
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -28,13 +28,27 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * http
      */
     @ExceptionHandler(EntidadeNaoEncontradaException.class)
-    public ResponseEntity<?> tratarEntidadeNaoEncontradaException(
+    public ResponseEntity<?> handleEntidadeNaoEncontradaException(
             EntidadeNaoEncontradaException ex, WebRequest request) {
 
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ProblemType problemType = ProblemType.ENTIDADE_NAO_ENCONTRADA;
+        String detail = ex.getMessage();
+
+        Problem problem = createProblemBuilder(
+                status, problemType, detail)
+                .build();
+
+//        Problem problem = Problem.builder()
+//                .status(status.value())
+//                .type("https://algafood.com.br/entidade-nao-encontrada")
+//                .title("Entidade não encontrada")
+//                .detail(detail)
+//                .build();
         return handleExceptionInternal(
-                ex, ex.getMessage(), new HttpHeaders(),
-                HttpStatus.NOT_FOUND, request
-                );
+                ex, problem, new HttpHeaders(),
+                status, request
+        );
 
     }
 
@@ -43,9 +57,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
      * a causa da exception também veja na linha 62
      * que passamos como parâmetro a causa (msg, causa)
      * -> throw new NegocioException(e.getMessage(), e);
-     * */
+     */
     @ExceptionHandler(NegocioException.class)
-    public ResponseEntity<?> tratarNegocioException(
+    public ResponseEntity<?> handleNegocioException(
             NegocioException ex, WebRequest request) {
 
         return handleExceptionInternal(
@@ -55,7 +69,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EntidadeEmUsoException.class)
-    public ResponseEntity<?> tratarEntidadeEmUsoException(
+    public ResponseEntity<?> handleEntidadeEmUsoException(
             EntidadeEmUsoException ex, WebRequest request) {
 
         return handleExceptionInternal(
@@ -68,19 +82,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body,
                                                              HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        if(body == null){
+        if (body == null) {
             //instanciando um problema
-            body = Problema.builder()
-                    .dataHora(LocalDateTime.now())
-                    .mensagem(status.getReasonPhrase()) // vem uma pequena descrição do status que está sendo retornado na resposta
+            body = Problem.builder()
+                    .title(status.getReasonPhrase()) // vem uma pequena descrição do status que está sendo retornado na resposta
+                    .status(status.value()) // pega o código do status
                     .build();
         } else if (body instanceof String) {
-            body = Problema.builder()
-                    .dataHora(LocalDateTime.now())
-                    .mensagem((String) body) // vem uma pequena descrição do status que está sendo retornado na resposta
+            body = Problem.builder()
+                    .title((String) body) // vem uma pequena descrição do status que está sendo retornado na resposta
+                    .status(status.value())
                     .build();
         }
 
         return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    private Problem.ProblemBuilder createProblemBuilder(HttpStatus status,
+                                                        ProblemType problemType, String detail) {
+        return Problem.builder()
+                .status(status.value())
+                .type(problemType.getUri())
+                .title(problemType.getTitle())
+                .detail(detail);
     }
 }
