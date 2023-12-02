@@ -11,10 +11,11 @@ public enum ProblemType {
 
     PROPRIEDADE_IGNORADA("/propriedade-ignorada", "Propriedade Ignorada Por JsonIgnore"),
     MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem Incompreesível"),
-    ENTIDADE_NAO_ENCONTRADA("/entidade-nao-encontrada", "Entidade não encontrada"),
+    RECURSO_NAO_ENCONTRADO("/entidade-nao-encontrada", "Entidade não encontrada"),
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
     ERRO_NEGOCIO("/erro-negocio", "Violação de regra de negócio"),
-    PROPRIEDADE_NAO_EXISTE_NA_ENTIDADE("/propriedade-nao-existe-na-entidade", "Propriedade Inexistente na Entidade");
+    PROPRIEDADE_NAO_EXISTE_NA_ENTIDADE("/propriedade-nao-existe-na-entidade", "Propriedade Inexistente na Entidade"),
+    PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro Inválido");
 
     private String title;
     private String uri;
