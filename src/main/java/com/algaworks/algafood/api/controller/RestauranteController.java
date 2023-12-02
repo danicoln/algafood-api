@@ -5,13 +5,18 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.RestauranteService;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
@@ -60,47 +65,59 @@ public class RestauranteController {
 
     @PatchMapping("/{restauranteId}")
     public Restaurante atualizarParcial(@PathVariable Long restauranteId,
-                                        @RequestBody Map<String, Object> campos) {
+                                        @RequestBody Map<String, Object> campos,
+                                        HttpServletRequest request) {
 
         Restaurante restauranteAtual = service.buscar(restauranteId);
 
-        merge(campos, restauranteAtual);
+        merge(campos, restauranteAtual, request);
         return atualizar(restauranteId, restauranteAtual);
     }
 
     /**
      * A função deste método é "mesclar" o valor 1 (dadosOrigem) para o valor 2 (restauranteDestino)
      */
-    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
+    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
+        ServletServerHttpRequest servletServerHttpRequest = new ServletServerHttpRequest(request);
 
-        /**
-         * ObjectMapper do pacote Jackson, é responsável por serializar(converter)
-         * objetos java em json e vice versa.*/
-        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            /**
+             * ObjectMapper do pacote Jackson, é responsável por serializar(converter)
+             * objetos java em json e vice versa.*/
+            ObjectMapper objectMapper = new ObjectMapper();
 
-        /**
-         * Aqui, convertemos os dadosOrigem para um tipo Restaurante*/
-        Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+            //configuramos o objectMapper passando a funcionalidade, para falhar
+            // quando a propriedade esteja sendo ignorada.
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+            //caso a propriedade não exista;
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
-        System.out.println(restauranteOrigem);
+            /**
+             * Aqui, convertemos os dadosOrigem para um tipo Restaurante*/
+            Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+            System.out.println(restauranteOrigem);
 
-        /**Atribuimos as propriedades à variável dadosOrigem*/
-        dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-            /**Usamos Field do Java Lang, para representar um atributo da classe Restaurante
-             * que iremos modificar*/
-            Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-            field.setAccessible(true);
+            /**Atribuimos as propriedades à variável dadosOrigem*/
+            dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+                /**Usamos Field do Java Lang, para representar um atributo da classe Restaurante
+                 * que iremos modificar*/
+                Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+                field.setAccessible(true);
 
-            /**com o método getField(), buscamos o valor da propriedade representada
-             * pela variável field e passamos para a variavel restauranteOrigem
-             * a variável novoValor já está convertida para o tipo Restaurante.*/
-            Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+                /**com o método getField(), buscamos o valor da propriedade representada
+                 * pela variável field e passamos para a variavel restauranteOrigem
+                 * a variável novoValor já está convertida para o tipo Restaurante.*/
+                Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 
-            System.out.println(nomePropriedade + " = " + valorPropriedade + " = " + novoValor);
+                System.out.println(nomePropriedade + " = " + valorPropriedade + " = " + novoValor);
 
-            /**Inspeciona os objetos java e altera em tempo de execução*/
-            ReflectionUtils.setField(field, restauranteDestino, novoValor);
-        });
+                /**Inspeciona os objetos java e altera em tempo de execução*/
+                ReflectionUtils.setField(field, restauranteDestino, novoValor);
+            });
+        }catch (IllegalArgumentException ex){
+            Throwable rootCause = ExceptionUtils.getRootCause(ex);
+            throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest);
+        }
     }
 
     @DeleteMapping("/{restauranteId}")
