@@ -3,8 +3,10 @@ package com.algaworks.algafood.api.exceptionhandler;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.exc.PropertyBindingException;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,22 +28,23 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-    /**
-     * 8.20. Customizando exception handlers de ResponseEntityExceptionHandler
-     * */
+    private String detalhe;
+    private ProblemType problemType;
+
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
             HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
 
-        /**8.21. Tratando a exception InvalidFormatException na desserialização
-         **/
-        //ExceptionUtils do pacote commons.lang que adicionamos no pom.xml
-        //Com esse cara, pegamos a causa raiz, indo em toda a pilha de
-        //exceções (toda stack).
-        Throwable rootCouse = ExceptionUtils.getRootCause(ex);
+        Throwable rootCouse = rootCause(ex); // passei o método que eu criei
 
-        if(rootCouse instanceof InvalidFormatException){
+        if (rootCouse instanceof InvalidFormatException) {
             return handleJsonMappingException((InvalidFormatException) rootCouse, headers, status, request);
+
+        } else if (rootCouse instanceof IgnoredPropertyException) {
+            return handlePropertyBindingException((IgnoredPropertyException) rootCouse, headers, status, request);
+
+        } else if (rootCouse instanceof UnrecognizedPropertyException) {
+            return handlePropertyBindingException((UnrecognizedPropertyException) rootCouse, headers, status, request);
         }
 
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
@@ -49,8 +52,71 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail).build();
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(),status, request);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
+
+    //método criado por mim
+
+    private Throwable rootCause(Exception ex) {
+        //ExceptionUtils do pacote commons.lang que adicionamos no pom.xml
+        //Com esse cara, pegamos a causa raiz, indo em toda a pilha de
+        //exceções (toda stack).
+        return ExceptionUtils.getRootCause(ex);
+    }
+
+    private ResponseEntity<Object> handlePropertyBindingException(
+            PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        if (ex instanceof IgnoredPropertyException) {
+            String path = getCollect(ex);
+            String detail = String.format(
+                    "A propriedade '%s' está habilitada para ser ignorada " +
+                            "na entidade atual", path);
+
+            ProblemType problemType = ProblemType.PROPRIEDADE_IGNORADA;
+            adicionaDetailAndProblemType(detail, problemType);
+
+        } else if (ex instanceof UnrecognizedPropertyException) {
+            String path = getCollect(ex);
+            String detail = String.format(
+                    "A propriedade '%s' não existe " +
+                            "na entidade atual", path);
+
+            ProblemType problemType = ProblemType.PROPRIEDADE_NAO_EXISTE_NA_ENTIDADE;
+            adicionaDetailAndProblemType(detail, problemType);
+        }
+
+        Problem problem = createProblemBuilder(status, getProblemType(), getDetalhe()).build();
+        return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
+    private void adicionaDetailAndProblemType(String detail, ProblemType problemType) {
+        setProblemType(problemType);
+        setDetalhe(detail);
+    }
+
+    private String getCollect(PropertyBindingException ex) {
+        return ex.getPath().stream()
+                .map(ref -> ref.getFieldName())
+                .collect(Collectors.joining());
+    }
+
+    private void setProblemType(ProblemType problemType) {
+        this.problemType = problemType;
+    }
+
+    private ProblemType getProblemType() {
+        return problemType;
+    }
+
+    private String getDetalhe() {
+        return this.detalhe;
+    }
+
+    private void setDetalhe(String detail) {
+        this.detalhe = detail;
+    }
+
 
     // método handle criado
     private ResponseEntity<Object> handleJsonMappingException(
@@ -94,7 +160,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail).build();
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(),status, request);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     /**
@@ -128,7 +194,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail).build();
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(),status, request);
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @Override

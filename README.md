@@ -1381,3 +1381,9 @@ Habilitamos também pra quando as propriedades no backend estão configuradas pa
 ```
 spring.jackson.deserialization.fail-on-ignored-properties=true
 ```
+
+### 8.23. Desafio: tratando a PropertyBindingException na desserialização
+
+Ver a solução do desafio no código. 
+
+✅ Fiz algumas refatorações, criando métodos para diminuição de linhas de código.
