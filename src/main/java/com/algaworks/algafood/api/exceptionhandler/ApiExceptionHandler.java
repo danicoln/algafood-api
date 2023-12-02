@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.exceptionhandler;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +40,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         Throwable rootCouse = rootCause(ex); // passei o método que eu criei
 
         if (rootCouse instanceof InvalidFormatException) {
-            return handleJsonMappingException((InvalidFormatException) rootCouse, headers, status, request);
+            return handleInvalidFormatException((InvalidFormatException) rootCouse, headers, status, request);
 
         } else if (rootCouse instanceof IgnoredPropertyException) {
             return handlePropertyBindingException((IgnoredPropertyException) rootCouse, headers, status, request);
@@ -66,27 +68,26 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handlePropertyBindingException(
             PropertyBindingException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String path = joinPath(ex.getPath());
 
         if (ex instanceof IgnoredPropertyException) {
-            String path = getCollect(ex);
+
+            ProblemType problemType = ProblemType.PROPRIEDADE_IGNORADA;
             String detail = String.format(
                     "A propriedade '%s' está habilitada para ser ignorada " +
                             "na entidade atual", path);
-
-            ProblemType problemType = ProblemType.PROPRIEDADE_IGNORADA;
             adicionaDetailAndProblemType(detail, problemType);
 
         } else if (ex instanceof UnrecognizedPropertyException) {
-            String path = getCollect(ex);
+
+            ProblemType problemType = ProblemType.PROPRIEDADE_NAO_EXISTE_NA_ENTIDADE;
             String detail = String.format(
                     "A propriedade '%s' não existe " +
                             "na entidade atual", path);
-
-            ProblemType problemType = ProblemType.PROPRIEDADE_NAO_EXISTE_NA_ENTIDADE;
             adicionaDetailAndProblemType(detail, problemType);
         }
-
         Problem problem = createProblemBuilder(status, getProblemType(), getDetalhe()).build();
+
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
@@ -95,10 +96,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         setDetalhe(detail);
     }
 
-    private String getCollect(PropertyBindingException ex) {
-        return ex.getPath().stream()
+    private String joinPath(List<JsonMappingException.Reference> references) {
+        return references.stream()
                 .map(ref -> ref.getFieldName())
-                .collect(Collectors.joining());
+                .collect(Collectors.joining("."));
     }
 
     private void setProblemType(ProblemType problemType) {
@@ -119,7 +120,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     // método handle criado
-    private ResponseEntity<Object> handleJsonMappingException(
+    private ResponseEntity<Object> handleInvalidFormatException(
             InvalidFormatException ex, HttpHeaders headers, HttpStatus status, WebRequest request
     ) {
 
@@ -129,9 +130,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
          * e imprimimos no console com o .getFieldName()*/
         //ex.getPath().forEach(ref -> System.out.println(ref.getFieldName()));
 
-        String path = ex.getPath().stream()
-                .map(ref -> ref.getFieldName())
-                .collect(Collectors.joining(".")); // coletor que contatena os elementos
+        String path = joinPath(ex.getPath());
 
         ProblemType problemType = ProblemType.MENSAGEM_INCOMPREENSIVEL;
         String detail = String.format("A propriedade '%s' recebeu o valor '%s', " +

@@ -1387,3 +1387,7 @@ spring.jackson.deserialization.fail-on-ignored-properties=true
 Ver a solução do desafio no código. 
 
 ✅ Fiz algumas refatorações, criando métodos para diminuição de linhas de código.
+
+Obs.: Na Resolução do desafio, o prof. implementou de forma mais abstrata, não detalhando as duas exceptions mencionadas anteriormente.
+
+Optei por fazer correções pontuais, mantendo a minha implementação.
