@@ -1361,3 +1361,4 @@ Existe uma forma de criar um ExceptionHandler de forma global.
 
 ### 8.18. Padronizando o formato de problemas no corpo de respostas com a RFC 7807
 
+### 8.20. Customizando exception handlers de ResponseEntityExceptionHandler
