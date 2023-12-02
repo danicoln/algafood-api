@@ -1391,3 +1391,94 @@ Ver a solução do desafio no código.
 Obs.: Na Resolução do desafio, o prof. implementou de forma mais abstrata, não detalhando as duas exceptions mencionadas anteriormente.
 
 Optei por fazer correções pontuais, mantendo a minha implementação.
+
+### 8.24. Lançando exception de desserialização na atualização parcial (PATCH)
+
+Quando fazemos atualização parcial (PATCH), no nosso controller de Restaurante, utilizamos o ObjectMapper, que é uma classe do Jackson, onde instanciamos programaticamente, ou seja, não é o spring boot que instancia, sendo assim, não autoconfigura este Objeto.
+
+```
+objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
+objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+```
+
+Com esta configuração, pedimos para que falhe caso a propriedade esteja sendo ignorada ou para quando não exista na entidade.
+
+Com isso, ao rodar, acontece o erro 500. A exception lançada é do tipo IllegalArgumentException:
+
+```
+2023-12-02 14:24:59.525 ERROR 16276 --- [nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.IllegalArgumentException: Ignored field "endereco" (class com.algaworks.algafood.domain.model.Restaurante) encountered; mapper configured not to allow this (4 known properties: "nome", "id", "taxaFrete", "cozinha"])
+ at [Source: UNKNOWN; byte offset: #UNKNOWN] (through reference chain: com.algaworks.algafood.domain.model.Restaurante["endereco"])] with root cause
+
+com.fasterxml.jackson.databind.exc.IgnoredPropertyException: Ignored field "endereco" (class com.algaworks.algafood.domain.model.Restaurante) encountered; mapper configured not to allow this (4 known properties: "nome", "id", "taxaFrete", "cozinha"])
+ at [Source: UNKNOWN; byte offset: #UNKNOWN] (through reference chain: com.algaworks.algafood.domain.model.Restaurante["endereco"])
+
+```
+
+Não tratamos o IllegalArgumentException na classe ApiExceptionHandler, por ser uma exception muito genérica. Sendo assim, o tratamento implementado é de outra forma. 
+
+Para tratarmos este erro, adicionamos um try-catch no método merge(), inserindo todo o código para dentro do try. No catch, passamos a IllegalArgumentException. 
+
+Ainda no catch, passamos a causa, parecido com as implementações anteriores, utilizando a classe ExceptionUtils do pacote commons lang3:
+```
+Throwable rootCause = ExceptionUtils.getRootCause(ex);
+``` 
+E relançamos HttpMessageNotReadableException passando a mensagem e a causa.
+```
+catch (IllegalArgumentException ex){
+            Throwable rootCause = ExceptionUtils.getRootCause(ex);
+            throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest);
+        }
+```
+
+Desta forma, verificamos que HttpMessageNotReadableException consta depreciado. 
+
+A solução para isso foi da seguinte forma:
+Ao acessarmos HttpMessageNotReadableException, verificamos um construtor não depreciado e que contém como parâmetro a causa, mas também uma outra classe, a <strong>HttpInputMessage</strong>.
+
+E ao acessar HttpInputMessage, podemos perceber que se trata de uma interface e analisando as classes que implementam essa interface, verificamos a classe ServletServerHttpRequest. Esta classe, encapsula um HttpServletRequest, que é da api de servlet, do javaEE. Sendo assim, podemos utilizar ServletServerHttpRequest, na instância, passando HttpServletRequest de parâmetro.
+
+No método adicionarParcial do controlador Restaurante, passamos mais um argumento, o HttpServletRequest e no método merge também:
+
+## Metodo atualizarParcial()
+```
+ @PatchMapping("/{restauranteId}")
+    public Restaurante atualizarParcial(@PathVariable Long restauranteId,
+                                        @RequestBody Map<String, Object> campos,
+                                        HttpServletRequest request) {
+
+        Restaurante restauranteAtual = service.buscar(restauranteId);
+        merge(campos, restauranteAtual, request);
+        return atualizar(restauranteId, restauranteAtual);
+    }
+```
+
+No método merge(), declaramos o ServletServerHttpRequest e passamos o request que passamos como parâmetro no método merge(). E por fim, no catch, passamos o ServletServerHttpRequest como terceiro argumento. Assim, o método merge() fica implementado da seguinte forma:
+
+```
+private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
+        ServletServerHttpRequest servletServerHttpRequest = new ServletServerHttpRequest(request);
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);  
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+
+            Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
+            System.out.println(restauranteOrigem);
+
+            dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
+                Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
+                field.setAccessible(true);
+
+                Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
+
+                System.out.println(nomePropriedade + " = " + valorPropriedade + " = " + novoValor);
+
+                ReflectionUtils.setField(field, restauranteDestino, novoValor);
+            });
+        }catch (IllegalArgumentException ex){
+            Throwable rootCause = ExceptionUtils.getRootCause(ex);
+            throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest);
+        }
+    }
+```
