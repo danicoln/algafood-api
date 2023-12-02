@@ -1366,3 +1366,18 @@ Existe uma forma de criar um ExceptionHandler de forma global.
 ### 8.21. Tratando a exception InvalidFormatException na desserialização
 
 ✅ Ver no código a documentação das tarefas realizadas nesta aula
+
+### 8.22. Habilitando erros na desserialização de propriedades inexistentes ou ignoradas
+
+✅ Nesta aula, habilitamos um erro na desserialização de propriedades inexistentes ou ignoradas. 
+
+Propriedades que são passadas no postman por exemplo, que não existe em nossa entidade, habilitamos um lançamento de exception no application.properties:
+
+```
+spring.jackson.deserialization.fail-on-unknown-properties=true
+```
+
+Habilitamos também pra quando as propriedades no backend estão configuradas para serem ignoradas com @JsonIgnore:
+```
+spring.jackson.deserialization.fail-on-ignored-properties=true
+```
