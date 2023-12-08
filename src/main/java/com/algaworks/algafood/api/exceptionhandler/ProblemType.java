@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 public enum ProblemType {
 
+    ERRO_DE_SISTEMA("/erro-de-sistema", "Erro de Sistema"),
     PROPRIEDADE_IGNORADA("/propriedade-ignorada", "Propriedade Ignorada Por JsonIgnore"),
     MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem Incompreesível"),
     RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso não encontrado"),
