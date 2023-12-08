@@ -1482,3 +1482,6 @@ private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDesti
         }
     }
 ```
+
+### 8.28. Estendendo o formato do problema para adicionar novas propriedades
+
