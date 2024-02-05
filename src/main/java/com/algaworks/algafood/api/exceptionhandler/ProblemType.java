@@ -16,7 +16,8 @@ public enum ProblemType {
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
     ERRO_NEGOCIO("/erro-negocio", "Violação de regra de negócio"),
     PROPRIEDADE_NAO_EXISTE_NA_ENTIDADE("/propriedade-nao-existe-na-entidade", "Propriedade Inexistente na Entidade"),
-    PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro Inválido");
+    PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro Inválido"),
+    DADOS_INVALIDOS("/dados-invalidos","Dados inválidos" );
 
     private String title;
     private String uri;
