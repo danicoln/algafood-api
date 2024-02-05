@@ -1486,3 +1486,17 @@ private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDesti
 ### 8.28. Estendendo o formato do problema para adicionar novas propriedades
 
 ### 8.29. Desafio: estendendo o formato do problema
+
+# 9. Validação com Bean Validation
+
+## 9.1 Validação do modelo com Bean Validation
+
+```
+<dependency> 
+    <groupId>org.springframework.boot</groupId> 
+    <artifactId>spring-boot-starter-validation</artifactId> 
+</dependency>
+```
+## 9.2. Adicionando constraints e validando no controller com @Valid
+
+Adicionado novas validações, @Valid e @NotNull
