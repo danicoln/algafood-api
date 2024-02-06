@@ -1512,3 +1512,8 @@ Para qualquer dúvida, conferir o commit #9.7
 ## 9.8. Convertendo grupos de constraints para validação em cascata com @ConvertGroup
 
 Utilizando @ConvertGroup para o atributo associado "cozinha" em Restaurante. Esta solução deixa menos burocrático o uso de validação de grupos.
+
+## 9.13. Resolvendo mensagens de validação com Resource Bundle do Bean Validation
+
+Foi explicado algumas formas de resolver mensagens de validação com Resource Bundle. 
+O ideal, é sempre usar o messages.properties. Lembrando que o nome dos arquivos são importantes, "messages.properties" e "ValidationMessages.properties", para que o spring possa entender. 
