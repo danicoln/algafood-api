@@ -1508,3 +1508,7 @@ Nesta aula aprendemos sobre a utilização de groups nas validações como @Vali
 Esta técnica é utilizada para problemas de validações em entidades com associações variadas.
 
 Para qualquer dúvida, conferir o commit #9.7
+
+## 9.8. Convertendo grupos de constraints para validação em cascata com @ConvertGroup
+
+Utilizando @ConvertGroup para o atributo associado "cozinha" em Restaurante. Esta solução deixa menos burocrático o uso de validação de grupos.

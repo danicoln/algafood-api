@@ -2,7 +2,6 @@ package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.Groups;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,12 +28,12 @@ public class Restaurante {
     private Long id;
 
 //    @NotNull
-    @NotBlank(groups = Groups.CadastroRestaurante.class)
+    @NotBlank
     @Column(nullable = false)
     private String nome;
 
     //@DecimalMin("0")
-    @PositiveOrZero(groups = Groups.CadastroRestaurante.class) //Não aceita valor negativo
+    @PositiveOrZero
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
@@ -55,7 +56,8 @@ public class Restaurante {
 
     //    @JsonIgnore
     @Valid
-    @NotNull(groups = Groups.CadastroRestaurante.class)
+    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class) // converte de grupo default para a entidade escolhida
+    @NotNull
     @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)
     private Cozinha cozinha;
