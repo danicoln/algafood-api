@@ -1500,3 +1500,11 @@ private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDesti
 ## 9.2. Adicionando constraints e validando no controller com @Valid
 
 Adicionado novas validações, @Valid e @NotNull
+
+## 9.7. Agrupando e restringindo constraints que devem ser usadas na validação
+
+Nesta aula aprendemos sobre a utilização de groups nas validações como @Valid, @NotNull, @NotBlank etc. 
+
+Esta técnica é utilizada para problemas de validações em entidades com associações variadas.
+
+Para qualquer dúvida, conferir o commit #9.7
