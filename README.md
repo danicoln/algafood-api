@@ -1486,3 +1486,86 @@ private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDesti
 ### 8.28. Estendendo o formato do problema para adicionar novas propriedades
 
 ### 8.29. Desafio: estendendo o formato do problema
+
+# 9. Validação com Bean Validation
+
+## 9.1 Validação do modelo com Bean Validation
+
+```
+<dependency> 
+    <groupId>org.springframework.boot</groupId> 
+    <artifactId>spring-boot-starter-validation</artifactId> 
+</dependency>
+```
+## 9.2. Adicionando constraints e validando no controller com @Valid
+
+Adicionado novas validações, @Valid e @NotNull
+
+## 9.7. Agrupando e restringindo constraints que devem ser usadas na validação
+
+Nesta aula aprendemos sobre a utilização de groups nas validações como @Valid, @NotNull, @NotBlank etc. 
+
+Esta técnica é utilizada para problemas de validações em entidades com associações variadas.
+
+Para qualquer dúvida, conferir o commit #9.7
+
+## 9.8. Convertendo grupos de constraints para validação em cascata com @ConvertGroup
+
+Utilizando @ConvertGroup para o atributo associado "cozinha" em Restaurante. Esta solução deixa menos burocrático o uso de validação de grupos.
+
+## 9.13. Resolvendo mensagens de validação com Resource Bundle do Bean Validation
+
+Foi explicado algumas formas de resolver mensagens de validação com Resource Bundle. 
+O ideal, é sempre usar o messages.properties. Lembrando que o nome dos arquivos são importantes, "messages.properties" e "ValidationMessages.properties", para que o spring possa entender. 
+
+## 9.17. Criando constraints de validação customizadas em nível de classe
+
+<p>Aprendendo a criar qualquer tipo de validação customizada com duas ou mais propriedades</p>
+continua...
+
+## 9.18. Ajustando Exception Handler para adicionar mensagens de validação em nível de classe
+
+<p>Continuando a aula anterior, implementamos uma mensagem customizada</p>
+
+## 9.19. Executando processo de validação programaticamente
+
+<p>O BeanValidation já está funcionando na camada do Controlador, quando é feito um POST, PUT, DELETE, o objeto é validado antes mesmo do JPA tentar fazer a persistência deste objeto, de forma que conseguimos capturar estes erros de validação e mostrar na resposta da api.</p>
+
+<p>Mas no método HTTP Patch, ao forçar um erro, por exemplo, uma atualização de um frete negativo, dá um erro na camada de persistência e não na camada dos controladores</p>
+
+<p>Isso acontesse por causa que no método Patch, recebe um Map, diferentemente dos outros métodos que recebem o objeto, por exemplo o Restaurante</p>
+
+<p>Sendo assim, alteramos o método Patch para a seguinte forma:</p>
+
+<pre>
+    <code>
+        @PatchMapping("/{restauranteId}")
+        public Restaurante atualizarParcial(@PathVariable Long restauranteId,
+                                            @RequestBody Map<code><</code>String, Object> campos,
+                                            HttpServletRequest request) {
+            Restaurante restauranteAtual = service.buscar(restauranteId);
+
+            merge(campos, restauranteAtual, request);
+            validate(restauranteAtual, "restaurante");
+
+            return atualizar(restauranteId, restauranteAtual);
+        }
+    </code>
+</pre>
+
+<p>Criamos o método validate no próprio Controller e injetamos o validator "SmartValidator":</p>
+
+<pre>
+private void validate(Restaurante restaurante, String objNome) {
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objNome);
+        validator.validate(restaurante, bindingResult);
+
+        if(bindingResult.hasErrors()){
+            throw new ValidacaoException(bindingResult);
+        }
+    }
+</pre>
+
+<p>Com isso, o erro não será mais a exception que ocorria na camada de persistência.</p>
+
+<p>Agora, simplesmente, precisamos capturar a ValidacaoException dentro da ExceptionHandler, extrair o bindResult desta exception, e tratar normalmente da mesma forma do handleMethodArgumentNotValid.</p>
