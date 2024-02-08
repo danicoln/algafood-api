@@ -1517,3 +1517,7 @@ Utilizando @ConvertGroup para o atributo associado "cozinha" em Restaurante. Est
 
 Foi explicado algumas formas de resolver mensagens de validação com Resource Bundle. 
 O ideal, é sempre usar o messages.properties. Lembrando que o nome dos arquivos são importantes, "messages.properties" e "ValidationMessages.properties", para que o spring possa entender. 
+
+## 9.17. Criando constraints de validação customizadas em nível de classe
+
+<p>Aprendendo a criar qualquer tipo de validação customizada com duas ou mais propriedades</p>
