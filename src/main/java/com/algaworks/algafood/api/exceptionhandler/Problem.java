@@ -21,11 +21,11 @@ public class Problem {
     private String detail;
     private String userMessage; //propriedade para mostrar a mensagem para o usuario
     private LocalDateTime timestamp; // propriedade para mostrar a data do problema
-    private List<Field> fields;
+    private List<Object> objects;
 
     @Getter
     @Builder
-    public static class Field {
+    public static class Object {
 
         private String name;
         private String userMessage;

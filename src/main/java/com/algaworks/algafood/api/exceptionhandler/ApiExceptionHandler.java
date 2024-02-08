@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,9 +28,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -113,14 +112,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         BindingResult bindingResult = ex.getBindingResult();
 
-        List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream()
-                .map(fieldError -> {
+        List<Problem.Object> problemObjects = bindingResult.getAllErrors().stream()
+                .map(objectError -> {
 
                     //Para ler o arquivo messages.properties
-                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+                    String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
 
-                return Problem.Field.builder() // transforma em um stream de Problem.Field
-                        .name(fieldError.getField())
+                    String nome = objectError.getObjectName();
+
+                    if(objectError instanceof FieldError) {
+                        nome = ((FieldError) objectError).getField();
+                    }
+
+                return Problem.Object.builder() // transforma em um stream de Problem.Field
+                        .name(nome)
                         .userMessage(message)
                         .build();
                 })
@@ -128,7 +133,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
-                .fields(problemFields).build();
+                .objects(problemObjects).build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }

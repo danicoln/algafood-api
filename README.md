@@ -1521,3 +1521,8 @@ O ideal, é sempre usar o messages.properties. Lembrando que o nome dos arquivos
 ## 9.17. Criando constraints de validação customizadas em nível de classe
 
 <p>Aprendendo a criar qualquer tipo de validação customizada com duas ou mais propriedades</p>
+continua...
+
+## 9.18. Ajustando Exception Handler para adicionar mensagens de validação em nível de classe
+
+<p>Continuando a aula anterior, implementamos uma mensagem customizada</p>
