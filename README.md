@@ -1526,3 +1526,46 @@ continua...
 ## 9.18. Ajustando Exception Handler para adicionar mensagens de validação em nível de classe
 
 <p>Continuando a aula anterior, implementamos uma mensagem customizada</p>
+
+## 9.19. Executando processo de validação programaticamente
+
+<p>O BeanValidation já está funcionando na camada do Controlador, quando é feito um POST, PUT, DELETE, o objeto é validado antes mesmo do JPA tentar fazer a persistência deste objeto, de forma que conseguimos capturar estes erros de validação e mostrar na resposta da api.</p>
+
+<p>Mas no método HTTP Patch, ao forçar um erro, por exemplo, uma atualização de um frete negativo, dá um erro na camada de persistência e não na camada dos controladores</p>
+
+<p>Isso acontesse por causa que no método Patch, recebe um Map, diferentemente dos outros métodos que recebem o objeto, por exemplo o Restaurante</p>
+
+<p>Sendo assim, alteramos o método Patch para a seguinte forma:</p>
+
+<pre>
+    <code>
+        @PatchMapping("/{restauranteId}")
+        public Restaurante atualizarParcial(@PathVariable Long restauranteId,
+                                            @RequestBody Map<code><</code>String, Object> campos,
+                                            HttpServletRequest request) {
+            Restaurante restauranteAtual = service.buscar(restauranteId);
+
+            merge(campos, restauranteAtual, request);
+            validate(restauranteAtual, "restaurante");
+
+            return atualizar(restauranteId, restauranteAtual);
+        }
+    </code>
+</pre>
+
+<p>Criamos o método validate no próprio Controller e injetamos o validator "SmartValidator":</p>
+
+<pre>
+private void validate(Restaurante restaurante, String objNome) {
+        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objNome);
+        validator.validate(restaurante, bindingResult);
+
+        if(bindingResult.hasErrors()){
+            throw new ValidacaoException(bindingResult);
+        }
+    }
+</pre>
+
+<p>Com isso, o erro não será mais a exception que ocorria na camada de persistência.</p>
+
+<p>Agora, simplesmente, precisamos capturar a ValidacaoException dentro da ExceptionHandler, extrair o bindResult desta exception, e tratar normalmente da mesma forma do handleMethodArgumentNotValid.</p>
