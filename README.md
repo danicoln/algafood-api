@@ -1588,3 +1588,31 @@ private void validate(Restaurante restaurante, String objNome) {
 No teste de Cidade, o desafio é não aceitar mais atualizar / ignorar a propriedade "nome" da entidade Estado.
 
 Criar Mixin para as outras classes do domain model, mas apenas para classes que estão usando anotações Jackson neste momento.
+
+## 11.6. Boas práticas para trabalhar com data e hora em REST APIs
+
+1. Usar o ISO 8601. Exemplo:
+
+"lastLoginDate": "2019-10-12T14:15:38-03:00"
+
+O Horário no exemplo significa que estamos utilizando padrão UTC com offset de -03:00 horas, que é exatamente o horário de Brasília.
+
+
+ No exemplo a seguir, a data é representada exatamente no padrão UTC, não é usado o offset:
+
+ "lastLoginDate": "2019-10-12T14:15:38Z"
+
+ Neste caso, quando tem o "Z" no final, sabemos que no horário de Brasília seria 11:15:38 da manhã. Sabemos disso pois o horário de Brasília é o padrão BRT -03:00, sendo assim, apenas subtraímos 3h desta data no exemplo.
+
+ 2. Aceitar qualquer fuso horário.
+
+ Independentemente do fuso horário da nossa API, podemos aceitar qualquer fuso horário, quando estivermos usando o ISO 8601.
+
+ 3. Armazene em UTC.
+
+ O ideal é sempre armazenar a data e hora em UTC, para evitar problema para os usuários.
+
+ 4. Retornar em UTC.
+
+ 5. Não inclua o horário, se não for necessário.
+

@@ -16,6 +16,8 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,12 +51,12 @@ public class Restaurante {
     // implementação do Hibernate, não no JPA
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataCadastro;
+    private OffsetDateTime dataCadastro;
 
     // implementação do Hibernate, não no JPA
     @UpdateTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
-    private LocalDateTime dataAtualizacao;
+    private OffsetDateTime dataAtualizacao;
 
     @Valid
     @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class) // converte de grupo default para a entidade escolhida
