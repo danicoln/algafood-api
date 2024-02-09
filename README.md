@@ -1569,3 +1569,9 @@ private void validate(Restaurante restaurante, String objNome) {
 <p>Com isso, o erro não será mais a exception que ocorria na camada de persistência.</p>
 
 <p>Agora, simplesmente, precisamos capturar a ValidacaoException dentro da ExceptionHandler, extrair o bindResult desta exception, e tratar normalmente da mesma forma do handleMethodArgumentNotValid.</p>
+
+## 11.2. Refinando o payload de cadastro com @JsonIgnoreProperties
+
+<p>Com a anotação @JsonIgoreProperties, podemos ignorar propriedades de classes.</p>
+
+<p>Nesta aula, implementamos um refinamento no payload de cadastro, para restaurante, onde na atualização, a ideia era atualizar apenas os dados de restaurante. As propriedades de cozinha, precisa ser ignorada, sendo assim, passamos como parâmetro a propriedade "titulo" (value) e um outro parâmetro o "allowGetters = true", sendo assim, a propriedade passada "titulo" é ignorada quando tiver alguma transação de atualização no restaurante, neste exemplo</p>
