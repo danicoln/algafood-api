@@ -1582,3 +1582,9 @@ private void validate(Restaurante restaurante, String objNome) {
 ## 11.3. Criando classes de mixin para usar as anotações do Jackson
 
 <p>Criação de uma classe RestauranteMixin para configurar as propriedades de restaurante não qual utilizamos anotações do Jackson. Com isso, desacoplamos algumas anotações e deixamos o código mais limpo.</p>
+
+## 11.4. Desafio: usando @JsonIgnoreProperties e Jackson Mixin
+
+No teste de Cidade, o desafio é não aceitar mais atualizar / ignorar a propriedade "nome" da entidade Estado.
+
+Criar Mixin para as outras classes do domain model, mas apenas para classes que estão usando anotações Jackson neste momento.
