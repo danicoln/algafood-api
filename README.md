@@ -1616,3 +1616,10 @@ O Horário no exemplo significa que estamos utilizando padrão UTC com offset de
 
  5. Não inclua o horário, se não for necessário.
 
+ ## 11.12. Refatorando e criando um assembler de DTO
+
+<p>Nesta aula, criamos um pacote "assembler", ou seja, um montador. É como se fosse uma espécie de transformação de um objeto para outro</p>
+
+
+
+
