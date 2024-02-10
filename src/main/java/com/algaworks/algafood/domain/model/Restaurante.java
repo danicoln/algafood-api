@@ -59,7 +59,6 @@ public class Restaurante {
     private OffsetDateTime dataAtualizacao;
 
     @Valid
-    @ConvertGroup(from = Default.class, to = Groups.CozinhaId.class) // converte de grupo default para a entidade escolhida
     @NotNull
     @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "cozinha_id", nullable = false)

@@ -4,9 +4,11 @@ import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.CozinhaModel;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.RestauranteModel;
+import com.algaworks.algafood.domain.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -57,8 +59,10 @@ public class RestauranteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RestauranteModel adicionar(@RequestBody @Valid Restaurante restaurante) {
+    public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput input) {
         try{
+            Restaurante restaurante = toDomainObject(input);
+
             return toModel(service.salvar(restaurante));
         } catch (CozinhaNaoEncontradaException e){
             throw new NegocioException(e.getMessage());
@@ -67,8 +71,10 @@ public class RestauranteController {
 
     @PutMapping("/{restauranteId}")
     public RestauranteModel atualizar(@PathVariable Long restauranteId,
-                                 @RequestBody @Valid Restaurante restaurante) {
+                                 @RequestBody @Valid RestauranteInput input) {
         try {
+            Restaurante restaurante = toDomainObject(input);
+
             Restaurante restauranteAtual = service.buscarOuFalhar(restauranteId);
 
             BeanUtils.copyProperties(restaurante, restauranteAtual,
@@ -81,7 +87,7 @@ public class RestauranteController {
         }
 
     }
-    
+
     @DeleteMapping("/{restauranteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long restauranteId) {
@@ -105,6 +111,19 @@ public class RestauranteController {
         return restaurantes.stream()
                 .map(restaurante -> toModel(restaurante))
                 .collect(Collectors.toList());
+    }
+
+    private Restaurante toDomainObject(RestauranteInput input){
+        Restaurante restaurante = new Restaurante();
+        restaurante.setNome(input.getNome());
+        restaurante.setTaxaFrete(input.getTaxaFrete());
+
+        Cozinha cozinha = new Cozinha();
+        cozinha.setId(input.getCozinha().getId());
+
+        restaurante.setCozinha(cozinha);
+
+        return restaurante;
     }
 
 }
