@@ -4,6 +4,7 @@ import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.model.CozinhaModel;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.RestauranteModel;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
@@ -27,6 +28,7 @@ import javax.validation.ValidationException;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -42,31 +44,29 @@ public class RestauranteController {
     private SmartValidator validator;
 
     @GetMapping
-    public List<Restaurante> listar() {
-        return repository.findAll();
+    public List<RestauranteModel> listar() {
+        return toCollectionModel(repository.findAll());
     }
 
     @GetMapping("/{restauranteId}")
     public RestauranteModel buscar(@PathVariable Long restauranteId) {
         Restaurante restaurante = service.buscarOuFalhar(restauranteId);
 
-        RestauranteModel model = null;
-
-        return model;
+        return toModel(restaurante);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante) {
+    public RestauranteModel adicionar(@RequestBody @Valid Restaurante restaurante) {
         try{
-            return service.salvar(restaurante);
+            return toModel(service.salvar(restaurante));
         } catch (CozinhaNaoEncontradaException e){
             throw new NegocioException(e.getMessage());
         }
     }
 
     @PutMapping("/{restauranteId}")
-    public Restaurante atualizar(@PathVariable Long restauranteId,
+    public RestauranteModel atualizar(@PathVariable Long restauranteId,
                                  @RequestBody @Valid Restaurante restaurante) {
         try {
             Restaurante restauranteAtual = service.buscarOuFalhar(restauranteId);
@@ -75,84 +75,36 @@ public class RestauranteController {
                     "id", "formasPagamentos",
                     "endereco", "dataCadastro", "produtos");
 
-            return service.salvar(restauranteAtual);
+            return toModel(service.salvar(restauranteAtual));
         } catch (EntidadeNaoEncontradaException e) {
             throw new NegocioException(e.getMessage());
         }
 
     }
-
-    @PatchMapping("/{restauranteId}")
-    public Restaurante atualizarParcial(@PathVariable Long restauranteId,
-                                        @RequestBody Map<String, Object> campos,
-                                        HttpServletRequest request) {
-        Restaurante restauranteAtual = service.buscar(restauranteId);
-
-        merge(campos, restauranteAtual, request);
-        validate(restauranteAtual, "restaurante");
-
-        return atualizar(restauranteId, restauranteAtual);
-    }
-
-    private void validate(Restaurante restaurante, String objNome) {
-        BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objNome);
-        validator.validate(restaurante, bindingResult);
-
-        if(bindingResult.hasErrors()){
-            throw new ValidacaoException(bindingResult);
-        }
-    }
-
-    /**
-     * A função deste método é "mesclar" o valor 1 (dadosOrigem) para o valor 2 (restauranteDestino)
-     */
-    private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
-        ServletServerHttpRequest servletServerHttpRequest = new ServletServerHttpRequest(request);
-
-        try {
-            /**
-             * ObjectMapper do pacote Jackson, é responsável por serializar(converter)
-             * objetos java em json e vice versa.*/
-            ObjectMapper objectMapper = new ObjectMapper();
-
-            //configuramos o objectMapper passando a funcionalidade, para falhar
-            // quando a propriedade esteja sendo ignorada.
-            objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);
-            //caso a propriedade não exista;
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
-
-            /**
-             * Aqui, convertemos os dadosOrigem para um tipo Restaurante*/
-            Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
-            System.out.println(restauranteOrigem);
-
-            /**Atribuimos as propriedades à variável dadosOrigem*/
-            dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-                /**Usamos Field do Java Lang, para representar um atributo da classe Restaurante
-                 * que iremos modificar*/
-                Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-                field.setAccessible(true);
-
-                /**com o método getField(), buscamos o valor da propriedade representada
-                 * pela variável field e passamos para a variavel restauranteOrigem
-                 * a variável novoValor já está convertida para o tipo Restaurante.*/
-                Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-
-                System.out.println(nomePropriedade + " = " + valorPropriedade + " = " + novoValor);
-
-                /**Inspeciona os objetos java e altera em tempo de execução*/
-                ReflectionUtils.setField(field, restauranteDestino, novoValor);
-            });
-        }catch (IllegalArgumentException ex){
-            Throwable rootCause = ExceptionUtils.getRootCause(ex);
-            throw new HttpMessageNotReadableException(ex.getMessage(), rootCause, servletServerHttpRequest);
-        }
-    }
-
+    
     @DeleteMapping("/{restauranteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long restauranteId) {
         service.excluir(restauranteId);
+    }
+
+    private RestauranteModel toModel(Restaurante restaurante) {
+        CozinhaModel cozinhaModel = new CozinhaModel();
+        cozinhaModel.setId(restaurante.getCozinha().getId());
+        cozinhaModel.setNome(restaurante.getCozinha().getNome());
+
+        RestauranteModel model = new RestauranteModel();
+        model.setId(restaurante.getId());
+        model.setNome(restaurante.getNome());
+        model.setTaxaFrete(restaurante.getTaxaFrete());
+        model.setCozinha(cozinhaModel);
+        return model;
+    }
+
+    private List<RestauranteModel> toCollectionModel(List<Restaurante> restaurantes){
+        return restaurantes.stream()
+                .map(restaurante -> toModel(restaurante))
+                .collect(Collectors.toList());
     }
 
 }
