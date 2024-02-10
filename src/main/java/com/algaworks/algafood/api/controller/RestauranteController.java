@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.RestauranteModel;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -46,9 +47,12 @@ public class RestauranteController {
     }
 
     @GetMapping("/{restauranteId}")
-    public Restaurante buscar(@PathVariable Long restauranteId) {
+    public RestauranteModel buscar(@PathVariable Long restauranteId) {
+        Restaurante restaurante = service.buscarOuFalhar(restauranteId);
 
-        return service.buscarOuFalhar(restauranteId);
+        RestauranteModel model = null;
+
+        return model;
     }
 
     @PostMapping
