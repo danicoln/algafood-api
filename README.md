@@ -1588,3 +1588,51 @@ private void validate(Restaurante restaurante, String objNome) {
 No teste de Cidade, o desafio é não aceitar mais atualizar / ignorar a propriedade "nome" da entidade Estado.
 
 Criar Mixin para as outras classes do domain model, mas apenas para classes que estão usando anotações Jackson neste momento.
+
+## 11.6. Boas práticas para trabalhar com data e hora em REST APIs
+
+1. Usar o ISO 8601. Exemplo:
+
+"lastLoginDate": "2019-10-12T14:15:38-03:00"
+
+O Horário no exemplo significa que estamos utilizando padrão UTC com offset de -03:00 horas, que é exatamente o horário de Brasília.
+
+
+ No exemplo a seguir, a data é representada exatamente no padrão UTC, não é usado o offset:
+
+ "lastLoginDate": "2019-10-12T14:15:38Z"
+
+ Neste caso, quando tem o "Z" no final, sabemos que no horário de Brasília seria 11:15:38 da manhã. Sabemos disso pois o horário de Brasília é o padrão BRT -03:00, sendo assim, apenas subtraímos 3h desta data no exemplo.
+
+ 2. Aceitar qualquer fuso horário.
+
+ Independentemente do fuso horário da nossa API, podemos aceitar qualquer fuso horário, quando estivermos usando o ISO 8601.
+
+ 3. Armazene em UTC.
+
+ O ideal é sempre armazenar a data e hora em UTC, para evitar problema para os usuários.
+
+ 4. Retornar em UTC.
+
+ 5. Não inclua o horário, se não for necessário.
+
+ ## 11.12. Refatorando e criando um assembler de DTO
+
+<p>Nesta aula, criamos um pacote "assembler", ou seja, um montador. É como se fosse uma espécie de transformação de um objeto para outro</p>
+
+
+## 11.21. Corrigindo bug de tratamento de exception de integridade de dados com flush do JPA
+
+<p>Depois que inserimos o @Transaction nos métodos de excluir nas classes de serviço, a aplicação começou a apresentar Bugs para tentativa de exclusão de Entidades que são relacionadas com outras, por exemplo cozinha.</p>
+
+<p>Quando fazemos operações que modificam dados do BD usando o entity manager do JPA, essas operações não necessariamente são executadas na hora. Quando fazemos operações crud, não quer dizer que o JPA irá executar na mesma hora, pois ele faz uma fila, gerencia na memória as operações, para fazer tudo de uma vez.</p>
+
+<p>Quando chega o momento de realizar a transação, é quando o entity manager faz o commit da transação. No momento deste commit, é lançado uma exeção de integridade.</p>
+
+<p>Quando anotamos com @Transaction no método excluir, estamos falando que a transação é iniciada quando o método excluir é chamado, e não mais quando o método deleteById do JPA é chamado. Então, quando faz o deleteById, ele vai para essa espécie de fila, não necessariamente será executado, ou seja, não tem garantia de que ele será executado no exato momento e assim, a execução continua, e quando o método é totalmente executado, como o método deleteById está dentro de uma transação (bloco), o spring irá fazer o commit, sendo assim o JPA executa no Banco de dados, lança a exception, porém não está mais dentro do try-catch.</p>
+
+Para resolver isso, forçamos o JPA a descarregar no momento da chamada do deleteById (ainda não é um commit):
+
+<pre>
+    repository.flush();
+</pre>

@@ -55,6 +55,7 @@ public class RestauranteService {
     public void excluir(Long restauranteId) {
         try {
             repository.deleteById(restauranteId);
+            repository.flush();
 
         } catch (EmptyResultDataAccessException emptyException) {
             throw new RestauranteNaoEncontradoException(restauranteId);

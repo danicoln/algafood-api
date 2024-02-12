@@ -48,6 +48,8 @@ public class ProdutoService {
     public void excluir(Long produtoId) {
         try {
             produtoRepository.deleteById(produtoId);
+            produtoRepository.flush();
+
         } catch (EmptyResultDataAccessException ex) {
             throw new NegocioException( //TODO: Verificar a Exception correta pra este caso.
                     String.format("Não existe um cadastro de produto com o código %d",
