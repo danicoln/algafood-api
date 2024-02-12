@@ -1621,5 +1621,18 @@ O Horário no exemplo significa que estamos utilizando padrão UTC com offset de
 <p>Nesta aula, criamos um pacote "assembler", ou seja, um montador. É como se fosse uma espécie de transformação de um objeto para outro</p>
 
 
+## 11.21. Corrigindo bug de tratamento de exception de integridade de dados com flush do JPA
 
+<p>Depois que inserimos o @Transaction nos métodos de excluir nas classes de serviço, a aplicação começou a apresentar Bugs para tentativa de exclusão de Entidades que são relacionadas com outras, por exemplo cozinha.</p>
 
+<p>Quando fazemos operações que modificam dados do BD usando o entity manager do JPA, essas operações não necessariamente são executadas na hora. Quando fazemos operações crud, não quer dizer que o JPA irá executar na mesma hora, pois ele faz uma fila, gerencia na memória as operações, para fazer tudo de uma vez.</p>
+
+<p>Quando chega o momento de realizar a transação, é quando o entity manager faz o commit da transação. No momento deste commit, é lançado uma exeção de integridade.</p>
+
+<p>Quando anotamos com @Transaction no método excluir, estamos falando que a transação é iniciada quando o método excluir é chamado, e não mais quando o método deleteById do JPA é chamado. Então, quando faz o deleteById, ele vai para essa espécie de fila, não necessariamente será executado, ou seja, não tem garantia de que ele será executado no exato momento e assim, a execução continua, e quando o método é totalmente executado, como o método deleteById está dentro de uma transação (bloco), o spring irá fazer o commit, sendo assim o JPA executa no Banco de dados, lança a exception, porém não está mais dentro do try-catch.</p>
+
+Para resolver isso, forçamos o JPA a descarregar no momento da chamada do deleteById (ainda não é um commit):
+
+<pre>
+    repository.flush();
+</pre>
