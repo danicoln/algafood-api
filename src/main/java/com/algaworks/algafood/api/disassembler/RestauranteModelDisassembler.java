@@ -3,22 +3,20 @@ package com.algaworks.algafood.api.disassembler;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.input.RestauranteInput;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RestauranteModelDisassembler {
 
+    @Autowired
+    private ModelMapper modelMapper;
+
     public Restaurante toDomainObject(RestauranteInput input){
-        Restaurante restaurante = new Restaurante();
-        restaurante.setNome(input.getNome());
-        restaurante.setTaxaFrete(input.getTaxaFrete());
 
-        Cozinha cozinha = new Cozinha();
-        cozinha.setId(input.getCozinha().getId());
+        return modelMapper.map(input, Restaurante.class);
 
-        restaurante.setCozinha(cozinha);
-
-        return restaurante;
     }
 
 }
