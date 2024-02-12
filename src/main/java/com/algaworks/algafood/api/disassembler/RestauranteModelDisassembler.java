@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.disassembler;
 
-import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.input.RestauranteInput;
 import org.modelmapper.ModelMapper;
