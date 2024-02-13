@@ -1,7 +1,7 @@
 package com.algaworks.algafood.core.mapper;
 
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.model.dto.output.RestauranteModel;
+import com.algaworks.algafood.api.dto.model.RestauranteModel;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

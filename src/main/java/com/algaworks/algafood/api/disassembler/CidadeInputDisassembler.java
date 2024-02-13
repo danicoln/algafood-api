@@ -2,7 +2,7 @@ package com.algaworks.algafood.api.disassembler;
 
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
-import com.algaworks.algafood.domain.model.dto.input.CidadeInput;
+import com.algaworks.algafood.api.dto.input.CidadeInput;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

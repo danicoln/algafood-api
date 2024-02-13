@@ -5,9 +5,10 @@ import com.algaworks.algafood.api.disassembler.RestauranteInputDisassembler;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.model.dto.output.RestauranteModel;
-import com.algaworks.algafood.domain.model.dto.input.RestauranteInput;
+import com.algaworks.algafood.api.dto.model.RestauranteModel;
+import com.algaworks.algafood.api.dto.input.RestauranteInput;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.RestauranteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class RestauranteController {
     @Autowired
     private RestauranteService service;
 
-    @Autowired
-    private SmartValidator validator;
+//    @Autowired
+//    private SmartValidator validator;
 
     @Autowired
     private RestauranteModelAssembler restauranteModelAssembler;
@@ -56,7 +57,7 @@ public class RestauranteController {
             Restaurante restaurante = restauranteInputDisassembler.toDomainObject(input);
 
             return restauranteModelAssembler.toModel(service.salvar(restaurante));
-        } catch (CozinhaNaoEncontradaException e) {
+        } catch (RestauranteNaoEncontradoException e) {
             throw new NegocioException(e.getMessage());
         }
     }
