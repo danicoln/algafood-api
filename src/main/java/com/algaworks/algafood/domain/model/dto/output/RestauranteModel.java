@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.model;
+package com.algaworks.algafood.domain.model.dto.output;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,4 +13,5 @@ public class RestauranteModel {
     private String nome;
     private BigDecimal precoFrete;
     private CozinhaModel cozinha;
+    private Boolean ativo;
 }

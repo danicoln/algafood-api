@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.model.input;
+package com.algaworks.algafood.domain.model.dto.input;
 
 import lombok.Getter;
 import lombok.Setter;

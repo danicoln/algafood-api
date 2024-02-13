@@ -67,6 +67,22 @@ public class RestauranteService {
         }
     }
 
+    @Transactional
+    public void ativar(Long restauranteId){
+        // No método buscarOuFalhar já é tradado a exception para quando não for encontrado o restaurante
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+        restauranteAtual.ativar();
+    }
+
+    @Transactional
+    public void inativar(Long restauranteId){
+        Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+
+//        restauranteAtual.setAtivo(false);
+        restauranteAtual.inativar();
+    }
+
     public Restaurante buscarOuFalhar(Long restauranteId) {
         return repository.findById(restauranteId)
                 .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));

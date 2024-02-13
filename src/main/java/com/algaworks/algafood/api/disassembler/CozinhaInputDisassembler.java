@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.disassembler;
 
 import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.model.input.CozinhaInput;
+import com.algaworks.algafood.domain.model.dto.input.CozinhaInput;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
