@@ -1636,3 +1636,49 @@ Para resolver isso, forçamos o JPA a descarregar no momento da chamada do delet
 <pre>
     repository.flush();
 </pre>
+
+## 12.10. Um pouco mais sobre JPA: objeto alterado fora da transação é sincronizado com o banco de dados
+
+
+<p>O que acontece se mudarmos o método salvar para a seguinte forma:</p>
+
+<pre>
+@Transactional
+public Usuario salvar(Usuario usuario) {
+    return usuario;
+}
+</pre>
+
+<p>Pelo teste, ao atualizar um usuário este é salvo no banco de dados.</p>
+
+<p>O que acontece é que quando buscamos um usuário, o objeto deste usuário fica no contexto de persistência do JPA. O JPA tem uma área de memória, chamado de contexto de persistência, onde os objetos que estamos trabalhando dentro deste contexto, vai gerenciando este objeto, e qualquer alteração neste objeto, é sincronizado com o banco de dados.</p>
+
+<p>Quando é feito um update no objeto do banco de dados, em determinado momento, o JPA sincroniza esta alteração, pois este objeto é gerenciado pelo JPA.</p>
+
+<p>Mas quem é que está nesta transação? O método salvar(). No método de atualização "PutMapping", não tem definido o @Transactional, mas o método salvar tem.</p>
+
+<p>Acontece que se não tivesse o @Transactional no método salvar, não seria atualizado no banco de dados. Mesmo se o método salvar não tivesse nada, como a seguir:</p> 
+
+<pre>
+@Transactional
+public void salvar() {
+}
+</pre>
+
+Mesmo se estivesse desse jeito, na chamada do método atualizar, o objeto seria atualizado, pois o método salvar() é transacionado (@Transactional);
+
+<p>O que poderia acontecer, para que a alteração que fizemos não ser sincronizada no banco de dados? Se lançarmos uma exception:</p>
+
+<pre>
+@Transactional
+public Usuario salvar(Usuario usuario) {
+    
+    if(true){
+        throw new RuntimeException();
+    }
+    
+    return usuario;
+}
+</pre>
+
+<p>Dessa forma, não terminaria a execução do método e não faria o update, pois foi feito o rollback.</p>
